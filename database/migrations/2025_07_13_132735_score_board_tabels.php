@@ -35,7 +35,7 @@ return new class extends Migration {
             $table->string('phone')->nullable()->after('email');
             $table->string('profile_photo')->nullable()->after('phone');
             $table->integer('total_user_score')->default(0)->after('profile_photo');
-            $table->boolean('is_active')->default(true)->after('total_user_score');
+            $table->boolean('is_active')->default(false)->after('total_user_score');
             $table->unsignedBigInteger('user_role')->nullable()->after('is_active');
 
             $table->foreign('university_id')->references('id')->on('universities')->onDelete('set null');

@@ -127,6 +127,25 @@ CREATE TABLE `password_reset_tokens` (
   PRIMARY KEY (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `personal_access_tokens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `personal_access_tokens` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `tokenable_type` varchar(255) NOT NULL,
+  `tokenable_id` bigint(20) unsigned NOT NULL,
+  `name` text NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `abilities` text DEFAULT NULL,
+  `last_used_at` timestamp NULL DEFAULT NULL,
+  `expires_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
+  KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `score_claim`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -221,7 +240,7 @@ CREATE TABLE `users` (
   `phone` varchar(255) DEFAULT NULL,
   `profile_photo` varchar(255) DEFAULT NULL,
   `total_user_score` int(11) NOT NULL DEFAULT 0,
-  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `is_active` tinyint(1) NOT NULL DEFAULT 0,
   `user_role` bigint(20) unsigned DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
@@ -245,6 +264,8 @@ CREATE TABLE `users` (
 
 /*M!999999\- enable the sandbox mode */ 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (13,'0001_01_01_000002_create_jobs_table',1);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (14,'0001_01_01_000000_create_users_table',2);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (15,'0001_01_01_000001_create_cache_table',2);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (16,'2025_07_13_132735_score_board_tabels',2);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (17,'2025_07_17_114041_add_two_factor_columns_to_users_table',3);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (18,'2025_07_17_114106_create_personal_access_tokens_table',3);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (22,'0001_01_01_000000_create_users_table',4);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (23,'0001_01_01_000001_create_cache_table',4);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (24,'2025_07_13_132735_score_board_tabels',4);
