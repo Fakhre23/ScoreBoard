@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->string('country');
             $table->integer('total_score')->default(0);
             $table->string('UNI_photo')->nullable();
+            $table->boolean('Status')->default(false);
         });
 
         // Table: standard_user_role

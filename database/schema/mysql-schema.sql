@@ -204,6 +204,7 @@ CREATE TABLE `universities` (
   `country` varchar(255) NOT NULL,
   `total_score` int(11) NOT NULL DEFAULT 0,
   `UNI_photo` varchar(255) DEFAULT NULL,
+  `Status` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -266,6 +267,6 @@ CREATE TABLE `users` (
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (13,'0001_01_01_000002_create_jobs_table',1);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (17,'2025_07_17_114041_add_two_factor_columns_to_users_table',3);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (18,'2025_07_17_114106_create_personal_access_tokens_table',3);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (22,'0001_01_01_000000_create_users_table',4);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (23,'0001_01_01_000001_create_cache_table',4);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (24,'2025_07_13_132735_score_board_tabels',4);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (25,'0001_01_01_000000_create_users_table',4);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (26,'0001_01_01_000001_create_cache_table',4);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (27,'2025_07_13_132735_score_board_tabels',4);
