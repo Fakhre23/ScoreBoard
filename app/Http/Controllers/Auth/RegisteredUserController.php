@@ -40,16 +40,16 @@ class RegisteredUserController extends Controller
         'password' => ['required', 'confirmed', Rules\Password::defaults()],
         'phone' => ['required', 'numeric', 'digits:10', 'unique:users,phone'],
         'university_id' => ['required', 'exists:universities,id'],
-        'role_id' => ['required', 'exists:standard_roles,id'],
+        'role_id' => ['required', 'exists:standard_user_role,id'],
     ]);
 
     $user = User::create([
         'name' => $request->name,
         'email' => $request->email,
         'password' => Hash::make($request->password),
-        'phone' => $request->phone,
+        'phone' => $request->phone, 
         'university_id' => $request->university_id,
-        'role_id' => $request->role_id,
+        'user_role' => $request->role_id,
     ]);
 
         event(new Registered($user));

@@ -33,7 +33,9 @@
                     {{ $university->name }}
                 </option>
                 @endforeach
+                <option value=""> ➕ Add University </option> <!-- to do == need to make it active  -->
             </select>
+
             <x-input-error :messages="$errors->get('university_id')" class="mt-2" />
         </div>
 
