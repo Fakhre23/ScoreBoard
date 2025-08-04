@@ -16,8 +16,8 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->insert([
             [
-                'name' => 'Fakhre Ambassador Test',
-                'email' => 'admin@example.com',
+                'name' => 'Ambassador Test',
+                'email' => 'Ambassador@example.com',
                 'password' => Hash::make('password'), // secure password
                 'university_id' => 1,
                 'phone' => '0790000000',
@@ -36,7 +36,54 @@ class UserSeeder extends Seeder
                 'total_user_score' => 0,
                 'is_active' => true,
                 'user_role' => 5, // Student
+            ],
+            [
+                'name' => 'Not active User',
+                'email' => 'notActive@example.com',
+                'password' => Hash::make('password'),
+                'university_id' => 2,
+                'phone' => '0780000000',
+                'profile_photo' => null,
+                'total_user_score' => 0,
+                'is_active' => false,
+                'user_role' => 4, // Student
+            ],
+            [
+                'name' => 'Representative User',
+                'email' => 'representative@example.com',
+                'password' => Hash::make('password'),
+                'university_id' => 2,
+                'phone' => '0780000000',
+                'profile_photo' => null,
+                'total_user_score' => 0,
+                'is_active' => true,
+                'user_role' => 4,
+
+            ],
+            [
+                'name' => 'Vice User',
+                'email' => 'vice@example.com',
+                'password' => Hash::make('password'),
+                'university_id' => 2,
+                'phone' => '0780000000',
+                'profile_photo' => null,
+                'total_user_score' => 0,
+                'is_active' => true,
+                'user_role' => 3,
+            ],
+            [
+                'name' => 'Admin User',
+                'email' => 'admin@example.com',
+                'password' => Hash::make('password'),
+                'university_id' => 2,
+                'phone' => '0780000000',
+                'profile_photo' => null,
+                'total_user_score' => 0,
+                'is_active' => true,
+                'user_role' => 1,
             ]
+
+
         ]);
     }
 }
