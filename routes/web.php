@@ -9,14 +9,35 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('dashboard/dashboard');
 })->middleware(['auth', 'verified', EnsureUserIsActive::class])->name('dashboard');
 
 
 
+
+
 Route::get('/pedndingDashboard', function () {
-    return view('pendingDashboard');
+    return view('dashboard/pendingDashboard');
 })->name('pendingDashboard');
+
+
+Route::get('/adminDashboard', function () {
+    return view('dashboard/adminDashboard');
+})->name('adminDashboard');
+
+Route::get('/ambassadorDashboard', function () {
+    return view('dashboard/ambassadorDashboard');
+})->name('ambassadorDashboard');
+
+Route::get('/viceDashboard', function () {
+    return view('dashboard/viceDashboard');
+})->name('viceDashboard');
+
+Route::get('/studentDashboard', function () {
+    return view('dashboard/studentDashboard');
+})->name('studentDashboard');
+
+
 
 
 Route::middleware('auth')->group(function () {
