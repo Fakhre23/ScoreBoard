@@ -18,6 +18,7 @@
                 <th class="py-3 px-4 text-left font-semibold text-gray-600">Role</th>
                 <th class="py-3 px-4 text-left font-semibold text-gray-600">University</th>
                 <th class="py-3 px-4 text-left font-semibold text-gray-600">Status</th>
+                <th class="py-3 px-4 text-left font-semibold text-gray-600">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -34,7 +35,7 @@
 
                 {{-- Role Dropdown --}}
                 <td class="py-3 px-4">
-                    <select class="border rounded px-7 py-2 text-gray-800">
+                    <select class="border rounded px-7 py-1 text-gray-800">
                         @foreach($roles as $role)
                         <option value="{{ $role->id }}"
                             {{ $user->user_role == $role->id ? 'selected' : '' }}>
@@ -44,9 +45,8 @@
                     </select>
                 </td>
 
-                {{-- University  --}}
+                {{-- University --}}
                 <td class="py-3 px-4 text-gray-800">{{ $user->university_name }}</td>
-
 
                 {{-- Status Badge --}}
                 <td class="py-3 px-4">
@@ -55,6 +55,15 @@
                     @else
                     <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs">Pending</span>
                     @endif
+                </td>
+
+                {{-- Actions --}}
+                <td class="py-3 px-4">
+                    <form method="POST" action="{{ route('users.delete', $user->id) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
+                    </form>
                 </td>
             </tr>
             @endforeach

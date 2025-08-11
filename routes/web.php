@@ -15,7 +15,7 @@ Route::get('/dashboard', function () {
 
 
 
-
+/*  ///////////// Diffrent route for each role ///////////// */
 
 Route::get('/pedndingDashboard', function () {
     return view('dashboard/pendingDashboard');
@@ -38,7 +38,13 @@ Route::get('/studentDashboard', function () {
     return view('dashboard/studentDashboard');
 })->name('studentDashboard');
 
-Route::get('listUsers', [UserController::class, 'listUsers'])->name('listUsers');
+
+
+/* //////// CRUD for users ///////// */
+
+Route::get('usersList', [UserController::class, 'listUsers'])->name('users.list');
+Route::delete('usersList/{id}', [UserController::class, 'destroy'])->name('users.delete');
+
 
 
 
@@ -49,3 +55,19 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+
+
+
+
+
+
+
+
+
+
+
+// <form method="POST" action="{{ route('ReservedWord.delete', $word->id) }}">
+//                         @csrf
+//                         @method('DELETE')
+//                         <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
+//                     </form>

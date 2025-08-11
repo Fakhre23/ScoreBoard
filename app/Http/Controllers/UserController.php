@@ -15,6 +15,13 @@ class UserController extends Controller
         $roles = Role::all();
 
         // Return a view with the users data
-        return view('users.listUsers', compact('users', 'roles'));
+        return view('users.usersList', compact('users', 'roles'));
+    }
+
+    public function destroy($id)
+    {
+        $name = User::findOrFail($id);
+        $name->delete();
+        return redirect()->back()->with('success', 'User is Deleted');
     }
 }

@@ -29,11 +29,6 @@
                         Events
                     </a>
                 </li>
-
-                <!-- {{-- Extra Features --}}
-            <h2 class="text-2xl font-bold mt-10 mb-6 text-gray-800">Features</h2>
-            <ul class="space-y-4"> -->
-
                 <li>
                     <a href="#" id="menuLeaderboard" class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
                         Leaderboard
@@ -44,13 +39,13 @@
                         My Profile
                     </a>
                 </li>
-            </ul>
+
         </aside>
 
         {{-- ********  Main Content ********  --}}
 
         <div class="flex-1 p-10 overflow-auto">
-        
+
 
             {{-- ********   Area where content will be injected ********   --}}
             <div id="contentArea">
@@ -68,7 +63,7 @@
     {{-- ********  AJAX and Interactivity //// (ChatGPT do that not me) ********  --}}
     <script>
         document.getElementById('listUsers').addEventListener('click', function() {
-            fetch('listUsers')
+            fetch('usersList')
                 .then(response => response.text())
                 .then(html => {
                     document.getElementById('contentArea').innerHTML = html;
