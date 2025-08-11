@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\EnsureUserIsActive;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -37,6 +38,7 @@ Route::get('/studentDashboard', function () {
     return view('dashboard/studentDashboard');
 })->name('studentDashboard');
 
+Route::get('listUsers', [UserController::class, 'listUsers'])->name('listUsers');
 
 
 

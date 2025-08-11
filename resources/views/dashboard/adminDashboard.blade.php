@@ -14,7 +14,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" id="menuHome" class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
+                    <a href="#" id="listUsers" class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
                         Users
                     </a>
                 </li>
@@ -47,38 +47,32 @@
             </ul>
         </aside>
 
-        {{-- ******** Main Content ******** --}}
-        <main class="flex-1 p-10 overflow-auto bg-gray-50">
-            {{-- Header --}}
-            <h1 class="text-3xl font-bold mb-6 text-gray-900" id="pageTitle">Welcome</h1>
+        {{-- ********  Main Content ********  --}}
 
-            {{-- Dynamic Content Area --}}
-            <div id="contentArea" class="text-gray-700">
-                <p>Select an option from the sidebar to begin.</p>
+        <div class="flex-1 p-10 overflow-auto">
+        
+
+            {{-- ********   Area where content will be injected ********   --}}
+            <div id="contentArea">
+                <p class="text-gray-600">Please select an option from the sidebar.</p>
             </div>
-        </main>
+        </div>
+
+
+
     </div>
 
-    {{-- ******** AJAX Logic ******** --}}
+
+
+
+    {{-- ********  AJAX and Interactivity //// (ChatGPT do that not me) ********  --}}
     <script>
-        const loadContent = (url, title) => {
-            fetch(url)
-                .then(res => res.text())
+        document.getElementById('listUsers').addEventListener('click', function() {
+            fetch('listUsers')
+                .then(response => response.text())
                 .then(html => {
                     document.getElementById('contentArea').innerHTML = html;
-                    document.getElementById('pageTitle').innerText = title;
-                })
-                .catch(err => {
-                    document.getElementById('contentArea').innerHTML = '<p class="text-red-600">Error loading content.</p>';
                 });
-        };
-
-        // Menu click handlers
-        document.getElementById('menuHome').addEventListener('click', () => loadContent('/dashboard/home', 'Home'));
-        document.getElementById('menuUniversities').addEventListener('click', () => loadContent('/dashboard/universities', 'Universities'));
-        document.getElementById('menuEvents').addEventListener('click', () => loadContent('/dashboard/events', 'Events'));
-        document.getElementById('menuScores').addEventListener('click', () => loadContent('/dashboard/scores', 'Scores'));
-        document.getElementById('menuLeaderboard').addEventListener('click', () => loadContent('/dashboard/leaderboard', 'Leaderboard'));
-        document.getElementById('menuProfile').addEventListener('click', () => loadContent('/dashboard/profile', 'My Profile'));
+        });
     </script>
 </x-app-layout>
