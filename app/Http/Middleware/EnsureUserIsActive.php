@@ -18,17 +18,28 @@ class EnsureUserIsActive
     {
         $user = $request->user();
 
-        if ($user && $user->is_active == 0) {       //check if the logged-in user exists before trying to access their is_active property.
+        // If not active → always go to pendingDashboard
+        if ($user && $user->is_active == 0 && !$request->routeIs('pendingDashboard')) {
             return redirect()->route('pendingDashboard');
-        } else if ($user && $user->user_role == 1) {
-            return redirect()->route('adminDashboard');
-        } else if ($user && $user->user_role == 2) {
-            return redirect()->route('ambassadorDashboard');
-        } else if ($user && $user->user_role == 3) {
-            return redirect()->route('viceDashboard');
-        } else if ($user && $user->user_role == 4) {
-            return redirect()->route('studentDashboard');
         }
+
+        // Role-based dashboard protection
+        $roleRoutes = [
+            1 => 'adminDashboard',
+            2 => 'ambassadorDashboard',
+            3 => 'viceDashboard',
+            4 => 'studentDashboard',
+        ];
+
+        if ($user && isset($roleRoutes[$user->user_role])) {
+            $correctRoute = $roleRoutes[$user->user_role];
+
+            // If not already on correct dashboard, redirect
+            if (!$request->routeIs($correctRoute)) {
+                return redirect()->route($correctRoute);
+            }
+        }
+
         return $next($request);
     }
 }

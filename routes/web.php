@@ -9,45 +9,41 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard/dashboard');
-})->middleware(['auth', 'verified', EnsureUserIsActive::class])->name('dashboard');
+/* ========= DASHBOARD ROUTES ========= */
+// All dashboards share the same middleware
+Route::middleware(['auth', 'verified', EnsureUserIsActive::class])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard/dashboard');
+    })->name('dashboard');
 
+    Route::get('/pendingDashboard', function () {
+        return view('dashboard/pendingDashboard');
+    })->name('pendingDashboard');
 
+    Route::get('/adminDashboard', function () {
+        return view('dashboard/admin/adminDashboard');
+    })->name('adminDashboard');
 
-/*  ///////////// Diffrent route for each role ///////////// */
+    Route::get('/ambassadorDashboard', function () {
+        return view('dashboard/ambassador/ambassadorDashboard');
+    })->name('ambassadorDashboard');
 
-Route::get('/pedndingDashboard', function () {
-    return view('dashboard/pendingDashboard');
-})->name('pendingDashboard');
+    Route::get('/viceDashboard', function () {
+        return view('dashboard/viceDashboard');
+    })->name('viceDashboard');
 
+    Route::get('/studentDashboard', function () {
+        return view('dashboard/studentDashboard');
+    })->name('studentDashboard');
+});
 
-Route::get('/adminDashboard', function () {
-    return view('dashboard/adminDashboard');
-})->name('adminDashboard');
-
-Route::get('/ambassadorDashboard', function () {
-    return view('dashboard/ambassadorDashboard');
-})->name('ambassadorDashboard');
-
-Route::get('/viceDashboard', function () {
-    return view('dashboard/viceDashboard');
-})->name('viceDashboard');
-
-Route::get('/studentDashboard', function () {
-    return view('dashboard/studentDashboard');
-})->name('studentDashboard');
-
-
-
-/* //////// CRUD for users ///////// */
+/* ========= USER MANAGEMENT ========= */
 
 Route::get('usersList', [UserController::class, 'listUsers'])->name('users.list');
 Route::delete('usersList/{id}', [UserController::class, 'destroy'])->name('users.delete');
 
 
-
-
+/* ========= PROFILE ROUTES ========= */
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -55,19 +51,3 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
-
-
-
-
-
-
-
-
-
-
-
-// <form method="POST" action="{{ route('ReservedWord.delete', $word->id) }}">
-//                         @csrf
-//                         @method('DELETE')
-//                         <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
-//                     </form>
