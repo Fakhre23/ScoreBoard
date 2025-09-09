@@ -8,5 +8,3 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 //this is just test 
-
-

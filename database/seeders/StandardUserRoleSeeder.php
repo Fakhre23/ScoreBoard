@@ -16,11 +16,10 @@ class StandardUserRoleSeeder extends Seeder
     {
         DB::table('standard_user_role')->insert([
             ['name' => 'Admin'],
-            ['name' => 'student'],
+            ['name' => 'Student'],
             ['name' => 'Ambassador'],
             ['name' => 'ViceAmbassador'],
             ['name' => 'Representative'],
         ]);
     }
 }
-c

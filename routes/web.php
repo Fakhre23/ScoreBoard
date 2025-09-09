@@ -9,16 +9,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/pendingDashboard', function () {
+    return view('dashboard/pendingDashboard');
+})->name('pendingDashboard');
+
 /* ========= DASHBOARD ROUTES ========= */
 // All dashboards share the same middleware
 Route::middleware(['auth', 'verified', EnsureUserIsActive::class])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard/dashboard');
-    })->name('dashboard');
-
-    Route::get('/pendingDashboard', function () {
-        return view('dashboard/pendingDashboard');
-    })->name('pendingDashboard');
+    })->name('dashboard');;
 
     Route::get('/adminDashboard', function () {
         return view('dashboard/admin/adminDashboard');

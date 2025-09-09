@@ -46,7 +46,7 @@
                 </td>
 
                 {{-- University --}}
-                <td class="py-3 px-4 text-gray-800">{{ $user->university_name }}</td>
+                <td class="py-3 px-4 text-gray-800">{{ $user->university_id }}</td>
 
                 {{-- Status Badge --}}
                 <td class="py-3 px-4">
