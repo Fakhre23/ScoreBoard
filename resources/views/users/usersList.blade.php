@@ -22,50 +22,52 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($users as $user)
-            <tr class="border-b hover:bg-gray-50">
-                {{-- Name --}}
-                <td class="py-3 px-4 text-gray-800">{{ $user->name }}</td>
+            @foreach ($users as $user)
+                <tr class="border-b hover:bg-gray-50">
+                    {{-- Name --}}
+                    <td class="py-3 px-4 text-gray-800">{{ $user->name }}</td>
 
-                {{-- Email --}}
-                <td class="py-3 px-4 text-gray-800">{{ $user->email }}</td>
+                    {{-- Email --}}
+                    <td class="py-3 px-4 text-gray-800">{{ $user->email }}</td>
 
-                {{-- Phone --}}
-                <td class="py-3 px-4 text-gray-800">{{ $user->phone }}</td>
+                    {{-- Phone --}}
+                    <td class="py-3 px-4 text-gray-800">{{ $user->phone }}</td>
 
-                {{-- Role Dropdown --}}
-                <td class="py-3 px-4">
-                    <select class="border rounded px-7 py-1 text-gray-800">
-                        @foreach($roles as $role)
-                        <option value="{{ $role->id }}"
-                            {{ $user->user_role == $role->id ? 'selected' : '' }}>
-                            {{ $role->name }}
-                        </option>
-                        @endforeach
-                    </select>
-                </td>
+                    {{-- Role Dropdown --}}
+                    <td class="py-3 px-4">
+                        <select class="border rounded px-7 py-1 text-gray-800">
+                            @foreach ($roles as $role)
+                                <option value="{{ $role->id }}"
+                                    {{ $user->user_role == $role->id ? 'selected' : '' }}>
+                                    {{ $role->id === 1 ? 'Admin' : ($role->id === 2 ? 'Ambassador' : ($role->id === 3 ? 'Vice Ambassador' : ($role->id === 4 ? 'Representative' : 'Viewer'))) }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </td>
 
-                {{-- University --}}
-                <td class="py-3 px-4 text-gray-800">{{ $user->university_id }}</td>
 
-                {{-- Status Badge --}}
-                <td class="py-3 px-4">
-                    @if($user->is_active)
-                    <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">Active</span>
-                    @else
-                    <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs">Pending</span>
-                    @endif
-                </td>
+                    {{-- University --}}
+                    <td class="py-3 px-4 text-gray-800">{{ $user->university_id }}</td>
 
-                {{-- Actions --}}
-                <td class="py-3 px-4">
-                    <form method="POST" action="{{ route('users.delete', $user->id) }}">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
-                    </form>
-                </td>
-            </tr>
+                    {{-- Status Badge --}}
+                    <td class="py-3 px-4">
+                        @if ($user->is_active)
+                            <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">Active</span>
+                        @else
+                            <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs">Pending</span>
+                        @endif
+                    </td>
+
+                    {{-- Actions --}}
+                    <td class="py-3 px-4">
+                        <form method="POST" action="{{ route('users.delete', $user->id) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
+                        </form>
+                    </td>
+                </tr>
             @endforeach
         </tbody>
     </table>

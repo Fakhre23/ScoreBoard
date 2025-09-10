@@ -68,11 +68,14 @@
 
         // Representatives
         document.getElementById('listUsers').addEventListener('click', function() {
-            fetch('usersList')
+            fetch('usersList',)
                 .then(response => response.text())
                 .then(html => {
                     document.getElementById('contentArea').innerHTML = html;
                 });
         });
+
+        
+
     </script>
 </x-app-layout>

@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserRoles;
 
 Route::get('/', function () {
     return view('welcome');
@@ -41,6 +42,10 @@ Route::middleware(['auth', 'verified', EnsureUserIsActive::class])->group(functi
 
 Route::get('usersList', [UserController::class, 'listUsers'])->name('users.list');
 Route::delete('usersList/{id}', [UserController::class, 'destroy'])->name('users.delete');
+
+
+
+Route::get('listRoles', [UserRoles::class, 'index'])->name('roles.list');
 
 
 /* ========= PROFILE ROUTES ========= */

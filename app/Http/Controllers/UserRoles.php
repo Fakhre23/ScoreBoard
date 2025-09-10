@@ -7,12 +7,12 @@ use App\Models\Role;
 
 class UserRoles extends Controller
 {
-    // public function index()
-    // {
-    //     // Fetch all roles from the database
-    //     $roles = Role::all();
+/*     public function listRoles()
+    {
+        // Fetch all roles from the database
+        $roles = Role::all();
 
-    //     // Return a view with the roles data
-    //     return view('roles.listRoles', compact('roles'));
-    // }
+        // Return a view with the roles data
+        return view('roles.listRoles', compact('roles'));
+    } */
 }

@@ -16,6 +16,7 @@ class UserController extends Controller
         // Fetch all users from the database
         $users = User::all();
         $roles = Role::all();
+
         $userUniversity = $currentUser->university_id;
 
         if ($currentUser->user_role == 1) {
@@ -27,6 +28,10 @@ class UserController extends Controller
             return view('users.usersList', compact('users', 'roles'));
         }
     }
+
+
+
+
     public function destroy(Request $request, $id)
     {
         $currentUser = $request->user();
