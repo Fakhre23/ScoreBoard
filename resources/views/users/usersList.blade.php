@@ -60,15 +60,12 @@
 
                         {{-- Status Badge --}}
                         <td class="py-3 px-4">
-                            @if ($user->is_active)
-                                <span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-medium">
-                                    Active
-                                </span>
-                            @else
-                                <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-xs font-medium">
-                                    Pending
-                                </span>
-                            @endif
+                            <select name="is_active"
+                                class="border rounded-lg px-3 py-1 text-gray-800 text-sm w-full sm:w-auto"
+                                onchange="this.form.submit()">
+                                <option value="1" {{ $user->is_active ? 'selected' : '' }}>Active</option>
+                                <option value="0" {{ !$user->is_active ? 'selected' : '' }}>Pending</option>
+                            </select>
                         </td>
 
                         {{-- Actions --}}
