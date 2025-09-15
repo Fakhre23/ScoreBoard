@@ -45,7 +45,17 @@ class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
-        return $user->user_role === 1;
+        // epxplain to whole thing ...
+        //First parameter $user → Laravel automatically injects the currently logged-in user.
+        //Second parameter $model → Laravel expects an instance of the model you want to act on (in this case, a User object).
+        //So Laravel is saying:
+        //“Tell me which User record you want to delete, so I can check if the logged-in user has permission over it.”
+
+        if ($user->user_role === 1) {
+            return true; // Allow deletion if the user is an admin
+        } else {
+            return false; // Deny deletion for non-admin users
+        };
     }
 
     /**
