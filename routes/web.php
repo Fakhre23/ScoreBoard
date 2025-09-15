@@ -41,7 +41,7 @@ Route::middleware(['auth', 'verified', EnsureUserIsActive::class])->group(functi
 /* ========= USER MANAGEMENT ========= */
 
 Route::get('usersList', [UserController::class, 'listUsers'])->name('users.list');
-Route::delete('usersList/{id}', [UserController::class, 'destroy'])->name('users.delete');
+Route::delete('usersList/{id}', [UserController::class, 'delete'])->name('users.delete');
 
 
 

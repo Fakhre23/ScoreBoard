@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\University;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 
 class UserController extends Controller
 {
+    use AuthorizesRequests;
 
     public function listUsers(Request $request)
     {
@@ -36,17 +39,11 @@ class UserController extends Controller
 
 
 
-    public function destroy(Request $request, $id)
+    public function delete(Request $request, $id)
     {
-        $currentUser = $request->user();
-
-        if ($currentUser->user_role !== 1) {
-            return redirect()->back()->with('error', 'You do not have permission to delete users.');
-        } else {
-
-            $name = User::findOrFail($id);
-            $name->delete();
-            return redirect()->back()->with('success', 'User is Deleted');
-        }
+        $userToDelete = User::findOrFail($id);
+        $this->authorize('delete', $userToDelete);  //Check if the currently logged-in user is allowed to delete this $userToDelete model.
+        $userToDelete->delete();
+        return redirect()->back()->with('success', 'User is Deleted');
     }
 }
