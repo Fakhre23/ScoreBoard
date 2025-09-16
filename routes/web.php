@@ -40,10 +40,14 @@ Route::middleware(['auth', 'verified', EnsureUserIsActive::class])->group(functi
 
 /* ========= USER MANAGEMENT ========= */
 
-Route::get('usersList', [UserController::class, 'listUsers'])->name('users.list');
-Route::delete('usersList/{id}', [UserController::class, 'delete'])->name('users.delete');
 
-
+Route::middleware('auth')->group(function () { // just for more securty its not nesscery 
+    Route::get('usersList', [UserController::class, 'listUsers'])->name('users.list');
+    Route::delete('usersList/{id}', [UserController::class, 'delete'])->name('users.delete');
+    Route::patch('usersList/{id}/status', [UserController::class, 'statusUpdate'])->name('users.statusUpdate');
+    Route::patch('usersList/{id}/university', [UserController::class, 'changeUniversity'])->name('users.changeUniversity');
+    Route::patch('usersList/{id}/role', [UserController::class, 'changeRole'])->name('users.changeRole');
+});
 
 Route::get('listRoles', [UserRoles::class, 'index'])->name('roles.list');
 

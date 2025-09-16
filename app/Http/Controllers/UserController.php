@@ -45,4 +45,45 @@ class UserController extends Controller
         $userToDelete->delete();
         return redirect()->back()->with('success', 'User is Deleted');
     }
+
+
+    public function statusUpdate(Request $request, $id)
+    {
+        $userToUpdate = User::findOrFail($id);
+        $userToUpdate->is_active = $request->input('is_active');
+        $userToUpdate->save();
+        return redirect()->back()->with('success', 'User status is updated');
+    }
+
+
+    public function changeRole(Request $request, $id)
+    {
+        $userToUpdate = User::findOrFail($id);
+
+        $this->authorize('roleUpdate', $userToUpdate);
+        $request->validate([
+            'userRole' => 'required|exists:standard_user_role,id',
+        ]);
+
+        $userToUpdate->user_role = $request->input('userRole');
+        $userToUpdate->save();
+        return redirect()->back()->with('success', 'User role is updated');
+    }
+
+
+
+
+    public function changeUniversity(Request $request, $id)
+    {
+        $userToUpdate = User::findOrFail($id);
+
+        $this->authorize('update', $userToUpdate);
+        $request->validate([
+            'university_id' => 'required|exists:universities,id',
+        ]);
+
+        $userToUpdate->university_id = $request->input('university_id');
+        $userToUpdate->save();
+        return redirect()->back()->with('success', 'User university is updated');
+    }
 }

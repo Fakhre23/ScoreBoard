@@ -36,36 +36,52 @@
 
                         {{-- Role Dropdown --}}
                         <td class="py-3 px-4">
-                            <select class="border rounded-lg px-3 py-1 text-gray-800 w-full sm:w-auto">
-                                @foreach ($roles as $role)
-                                    <option value="{{ $role->id }}"
-                                        {{ $user->user_role == $role->id ? 'selected' : '' }}>
-                                        {{ $role->id === 1 ? 'Admin' : ($role->id === 2 ? 'Ambassador' : ($role->id === 3 ? 'Vice Ambassador' : ($role->id === 4 ? 'Representative' : 'Viewer'))) }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            <form method="POST" action="{{ route('users.changeRole', $user->id) }}">
+                                @csrf
+                                @method('PATCH')
+                                <select name="userRole"
+                                    class="border rounded-lg px-3 py-1 text-gray-800 w-full sm:w-auto"
+                                    onchange="this.form.submit()">
+                                    @foreach ($roles as $role)
+                                        <option value="{{ $role->id }}"
+                                            {{ $user->user_role == $role->id ? 'selected' : '' }}>
+                                            {{ $role->id === 1 ? 'Admin' : ($role->id === 2 ? 'Ambassador' : ($role->id === 3 ? 'Vice Ambassador' : ($role->id === 4 ? 'Representative' : 'Viewer'))) }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </form>
                         </td>
 
                         {{-- University Dropdown --}}
                         <td class="py-3 px-4">
-                            <select class="border rounded-lg px-3 py-1 text-gray-800 w-full sm:w-auto">
-                                @foreach ($universities as $university)
-                                    <option value="{{ $university->id }}"
-                                        {{ $user->university_id == $university->id ? 'selected' : '' }}>
-                                        {{ $university->name }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            <form method="POST" action="{{ route('users.changeUniversity', $user->id) }}">
+                                @csrf
+                                @method('PATCH')
+                                <select name="university_id"
+                                    class="border rounded-lg px-3 py-1 text-gray-800 w-full sm:w-auto"
+                                    onchange="this.form.submit()">
+                                    @foreach ($universities as $university)
+                                        <option value="{{ $university->id }}"
+                                            {{ $user->university_id == $university->id ? 'selected' : '' }}>
+                                            {{ $university->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </form>
                         </td>
 
                         {{-- Status Badge --}}
                         <td class="py-3 px-4">
-                            <select name="is_active"
-                                class="border rounded-lg px-3 py-1 text-gray-800 text-sm w-full sm:w-auto"
-                                onchange="this.form.submit()">
-                                <option value="1" {{ $user->is_active ? 'selected' : '' }}>Active</option>
-                                <option value="0" {{ !$user->is_active ? 'selected' : '' }}>Pending</option>
-                            </select>
+                            <form method="POST" action="{{ route('users.statusUpdate', $user->id) }}">
+                                @csrf
+                                @method('PATCH')
+                                <select name="is_active"
+                                    class="border rounded-lg px-3 py-1 text-gray-800 text-sm w-full sm:w-auto"
+                                    onchange="this.form.submit()">
+                                    <option value="1" {{ $user->is_active ? 'selected' : '' }}>Active</option>
+                                    <option value="0" {{ !$user->is_active ? 'selected' : '' }}>Pending</option>
+                                </select>
+                            </form>
                         </td>
 
                         {{-- Actions --}}

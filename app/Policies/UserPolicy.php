@@ -44,7 +44,23 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        return false;
+        if ($user->user_role === 1) {
+            return true; // Allow update if the user is an admin
+        } else {
+            return false; // Deny update for non-admin users
+        };
+    }
+
+
+    public function roleUpdate(User $user, User $model): bool
+    {
+        if ($user->user_role === 1) {
+            return true; // Allow update if the user is an admin
+        } else if ($user->user_role === 2) {
+            return true; // Allow update if the user is an ambassador
+        } else {
+            return false; // Deny update for non-admin and non-ambassador users
+        };
     }
 
     /**
