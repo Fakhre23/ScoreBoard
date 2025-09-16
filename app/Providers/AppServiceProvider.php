@@ -24,6 +24,5 @@ class AppServiceProvider extends ServiceProvider
     {
         // Register the UserPolicy for the User model
         Gate::policy(User::class, UserPolicy::class);
-        Gate::define('delete', [UserPolicy::class, 'delete']);
     }
 }

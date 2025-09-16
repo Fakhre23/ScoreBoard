@@ -17,23 +17,22 @@ class UserController extends Controller
     {
         $currentUser = $request->user();
 
-        // Fetch all users and thier data from the database
-        $users = User::all();
+        // Check permission before continuing
+        //User::class is just a PHP constant that gives you the class name string → "App\Models\User".
+        $this->authorize('viewAny', User::class);
+
+        if ($currentUser->user_role === 1) {
+            // Admin → see all
+            $users = User::all();
+        } else {
+            // Ambassador → only their university
+            $users = User::where('university_id', $currentUser->university_id)->get();
+        }
+
         $roles = Role::all();
         $universities = University::all();
-        // store current user university id 
-        $userUniversity = $currentUser->university_id;
 
-        //show all users for admin , and for all roles just show the same uni 
-        if ($currentUser->user_role == 1) {
-
-            // Return a view with the all users data
-            return view('users.usersList', compact('users', 'roles', 'universities'));
-        } else if ($currentUser->user_role > 1) {
-            // show the data just if they are the same uni ...
-            $users = User::where('university_id', $userUniversity)->get();
-            return view('users.usersList', compact('users', 'roles', 'universities'));
-        }
+        return view('users.usersList', compact('users', 'roles', 'universities'));
     }
 
 

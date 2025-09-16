@@ -13,7 +13,14 @@ class UserPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        if ($user->user_role === 1) {
+            return true;
+        }
+        if ($user->user_role > 1 && $user->user_role <= 3) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
