@@ -86,4 +86,42 @@ class UserController extends Controller
         $userToUpdate->save();
         return redirect()->back()->with('success', 'User university is updated');
     }
+
+
+
+
+    public function create(Request $request)
+    {
+        $this->authorize('create', User::class);
+
+        $roles = Role::all();
+        $universities = University::all();
+
+        return view('users.createUsers', compact('roles', 'universities'));
+    }
+
+    public function store(Request $request)
+    {
+        $this->authorize('create', User::class);
+
+        $request->validate([
+            'name' => 'required|string|max:255|unique:users,name',
+            'email' => 'required|email|max:255|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+            'phone' => 'required|string|max:15',
+            'university_id' => 'required|exists:universities,id',
+            'role_id' => 'required|exists:standard_user_role,id',
+        ]);
+
+        User::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => $request->input('password'),
+            'phone' => $request->input('phone'),
+            'university_id' => $request->input('university_id'),
+            'user_role' => $request->input('role_id'),
+            'is_active' => "1",
+        ]);
+        return redirect()->with('success', 'New user created successfully.');
+    }
 }

@@ -3,10 +3,13 @@
     {{-- Header --}}
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
         <h2 class="text-2xl font-bold text-gray-800">User Management</h2>
-        <a href="#" class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-lg shadow transition">
-            + Create User
-        </a>
+        @foreach ($users as $user)
+            <a href="{{ route('users.create', $user->id) }}" @endforeach
+                class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-lg shadow transition">
+                + Create User
+            </a>
     </div>
+
 
     {{-- Table Wrapper (for responsiveness) --}}
     <div class="overflow-x-auto rounded-lg border border-gray-200">
