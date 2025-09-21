@@ -9,7 +9,8 @@
             {{-- Main Navigation --}}
             <ul class="space-y-4">
                 <li>
-                    <a href="#" id="menuHome" class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
+                    <a href="#" id="ListUniversities"
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
                         Universities
                     </a>
                 </li>
@@ -20,22 +21,26 @@
                 </li>
 
                 <li>
-                    <a href="#" id="menuEvents" class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
+                    <a href="#" id="menuEvents"
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
                         Scores
                     </a>
                 </li>
                 <li>
-                    <a href="#" id="menuScores" class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
+                    <a href="#" id="menuScores"
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
                         Events
                     </a>
                 </li>
                 <li>
-                    <a href="#" id="menuLeaderboard" class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
+                    <a href="#" id="menuLeaderboard"
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
                         Leaderboard
                     </a>
                 </li>
                 <li>
-                    <a href="#" id="menuProfile" class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
+                    <a href="#" id="menuProfile"
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
                         My Profile
                     </a>
                 </li>
@@ -65,6 +70,14 @@
     <script>
         document.getElementById('listUsers').addEventListener('click', function() {
             fetch('usersList')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('contentArea').innerHTML = html;
+                });
+        });
+
+        document.getElementById('ListUniversities').addEventListener('click', function() {
+            fetch('universitiesList')
                 .then(response => response.text())
                 .then(html => {
                     document.getElementById('contentArea').innerHTML = html;

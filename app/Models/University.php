@@ -11,4 +11,5 @@ class University extends Model
 {
     //Here you define the model as a table
     protected $table = 'universities';
+    protected $fillable = ['name', 'country', 'total_score', 'Status', 'UNI_photo'];
 }

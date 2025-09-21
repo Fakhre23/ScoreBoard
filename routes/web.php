@@ -5,6 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRoles;
+use App\Http\Controllers\UniveristyController;
+
+use App\Models\University;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -49,6 +53,11 @@ Route::middleware('auth')->group(function () { // just for more securty its not 
     Route::patch('usersList/{id}/role', [UserController::class, 'changeRole'])->name('users.changeRole');
     Route::get('usersList/{id}/create', [UserController::class, 'create'])->name('users.create');
     Route::post('usersList/store', [UserController::class, 'store'])->name('users.store');
+
+
+    // *** Universities Routes Section *** //
+
+    Route::get('universitiesList', [UniveristyController::class, 'universitiesList'])->name('universities.list');
 });
 
 Route::get('listRoles', [UserRoles::class, 'index'])->name('roles.list');
