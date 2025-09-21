@@ -4,9 +4,10 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\University;
+use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 
-class universities
+class UniversityPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -36,7 +37,11 @@ class universities
      */
     public function create(User $user): bool
     {
-        return false;
+        if ($user->user_role === 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -44,7 +49,11 @@ class universities
      */
     public function update(User $user, University $universities): bool
     {
-        return false;
+        if ($user->user_role === 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -52,7 +61,11 @@ class universities
      */
     public function delete(User $user, University $universities): bool
     {
-        return false;
+        if ($user->user_role === 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

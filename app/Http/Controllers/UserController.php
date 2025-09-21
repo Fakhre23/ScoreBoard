@@ -11,8 +11,10 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class UserController extends Controller
 {
+    //apply user  policies (its like roleBuck for your controller)
     use AuthorizesRequests;
 
+    //list all users
     public function listUsers(Request $request)
     {
         $currentUser = $request->user();
@@ -36,7 +38,7 @@ class UserController extends Controller
     }
 
 
-
+    //delete user
 
     public function delete(Request $request, $id)
     {
@@ -46,7 +48,7 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'User is Deleted');
     }
 
-
+    //cahange user status
     public function statusUpdate(Request $request, $id)
     {
         $userToUpdate = User::findOrFail($id);
@@ -55,7 +57,7 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'User status is updated');
     }
 
-
+    //change user role
     public function changeRole(Request $request, $id)
     {
         $userToUpdate = User::findOrFail($id);
@@ -71,7 +73,7 @@ class UserController extends Controller
     }
 
 
-
+    //change user university
 
     public function changeUniversity(Request $request, $id)
     {
@@ -88,7 +90,7 @@ class UserController extends Controller
     }
 
 
-
+    //create and store new users
 
     public function create(Request $request)
     {
@@ -122,6 +124,6 @@ class UserController extends Controller
             'user_role' => $request->input('role_id'),
             'is_active' => "1",
         ]);
-        return redirect()->with('success', 'New user created successfully.');
+        return redirect()->route('adminDashboard')->with('success', 'New user created successfully.');
     }
 }

@@ -58,6 +58,16 @@ Route::middleware('auth')->group(function () { // just for more securty its not 
     // *** Universities Routes Section *** //
 
     Route::get('universitiesList', [UniveristyController::class, 'universitiesList'])->name('universities.list');
+
+    Route::delete('universitiesList/{id}', [UniveristyController::class, 'delete'])->name('universities.delete');
+
+    Route::patch('universitiesList/{id}/status', [UniveristyController::class, 'statusUpdate'])->name('universities.statusUpdate');
+
+    Route::patch('universitiesList/{id}/edit', [UniveristyController::class, 'editUniversity'])->name('universities.edit');
+
+    Route::get('universitiesList/create', [UniveristyController::class, 'create'])->name('universities.create');
+
+    Route::post('universitiesList/store', [UniveristyController::class, 'store'])->name('universities.store');
 });
 
 Route::get('listRoles', [UserRoles::class, 'index'])->name('roles.list');
