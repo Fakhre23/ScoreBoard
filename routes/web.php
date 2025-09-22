@@ -73,6 +73,11 @@ Route::middleware('auth')->group(function () { // just for more securty its not 
     Route::get('universitiesList/not-active', [UniveristyController::class, 'notActiveList'])->name('universities.notActive');
 });
 
+// Routes for users to register their universities (no auth middleware)
+Route::get('registerUniversity/create', [UniveristyController::class, 'createUniFromUser'])->name('universities.fromUser.create');
+Route::post('registerUniversity/store', [UniveristyController::class, 'storeUniFromUser'])->name('universities.fromUser.store');
+
+
 Route::get('listRoles', [UserRoles::class, 'index'])->name('roles.list');
 
 

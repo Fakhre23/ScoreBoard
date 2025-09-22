@@ -61,7 +61,7 @@ class UniveristyController extends Controller
         $request->validate([
             'name' => 'required|string|max:255|unique:universities,name',
             'country' => 'required|string|max:100',
-            'total_score' => 'required|numeric|min:0|max:100',
+            'total_score' => 'required|numeric|min:0|max:1000',
             'status' => 'required|in:0,1', // Assuming status is a boolean field
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Optional photo upload
         ]);
@@ -118,5 +118,30 @@ class UniveristyController extends Controller
         $this->authorize('update', $currentUser);
         $universities =  University::where('Status', 0)->get();
         return view('universities.queueUniversity', compact('universities'));
+    }
+
+    // Create University from User (no auth needed)
+    public function createUniFromUser(Request $request)
+    {
+        return view('universities.addUniversityFromUser');
+    }
+
+    public function storeUniFromUser(Request $request)
+    {
+
+        $request->validate([
+            'name' => 'required|string|max:255|unique:universities,name',
+            'country' => 'required|string|max:100',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Optional photo upload
+        ]);
+
+        University::create([
+            'name' => $request->input('name'),
+            'country' => $request->input('country'),
+            'Status' => 0,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        return redirect()->route('dashboard')->with('success', 'University registration submitted successfully. It is pending approval.');
     }
 }
