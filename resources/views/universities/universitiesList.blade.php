@@ -10,7 +10,8 @@
 
         <!-- Second block -->
         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-            <a href="#" class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg shadow transition">
+            <a href="{{ route('universities.notActive') }}"
+                class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg shadow transition">
                 Queue University
 
             </a>
@@ -28,12 +29,13 @@
         <table class="min-w-full text-sm text-left">
             <thead class="bg-gray-100 text-gray-600 text-xs uppercase">
                 <tr>
-                    <th class="py-3 px-4">Logo</th>
+                    {{-- <th class="py-3 px-4">Logo</th> --}}
                     <th class="py-3 px-4">Name</th>
                     <th class="py-3 px-4">Country</th>
                     <th class="py-3 px-4">Total Score</th>
                     <th class="py-3 px-4">Status</th>
                     <th class="py-3 px-4">Created At</th>
+                    <th class="py-3 px-4">Updated At</th>
                     <th class="py-3 px-4">Actions</th>
                 </tr>
             </thead>
@@ -76,11 +78,18 @@
                     </td>
 
                     {{-- Created At --}}
+                    <td class="py-3 px-4 text-gray-700">
+                        {{ $university->created_at->format('M d, Y') }}
+                    </td>
+                    {{-- updated at --}}
+                    <td class="py-3 px-4 text-gray-700">
+                        {{ $university->updated_at->format('M d, Y') }}
+                    </td>
 
                     {{-- Actions --}}
                     <td class="py-3 px-4 flex gap-2">
                         {{-- Edit --}}
-                        <a href="#"
+                        <a href="{{ route('universities.edit', $university->id) }}"
                             class="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-600 transition">
                             Edit
                         </a>

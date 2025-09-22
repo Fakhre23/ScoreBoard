@@ -97,7 +97,7 @@ class UserController extends Controller
         $this->authorize('create', User::class);
 
         $roles = Role::all();
-        $universities = University::all();
+        $universities =  University::where('Status', 1)->get();
 
         return view('users.createUsers', compact('roles', 'universities'));
     }

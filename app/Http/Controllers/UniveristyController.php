@@ -76,4 +76,47 @@ class UniveristyController extends Controller
         ]);
         return redirect()->route('adminDashboard')->with('success', 'New university created successfully.');
     }
+
+    //edit and update university
+
+    public function edit(Request $request, $id)
+    {
+        $university = University::findOrFail($id);
+        $this->authorize('edit', $university);
+
+        return view('universities.editUniversity', compact('university'));
+    }
+
+
+
+    public function updateUniversity(Request $request, $id)
+    {
+        $universityToEdit = University::findOrFail($id);
+        $this->authorize('edit', $universityToEdit);
+
+        $request->validate([
+            'name' => 'required|string|max:255|unique:universities,name,' . $universityToEdit->id,
+            'country' => 'required|string|max:100',
+            'total_score' => 'required|numeric|min:0|max:100',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Optional photo upload
+        ]);
+
+        $universityToEdit->name = $request->input('name');
+        $universityToEdit->country = $request->input('country');
+        $universityToEdit->total_score = $request->input('total_score');
+        $universityToEdit->updated_at = now();
+        $universityToEdit->save();
+
+        return redirect()->route('adminDashboard')->with('success', 'University updated successfully.');
+    }
+
+
+
+    public function notActiveList(Request $request)
+    {
+        $currentUser = $request->user();
+        $this->authorize('update', $currentUser);
+        $universities =  University::where('Status', 0)->get();
+        return view('universities.queueUniversity', compact('universities'));
+    }
 }

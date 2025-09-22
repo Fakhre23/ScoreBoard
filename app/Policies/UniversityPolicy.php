@@ -29,7 +29,11 @@ class UniversityPolicy
      */
     public function view(User $user, University $universities): bool
     {
-        return false;
+        if ($user->user_role === 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -82,5 +86,14 @@ class UniversityPolicy
     public function forceDelete(User $user, University $universities): bool
     {
         return false;
+    }
+
+    public function edit(User $user, University $universities): bool
+    {
+        if ($user->user_role === 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

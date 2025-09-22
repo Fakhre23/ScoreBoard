@@ -63,11 +63,14 @@ Route::middleware('auth')->group(function () { // just for more securty its not 
 
     Route::patch('universitiesList/{id}/status', [UniveristyController::class, 'statusUpdate'])->name('universities.statusUpdate');
 
-    Route::patch('universitiesList/{id}/edit', [UniveristyController::class, 'editUniversity'])->name('universities.edit');
+    Route::patch('universitiesList/{id}/edit', [UniveristyController::class, 'updateUniversity'])->name('universities.edit');
+    Route::get('universitiesList/{id}/edit', [UniveristyController::class, 'edit'])->name('universities.editForm');
 
     Route::get('universitiesList/create', [UniveristyController::class, 'create'])->name('universities.create');
 
     Route::post('universitiesList/store', [UniveristyController::class, 'store'])->name('universities.store');
+
+    Route::get('universitiesList/not-active', [UniveristyController::class, 'notActiveList'])->name('universities.notActive');
 });
 
 Route::get('listRoles', [UserRoles::class, 'index'])->name('roles.list');
