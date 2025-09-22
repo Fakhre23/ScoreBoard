@@ -46,7 +46,7 @@
 
             <!-- Submit -->
             <div class="pt-4">
-                <button type="submit"
+                <button type="submit" 
                     class="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition-all duration-200 ease-in-out">
                     ✅ Create University
                 </button>

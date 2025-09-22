@@ -95,7 +95,8 @@
                         </a>
 
                         {{-- Delete --}}
-                        <form method="POST" action="{{ route('universities.delete', $university->id) }}">
+                        <form method="POST" action="{{ route('universities.delete', $university->id) }}"
+                            onsubmit="return confirm('Are you sure you want to delete this university?');">
                             @csrf
                             @method('DELETE')
                             <button type="submit"

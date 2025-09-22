@@ -106,7 +106,8 @@
 
                             {{-- Actions --}}
                             <td class="py-3 px-4">
-                                <form method="POST" action="{{ route('users.delete', $user->id) }}">
+                                <form method="POST" action="{{ route('users.delete', $user->id) }}"
+                                    onsubmit="return confirm('Are you sure you want to delete this user?');">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
