@@ -1,7 +1,7 @@
 <x-guest-layout>
 
     <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-2xl p-8">
-        <h2 class="text-3xl font-extrabold text-gray-900 mb-8 border-b pb-4">🎓 Create University</h2>
+        <h2 class="text-3xl font-extrabold text-gray-900 mb-8 border-b pb-4"> Create University</h2>
 
         <form method="POST" action="{{ route('universities.store') }}" enctype="multipart/form-data" class="space-y-6">
             @csrf

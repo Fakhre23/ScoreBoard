@@ -51,7 +51,7 @@ Route::middleware('auth')->group(function () { // just for more securty its not 
     Route::patch('usersList/{id}/status', [UserController::class, 'statusUpdate'])->name('users.statusUpdate');
     Route::patch('usersList/{id}/university', [UserController::class, 'changeUniversity'])->name('users.changeUniversity');
     Route::patch('usersList/{id}/role', [UserController::class, 'changeRole'])->name('users.changeRole');
-    Route::get('usersList/{id}/create', [UserController::class, 'create'])->name('users.create');
+    Route::get('usersList/create', [UserController::class, 'create'])->name('users.create');
     Route::post('usersList/store', [UserController::class, 'store'])->name('users.store');
 
 
