@@ -18,10 +18,12 @@
                 </button>
 
                 {{-- Create User --}}
-                <a href="{{ route('users.create') }}"
-                    class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded-lg shadow transition text-sm">
-                    + Create User
-                </a>
+                @can('view', App\Models\User::class)
+                    <a href="{{ route('users.create') }}"
+                        class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded-lg shadow transition text-sm">
+                        + Create User
+                    </a>
+                @endcan
             </div>
         </div>
 
@@ -34,10 +36,20 @@
                         <th class="py-3 px-4">Email</th>
                         <th class="py-3 px-4">Phone</th>
                         <th class="py-3 px-4">Role</th>
-                        <th class="py-3 px-4">University</th>
+
+                        @can('view', App\Models\User::class)
+                            <th class="py-3 px-4">University</th>
+                        @endcan
+
+
                         <th class="py-3 px-4">Status</th>
                         <th class="py-3 px-4">Created At</th>
-                        <th class="py-3 px-4">Actions</th>
+
+
+                        @can('view', App\Models\User::class)
+                            <th class="py-3 px-4">Actions</th>
+                        @endcan
+
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
@@ -66,21 +78,23 @@
                             </td>
 
                             {{-- University --}}
-                            <td class="py-3 px-4">
-                                <form method="POST" action="{{ route('users.changeUniversity', $user->id) }}">
-                                    @csrf
-                                    @method('PATCH')
-                                    <select name="university_id"
-                                        class="border rounded-lg px-3 py-1 text-gray-800 w-full sm:w-auto"
-                                        onchange="this.form.submit()">
-                                        @foreach ($universities as $university)
-                                            <option value="{{ $university->id }}"
-                                                {{ $user->university_id == $university->id ? 'selected' : '' }}>
-                                                {{ $university->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </form>
+                            @can('update', $user)
+                                <td class="py-3 px-4">
+                                    <form method="POST" action="{{ route('users.changeUniversity', $user->id) }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <select name="university_id"
+                                            class="border rounded-lg px-3 py-1 text-gray-800 w-full sm:w-auto"
+                                            onchange="this.form.submit()">
+                                            @foreach ($universities as $university)
+                                                <option value="{{ $university->id }}"
+                                                    {{ $user->university_id == $university->id ? 'selected' : '' }}>
+                                                    {{ $university->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </form>
+                                @endcan
                             </td>
 
                             {{-- Status --}}
@@ -105,18 +119,20 @@
                             </td>
 
                             {{-- Actions --}}
-                            <td class="py-3 px-4">
-                                <form method="POST" action="{{ route('users.delete', $user->id) }}"
-                                    onsubmit="return confirm('Are you sure you want to delete this user?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition">
-                                        Delete
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
+                            @can('delete', $user)
+                                <td class="py-3 px-4">
+                                    <form method="POST" action="{{ route('users.delete', $user->id) }}"
+                                        onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endcan
                     @endforeach
                 </tbody>
             </table>
