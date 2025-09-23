@@ -62,8 +62,8 @@ class UniveristyController extends Controller
             'name' => 'required|string|max:255|unique:universities,name',
             'country' => 'required|string|max:100',
             'total_score' => 'required|numeric|min:0|max:1000',
-            'status' => 'required|in:0,1', // Assuming status is a boolean field
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Optional photo upload
+            'status' => 'required|in:0,1', 
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
         ]);
 
         University::create([
@@ -97,21 +97,23 @@ class UniveristyController extends Controller
         $request->validate([
             'name' => 'required|string|max:255|unique:universities,name,' . $universityToEdit->id,
             'country' => 'required|string|max:100',
-            'total_score' => 'required|numeric|min:0|max:100',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Optional photo upload
+            'total_score' => 'required|numeric|min:0|max:1000',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $universityToEdit->name = $request->input('name');
         $universityToEdit->country = $request->input('country');
         $universityToEdit->total_score = $request->input('total_score');
+        $universityToEdit->created_at = $universityToEdit->created_at;
         $universityToEdit->updated_at = now();
+
         $universityToEdit->save();
 
         return redirect()->route('adminDashboard')->with('success', 'University updated successfully.');
     }
 
 
-
+    //list not active universities
     public function notActiveList(Request $request)
     {
         $currentUser = $request->user();
@@ -132,7 +134,7 @@ class UniveristyController extends Controller
         $request->validate([
             'name' => 'required|string|max:255|unique:universities,name',
             'country' => 'required|string|max:100',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Optional photo upload
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
         ]);
 
         University::create([

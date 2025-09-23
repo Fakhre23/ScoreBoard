@@ -118,7 +118,7 @@
 
                             {{-- Created At --}}
                             <td class="py-3 px-15 text-gray-700">
-                                {{ $user->updated_at?->format('Y-m-d') ?? '—' }}
+                                {{ $user->created_at?->format('Y-m-d') ?? '—' }}
                             </td>
 
                             {{-- Actions --}}

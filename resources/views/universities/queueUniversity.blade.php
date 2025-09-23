@@ -49,11 +49,11 @@
                                         @csrf
                                         @method('PATCH')
                                         <select name="UniversityStatus" onchange="this.form.submit()"
-                                            class="border rounded px-2 py-1 text-gray-800 w-32 text-sm">
-                                            <option value="1" {{ $university->status ? 'selected' : '' }}>Active
-                                            </option>
-                                            <option value="0" {{ !$university->status ? 'selected' : '' }}>Pending
-                                            </option>
+                                            class="border rounded px-2 py-1 w-32 text-sm {{ $university->status ? 'bg-green-50 border-green-400 text-green-800' : 'bg-red-50 border-red-400 text-red-800' }}">
+                                            <option value="1" {{ $university->status ? 'selected' : '' }}
+                                                class="text-green-800">Active</option>
+                                            <option value="0" {{ !$university->status ? 'selected' : '' }}
+                                                class="text-red-800">Pending</option>
                                         </select>
                                     </form>
                                 </td>
