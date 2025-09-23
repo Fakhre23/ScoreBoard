@@ -69,8 +69,8 @@
                             @csrf
                             @method('PATCH')
                             <select name="UniversityStatus"
-                                class="border rounded-lg px-3 py-1 text-gray-800 text-sm w-full sm:w-auto"
-                                onchange="this.form.submit()">
+                                class="border rounded-lg px-6 py-1 text-sm w-full sm:w-auto {{ $university->Status ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800' }}"
+                                onchange="if(this.value=='1'){this.classList.remove('bg-red-50','text-red-800');this.classList.add('bg-green-50','text-green-800');}else{this.classList.remove('bg-green-50','text-green-800');this.classList.add('bg-red-50','text-red-800');} this.form.submit();">
                                 <option value="1" {{ $university->Status ? 'selected' : '' }}>Active</option>
                                 <option value="0" {{ !$university->Status ? 'selected' : '' }}>Pending</option>
                             </select>

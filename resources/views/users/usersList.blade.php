@@ -43,7 +43,7 @@
 
 
                         <th class="py-3 px-4">Status</th>
-                        <th class="py-3 px-4">Created At</th>
+                        <th class="py-3 px-4">Registered</th>
 
 
                         @can('view', App\Models\User::class)
@@ -84,7 +84,7 @@
                                         @csrf
                                         @method('PATCH')
                                         <select name="university_id"
-                                            class="border rounded-lg px-3 py-1 text-gray-800 w-full sm:w-auto"
+                                            class="border rounded-lg px-8 py-1 text-gray-800 w-full sm:w-auto"
                                             onchange="this.form.submit()">
                                             @foreach ($universities as $university)
                                                 <option value="{{ $university->id }}"
@@ -99,22 +99,25 @@
 
                             {{-- Status --}}
                             <td class="py-3 px-4">
-                                <form method="POST" action="{{ route('users.statusUpdate', $user->id) }}">
+                                <form method="POST" action="{{ route('users.statusUpdate', $user->id) }}"
+                                    x-data="{ active: {{ $user->is_active ? 'true' : 'false' }} }">
                                     @csrf
                                     @method('PATCH')
                                     <select name="is_active"
-                                        class="border rounded-lg px-3 py-1 text-gray-800 text-sm w-full sm:w-auto"
-                                        onchange="this.form.submit()">
-                                        <option value="1" {{ $user->is_active ? 'selected' : '' }}>Active
+                                        class="rounded-lg px-6 py-1 text-sm w-full sm:w-auto border"
+                                        :class="active ? 'bg-green-50 border-green-400 text-green-800' :
+                                            'bg-red-50 border-red-400 text-red-800'"
+                                        @change="active = $event.target.value == '1'; $event.target.form.submit()">
+                                        <option value="1" {{ $user->is_active ? 'selected' : '' }}> Active
                                         </option>
-                                        <option value="0" {{ !$user->is_active ? 'selected' : '' }}>Pending
+                                        <option value="0" {{ !$user->is_active ? 'selected' : '' }}> Pending
                                         </option>
                                     </select>
                                 </form>
                             </td>
 
                             {{-- Created At --}}
-                            <td class="py-3 px-4 text-gray-700">
+                            <td class="py-3 px-15 text-gray-700">
                                 {{ $user->updated_at?->format('Y-m-d') ?? '—' }}
                             </td>
 
