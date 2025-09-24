@@ -82,6 +82,7 @@ class UserController extends Controller
         $this->authorize('update', $userToUpdate);
         $request->validate([
             'university_id' => 'required|exists:universities,id',
+
         ]);
 
         $userToUpdate->university_id = $request->input('university_id');

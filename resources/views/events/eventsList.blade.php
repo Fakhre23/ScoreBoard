@@ -14,7 +14,7 @@
                     <span x-text="fullscreen ? 'Collapse' : 'Expand'"></span>
                 </button>
 
-                <a href="#"
+                <a href="{{ route('events.create') }}"
                     class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded-lg shadow transition text-sm">
                     + Create Event
                 </a>

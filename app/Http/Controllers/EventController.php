@@ -38,4 +38,18 @@ class EventController extends Controller
         $eventToDelete->delete();
         return redirect()->back()->with('success', 'Event is Deleted');
     }
+
+
+    public function create(Request $request)
+    {
+        $users = User::all();
+        $roles = Role::all();
+        $universities =  University::where('Status', 1)->get();
+
+        return view('events.creatEvent', compact('roles', 'universities', 'users'));
+    }
+
+    public function store(Request $request) {
+        // 
+    }
 }
