@@ -6,6 +6,7 @@ use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRoles;
 use App\Http\Controllers\UniveristyController;
+use App\Http\Controllers\EventController;
 
 use App\Models\University;
 
@@ -71,6 +72,11 @@ Route::middleware('auth')->group(function () { // just for more securty its not 
     Route::post('universitiesList/store', [UniveristyController::class, 'store'])->name('universities.store');
 
     Route::get('universitiesList/not-active', [UniveristyController::class, 'notActiveList'])->name('universities.notActive');
+
+
+    // *** Events Routes Section *** //
+    Route::get('eventsList', [EventController::class, 'listEvents'])->name('events.list');
+    Route::delete('eventsList/{id}', [EventController::class, 'delete'])->name('events.delete');
 });
 
 // Routes for users to register their universities (no auth middleware)
