@@ -34,7 +34,9 @@
                         <th class="py-3 px-4">Status</th>
                         <th class="py-3 px-4">Created By</th>
                         <th class="py-3 px-4">Created At</th>
-                        <th class="py-3 px-4">Actions</th>
+                        @can('view', App\Models\User::class)
+                            <th class="py-3 px-4">Actions</th>
+                        @endcan
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
@@ -61,24 +63,29 @@
                                     $badgeClass = $statusClasses[$status] ?? 'bg-gray-100 text-gray-800';
                                 @endphp
 
-                                <span class="inline-block px-3 py-1 rounded-full text-xs font-medium {{ $badgeClass }}">
+                                <span
+                                    class="inline-block px-3 py-1 rounded-full text-xs font-medium {{ $badgeClass }}">
                                     {{ $status }}
                                 </span>
                             </td>
                             <td class="py-3 px-4 text-gray-700">
                                 {{ $event->created_by?->name ?? (\App\Models\User::find($event->created_by)?->email ?? ($event->created_by ?? 'System')) }}
                             </td>
-                            <td class="py-3 px-4 text-gray-700">{{ $event->created_at?->format('Y-m-d') ?? '—' }}</td>
-                            <td class="py-3 px-4 flex gap-2">
-                                <a href="#"
-                                    class="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-600 transition">Edit</a>
-                                <form method="POST" action="{{ route('events.delete', $event->id) }}"
-                                    onsubmit="return confirm('Are you sure you want to delete this event?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition">Delete</button>
-                                </form>
+                            <td class="py-3 px-4 text-gray-700">
+                                {{ $event->created_at?->format('Y-m-d') ?? '—' }}
+                            </td>
+                            @can('view', App\Models\User::class)
+                                <td class="py-3 px-4 flex gap-2">
+                                    <a href="#"
+                                        class="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-600 transition">Edit</a>
+                                    <form method="POST" action="{{ route('events.delete', $event->id) }}"
+                                        onsubmit="return confirm('Are you sure you want to delete this event?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition">Delete</button>
+                                    </form>
+                                @endcan
                             </td>
                         </tr>
 
@@ -91,9 +98,8 @@
                                 <div><strong>Rejection Reason:</strong> {{ $event->rejection_reason ?? '—' }}</div>
                                 <div><strong>Updated At:</strong> {{ $event->updated_at ?? '—' }}</div>
                                 <div><strong>Location:</strong> {{ $event->location ?? '—' }}</div>
-                                <div class="text-red-500"><strong>End Date:</strong> {{ $event->end_datetime ?? '—' }}</div>
-
-
+                                <div class="text-red-500"><strong>End Date:</strong> {{ $event->end_datetime ?? '—' }}
+                                </div>
                             </td>
                         </tr>
                     @endforeach

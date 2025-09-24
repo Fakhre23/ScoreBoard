@@ -74,5 +74,12 @@
                     document.getElementById('contentArea').innerHTML = html;
                 });
         });
+        document.getElementById('menuEvents').addEventListener('click', function() {
+            fetch('eventsList', )
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('contentArea').innerHTML = html;
+                });
+        });
     </script>
 </x-app-layout>
