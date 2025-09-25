@@ -40,7 +40,7 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
-                @foreach ($universities as $university)
+                @foreach ($universities->sortBy('created_at') as $university)
                     {{--  <tr class="hover:bg-gray-50 transition cursor-pointer"
                         onclick="window.location='{{ route('universities.show', $university->id) }}'">
 
@@ -70,7 +70,8 @@
                             @method('PATCH')
                             <select name="UniversityStatus"
                                 class="border rounded-lg px-6 py-1 text-sm w-full sm:w-auto {{ $university->Status ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800' }}"
-                                onchange="if(this.value=='1'){this.classList.remove('bg-red-50','text-red-800');this.classList.add('bg-green-50','text-green-800');}else{this.classList.remove('bg-green-50','text-green-800');this.classList.add('bg-red-50','text-red-800');} this.form.submit();">
+                                onfocus="this.dataset.prev = this.value"
+                                onchange="if (!confirm('Are you sure you want to change the status?')) { this.value = this.dataset.prev; return; } this.form.submit();">
                                 <option value="1" {{ $university->Status ? 'selected' : '' }}>Active</option>
                                 <option value="0" {{ !$university->Status ? 'selected' : '' }}>Pending</option>
                             </select>

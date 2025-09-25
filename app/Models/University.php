@@ -11,5 +11,6 @@ class University extends Model
 {
     //Here you define the model as a table
     protected $table = 'universities';
-    protected $fillable = ['name', 'country', 'total_score', 'Status', 'UNI_photo', 'created_at', 'updated_at'];
+    protected $guarded = [];    //all columns are mass assignable.
+    public $timestamps = true;  //created_at and updated_at
 }

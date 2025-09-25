@@ -53,7 +53,7 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
-                    @foreach ($users as $user)
+                    @foreach ($users->sortBy('created_at') as $user)
                         <tr class="hover:bg-gray-50 transition">
                             <td class="py-3 px-4 font-medium text-gray-800">{{ $user->name }}</td>
                             <td class="py-3 px-4 text-gray-700">{{ $user->email }}</td>
@@ -66,7 +66,8 @@
                                     @method('PATCH')
                                     <select name="userRole"
                                         class="border rounded-lg px-3 py-1 text-gray-800 w-full sm:w-auto"
-                                        onchange="this.form.submit()">
+                                        onfocus="this.dataset.prev = this.value"
+                                        onchange="if (!confirm('Are you sure you want to change the role?')) { this.value = this.dataset.prev; return; } this.form.submit();">
                                         @foreach ($roles as $role)
                                             <option value="{{ $role->id }}"
                                                 {{ $user->user_role == $role->id ? 'selected' : '' }}>
@@ -85,7 +86,8 @@
                                         @method('PATCH')
                                         <select name="university_id"
                                             class="border rounded-lg px-8 py-1 text-gray-800 w-full sm:w-auto"
-                                            onchange="this.form.submit()">
+                                            onfocus="this.dataset.prev = this.value"
+                                            onchange="if (!confirm('Are you sure you want to change the university?')) { this.value = this.dataset.prev; return; } this.form.submit();">
                                             @foreach ($universities as $university)
                                                 <option value="{{ $university->id }}"
                                                     {{ $user->university_id == $university->id ? 'selected' : '' }}>
@@ -94,8 +96,8 @@
                                             @endforeach
                                         </select>
                                     </form>
-                                @endcan
-                            </td>
+                                </td>
+                            @endcan
 
                             {{-- Status --}}
                             <td class="py-3 px-4">
@@ -107,7 +109,8 @@
                                         class="rounded-lg px-6 py-1 text-sm w-full sm:w-auto border"
                                         :class="active ? 'bg-green-50 border-green-400 text-green-800' :
                                             'bg-red-50 border-red-400 text-red-800'"
-                                        @change="active = $event.target.value == '1'; $event.target.form.submit()">
+                                        onfocus="this.dataset.prev = this.value"
+                                        onchange="if (!confirm('Are you sure you want to change the status?')) { this.value = this.dataset.prev; return; } this.form.submit();">
                                         <option value="1" {{ $user->is_active ? 'selected' : '' }}> Active
                                         </option>
                                         <option value="0" {{ !$user->is_active ? 'selected' : '' }}> Pending

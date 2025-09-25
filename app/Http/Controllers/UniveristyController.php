@@ -20,9 +20,11 @@ class UniveristyController extends Controller
         $this->authorize('viewAny', $currentUser);
 
         if ($currentUser->user_role === 1) {
-            $universities =  University::all();
+            $universities =  University::orderBy('created_at', 'desc')->get();
         } else {
-            $universities = University::where('id', $currentUser->university_id)->get();
+            $universities = University::where('id', $currentUser->university_id)
+                ->orderBy('created_at', 'desc')
+                ->get();
         }
         return view('universities.universitiesList', compact('universities'));
     }
@@ -62,8 +64,8 @@ class UniveristyController extends Controller
             'name' => 'required|string|max:255|unique:universities,name',
             'country' => 'required|string|max:100',
             'total_score' => 'required|numeric|min:0|max:1000',
-            'status' => 'required|in:0,1', 
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
+            'status' => 'required|in:0,1',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         University::create([
@@ -134,7 +136,7 @@ class UniveristyController extends Controller
         $request->validate([
             'name' => 'required|string|max:255|unique:universities,name',
             'country' => 'required|string|max:100',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         University::create([

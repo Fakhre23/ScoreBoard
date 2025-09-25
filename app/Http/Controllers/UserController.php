@@ -20,15 +20,16 @@ class UserController extends Controller
         $currentUser = $request->user();
 
         // Check permission before continuing
-        //User::class is just a PHP constant that gives you the class name string → "App\Models\User".
         $this->authorize('viewAny', User::class);
 
         if ($currentUser->user_role === 1) {
-            // Admin → see all
-            $users = User::all();
+            // Admin → see all, newest first
+            $users = User::orderBy('created_at', 'desc')->get();
         } else {
-            // Ambassador → only their university
-            $users = User::where('university_id', $currentUser->university_id)->get();
+            // Ambassador → only their university, newest first
+            $users = User::where('university_id', $currentUser->university_id)
+                ->orderBy('created_at', 'desc')
+                ->get();
         }
 
         $roles = Role::all();

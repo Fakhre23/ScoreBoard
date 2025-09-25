@@ -1,4 +1,6 @@
 <x-guest-layout>
+    <h2 class="text-3xl font-extrabold text-gray-900 mb-8 border-b pb-4"> Create User</h2>
+    {{--  --}}
     <form method="POST" action="{{ route('users.store') }}">
         @csrf
         <!-- Name -->
@@ -76,7 +78,7 @@
         <!-- ***************** Register Button ***************** -->
         <div class="flex items-center justify-center mt-4 ">
             <x-primary-button class="ms-4">
-                {{ __('Register') }}
+                {{ __('Create') }}
             </x-primary-button>
         </div>
     </form>
