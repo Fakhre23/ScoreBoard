@@ -75,18 +75,25 @@
                                 {{ $event->created_at?->format('Y-m-d') ?? '—' }}
                             </td>
                             @can('view', App\Models\User::class)
-                                <td class="py-3 px-4 flex gap-2">
-                                    <a href="#"
-                                        class="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-600 transition">Edit</a>
-                                    <form method="POST" action="{{ route('events.delete', $event->id) }}"
-                                        onsubmit="return confirm('Are you sure you want to delete this event?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition">Delete</button>
-                                    </form>
-                                @endcan
-                            </td>
+                                <td class="py-3 px-4">
+                                    <div class="flex gap-2">
+                                        <a href="{{ route('events.edit', $event->id) }}"
+                                            class="bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600 transition text-sm">
+                                            Edit
+                                        </a>
+
+                                        <form method="POST" action="{{ route('events.delete', $event->id) }}"
+                                            onsubmit="return confirm('Are you sure you want to delete this event?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition text-sm">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            @endcan
                         </tr>
 
                         {{-- Detail Row --}}

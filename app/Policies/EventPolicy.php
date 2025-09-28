@@ -53,7 +53,11 @@ class EventPolicy
      */
     public function update(User $user, Event $events): bool
     {
-        return false;
+        if ($user->user_role === 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

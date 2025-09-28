@@ -88,4 +88,47 @@ class EventController extends Controller
         ]);
         return redirect()->route('adminDashboard')->with('success', 'Event created successfully.');
     }
+
+
+    //**** edit / update event ****
+
+    public function edit(Request $request, $id)
+    {
+        $eventToEdit = Event::findOrFail($id);
+        $this->authorize('update', $eventToEdit);
+        $universities = University::where('Status', 1)->get();
+
+        return view('events.editEvent', compact('eventToEdit', 'universities'));
+    }
+
+    public function updateEvent(Request $request, $id)
+    {
+        $eventToEdit = Event::findOrFail($id);
+        $this->authorize('update', $eventToEdit);
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'location' => 'required|string|max:255',
+            'start_datetime' => 'required|date',
+            'end_datetime' => 'required|date|after_or_equal:start_datetime',
+            'max_participants' => 'required|integer|min:1',
+            'status' => 'required|in:Draft,PendingApproval,Approved,Rejected,Completed',
+            'scope' => 'required|in:Public,University',
+            'university_id' => 'nullable|required_if:scope,University|exists:universities,id',
+        ]);
+
+        $eventToEdit->title = $request->input('title');
+        $eventToEdit->description = $request->input('description'); //not found
+        $eventToEdit->location = $request->input('location');
+        $eventToEdit->start_datetime = $request->input('start_datetime');
+        $eventToEdit->end_datetime = $request->input('end_datetime');
+        $eventToEdit->max_participants = $request->input('max_participants');
+        $eventToEdit->status = $request->input('status');
+        $eventToEdit->scope = $request->input('scope');
+        $eventToEdit->university_id = $request->input('scope') === 'University' ? $request->input('university_id') : null;
+        $eventToEdit->updated_at = now();
+        $eventToEdit->save();
+
+        return redirect()->route('adminDashboard')->with('success', 'Event updated successfully.');
+    }
 }
