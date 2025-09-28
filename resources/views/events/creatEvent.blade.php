@@ -103,21 +103,23 @@
             </div>
 
             <!-- Status -->
-            <div>
-                <label for="status" class="block text-sm font-semibold text-gray-700">Status</label>
-                <select name="status" id="status" required
-                    class="mt-2 w-full rounded-xl border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 p-3 bg-white">
-                    <option value="Draft" {{ old('status') === 'Draft' ? 'selected' : '' }}>Draft</option>
-                    <option value="PendingApproval" {{ old('status') === 'PendingApproval' ? 'selected' : '' }}>Pending
-                        Approval</option>
-                    <option value="Approved" {{ old('status') === 'Approved' ? 'selected' : '' }}>Approved</option>
-                    <option value="Rejected" {{ old('status') === 'Rejected' ? 'selected' : '' }}>Rejected</option>
-                    <option value="Completed" {{ old('status') === 'Completed' ? 'selected' : '' }}>Completed</option>
-                </select>
-                @error('status')
-                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
-                @enderror
-            </div>
+            @can('view', App\Models\User::class)
+                <div>
+                    <label for="status" class="block text-sm font-semibold text-gray-700">Status</label>
+                    <select name="status" id="status" required
+                        class="mt-2 w-full rounded-xl border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 p-3 bg-white">
+                        <option value="Draft" {{ old('status') === 'Draft' ? 'selected' : '' }}>Draft</option>
+                        <option value="PendingApproval" {{ old('status') === 'PendingApproval' ? 'selected' : '' }}>Pending
+                            Approval</option>
+                        <option value="Approved" {{ old('status') === 'Approved' ? 'selected' : '' }}>Approved</option>
+                        <option value="Rejected" {{ old('status') === 'Rejected' ? 'selected' : '' }}>Rejected</option>
+                        <option value="Completed" {{ old('status') === 'Completed' ? 'selected' : '' }}>Completed</option>
+                    </select>
+                    @error('status')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+            @endcan
 
             <!-- Submit -->
             <div class="pt-4">

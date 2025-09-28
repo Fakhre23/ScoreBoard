@@ -8,16 +8,19 @@ use App\Http\Controllers\UserRoles;
 use App\Http\Controllers\UniveristyController;
 use App\Http\Controllers\EventController;
 
-use App\Models\University;
 
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+// Pending dashboard for users whose accounts are not yet active
+
 Route::get('/pendingDashboard', function () {
     return view('dashboard/pendingDashboard');
 })->name('pendingDashboard');
+
+
 
 /* ========= DASHBOARD ROUTES ========= */
 // All dashboards share the same middleware
@@ -47,6 +50,7 @@ Route::middleware(['auth', 'verified', EnsureUserIsActive::class])->group(functi
 
 
 Route::middleware('auth')->group(function () { // just for more securty its not nesscery 
+    //Users CRUD Routes Section
     Route::get('usersList', [UserController::class, 'listUsers'])->name('users.list');
     Route::delete('usersList/{id}', [UserController::class, 'delete'])->name('users.delete');
     Route::patch('usersList/{id}/status', [UserController::class, 'statusUpdate'])->name('users.statusUpdate');
@@ -56,7 +60,7 @@ Route::middleware('auth')->group(function () { // just for more securty its not 
     Route::post('usersList/store', [UserController::class, 'store'])->name('users.store');
 
 
-    // *** Universities Routes Section *** //
+    // *** Universities CRUD Routes Section *** //
 
     Route::get('universitiesList', [UniveristyController::class, 'universitiesList'])->name('universities.list');
 
@@ -65,6 +69,7 @@ Route::middleware('auth')->group(function () { // just for more securty its not 
     Route::patch('universitiesList/{id}/status', [UniveristyController::class, 'statusUpdate'])->name('universities.statusUpdate');
 
     Route::patch('universitiesList/{id}/edit', [UniveristyController::class, 'updateUniversity'])->name('universities.edit');
+
     Route::get('universitiesList/{id}/edit', [UniveristyController::class, 'edit'])->name('universities.editForm');
 
     Route::get('universitiesList/create', [UniveristyController::class, 'create'])->name('universities.create');
@@ -74,13 +79,21 @@ Route::middleware('auth')->group(function () { // just for more securty its not 
     Route::get('universitiesList/not-active', [UniveristyController::class, 'notActiveList'])->name('universities.notActive');
 
 
-    // *** Events Routes Section *** //
+    // *** Events CRUD Routes Section *** //
+
     Route::get('eventsList', [EventController::class, 'listEvents'])->name('events.list');
+
     Route::delete('eventsList/{id}', [EventController::class, 'delete'])->name('events.delete');
+
     Route::get('eventsList/create', [EventController::class, 'create'])->name('events.create');
+
     Route::post('eventsList/store', [EventController::class, 'store'])->name('events.store');
+
     Route::get('eventsList/{id}/edit', [EventController::class, 'edit'])->name('events.edit');
+
     Route::patch('eventsList/{id}/update', [EventController::class, 'updateEvent'])->name('events.update');
+
+    Route::get('eventsQueue', [EventController::class, 'notActiveList'])->name('events.queue');
 });
 
 // Routes for users to register their universities (no auth middleware)
