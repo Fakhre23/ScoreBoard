@@ -15,33 +15,40 @@ class EventController extends Controller
 {
     use AuthorizesRequests;
 
+    //list events (all events for admin * ber uni for ambassador ) 
+
     public function listEvents(Request $request)
     {
         $currentUser = $request->user();
-
-        // Check permission before continuing
         $this->authorize('viewAny', Event::class);
 
         if ($currentUser->user_role === 1) {
             $events = Event::all();
         } else {
-            // Ambassador → only their university events
             $events = Event::where('university_id', $currentUser->university_id)->get();
         }
-
         return view('events.eventsList', compact('events'));
     }
+
+
+    // **** delete event ****
+
     public function delete(Request $request, $id)
     {
         $eventToDelete = Event::findOrFail($id);
-        $this->authorize('delete', $eventToDelete);  //Check if the currently logged-in user is allowed to delete this $eventToDelete model.
+        //Check if the currently  is allowed to delete 
+        $this->authorize('delete', $eventToDelete);
         $eventToDelete->delete();
         return redirect()->back()->with('success', 'Event is Deleted');
     }
 
 
+
+    //***** create new event ******
+
     public function create(Request $request)
     {
+        $this->authorize('create', Event::class);
         $users = User::all();
         $roles = Role::all();
         $universities =  University::where('Status', 1)->get();
@@ -49,7 +56,36 @@ class EventController extends Controller
         return view('events.creatEvent', compact('roles', 'universities', 'users'));
     }
 
-    public function store(Request $request) {
-        // 
+    public function store(Request $request)
+    {
+        $this->authorize('create', Event::class);
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'location' => 'required|string|max:255',
+            'start_datetime' => 'required|date',
+            'end_datetime' => 'required|date|after_or_equal:start_datetime',
+            'max_participants' => 'required|integer|min:1',
+            'status' => 'required|in:Draft,PendingApproval,Approved,Rejected,Completed',
+            'scope' => 'required|in:Public,University',
+            'university_id' => 'nullable|required_if:scope,University|exists:universities,id',
+        ]);
+
+        $event = Event::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'location' => $request->location,
+            'start_datetime' => $request->start_datetime,
+            'end_datetime' => $request->end_datetime,
+            'max_participants' => $request->max_participants,
+            'created_by' => $request->user()->id,
+            'status' => $request->status,
+            'scope' => $request->scope,
+            'approved_by' => auth()->id(),
+            'approval_date' => now(),
+            'university_id' => $request->scope === 'University' ? $request->university_id : null,
+        ]);
+        return redirect()->route('adminDashboard')->with('success', 'Event created successfully.');
     }
 }

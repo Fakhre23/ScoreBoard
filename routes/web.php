@@ -78,6 +78,7 @@ Route::middleware('auth')->group(function () { // just for more securty its not 
     Route::get('eventsList', [EventController::class, 'listEvents'])->name('events.list');
     Route::delete('eventsList/{id}', [EventController::class, 'delete'])->name('events.delete');
     Route::get('eventsList/create', [EventController::class, 'create'])->name('events.create');
+    Route::post('eventsList/store', [EventController::class, 'store'])->name('events.store');
 });
 
 // Routes for users to register their universities (no auth middleware)

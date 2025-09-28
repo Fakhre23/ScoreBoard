@@ -1,4 +1,5 @@
-<x-guest-layout>
+<x-app-layout class="min-h-screen flex items-center justify-center bg-gray-50">
+
 
     <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-2xl p-8">
         <h2 class="text-3xl font-extrabold text-gray-900 mb-8 border-b pb-4"> Create University</h2>
@@ -53,4 +54,4 @@
             </div>
         </form>
     </div>
-</x-guest-layout>
+</x-app-layout>

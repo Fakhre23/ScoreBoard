@@ -39,7 +39,13 @@ class EventPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        if ($user->user_role === 1) {
+            return true;
+        } else if ($user->user_role === 2) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -55,8 +61,13 @@ class EventPolicy
      */
     public function delete(User $user, Event $events): bool
     {
-        return false;
+        if ($user->user_role === 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
+
 
     /**
      * Determine whether the user can restore the model.

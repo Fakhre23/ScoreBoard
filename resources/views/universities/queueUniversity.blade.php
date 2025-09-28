@@ -1,13 +1,14 @@
-<x-admin-layout>
+<x-app-layout class="min-h-screen flex items-center justify-center bg-gray-50">
     <div class="w-full max-w-6xl mx-auto px-4 py-8" x-data="{ fullscreen: false }">
         {{-- Header --}}
         <div class="flex justify-between items-center mb-4">
             <div class="flex items-center gap-3">
+
+                <h2 class="text-2xl font-bold text-gray-800">Queued Universities</h2>
                 <a href="{{ route('adminDashboard') }}"
                     class="px-3 py-1 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 text-sm">
-                    Home
+                    Back
                 </a>
-                <h2 class="text-2xl font-bold text-gray-800">Queued Universities</h2>
             </div>
 
             {{-- Expand Card Button --}}
@@ -111,4 +112,4 @@
             </div>
         </div>
     </div>
-</x-admin-layout>
+</x-app-layout>
