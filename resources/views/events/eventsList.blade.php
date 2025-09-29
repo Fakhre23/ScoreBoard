@@ -14,15 +14,15 @@
                     <span x-text="fullscreen ? 'Collapse' : 'Expand'"></span>
                 </button>
 
-                  <a href="{{ route('events.queue') }}"
+                <a href="{{ route('events.queue') }}"
                     class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded-lg shadow transition text-sm">
-                     View Queued Events
+                    View Queued Events
                 </a>
                 <a href="{{ route('events.create') }}"
                     class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded-lg shadow transition text-sm">
                     + Create Event
                 </a>
-              
+
             </div>
         </div>
 
@@ -104,7 +104,9 @@
                         {{-- Detail Row --}}
                         <tr x-show="openId === {{ $event->id }}" x-transition class="bg-gray-50">
                             <td colspan="11" class="py-3 px-4 text-gray-700 space-y-1">
-                                <div><strong>Approved By:</strong> {{ $event->approved_by?->name ?? '—' }}</div>
+                                <div><strong>Approved By:</strong>
+                                    {{ $event->approvedBy?->email ?? (\App\Models\User::find($event->approved_by)?->email ?? '—') }}
+                                </div>
                                 <div><strong>Description:</strong> {{ $event->description ?? '—' }}</div>
                                 <div><strong>Approval Date:</strong> {{ $event->approval_date ?? '—' }}</div>
                                 <div><strong>Rejection Reason:</strong> {{ $event->rejection_reason ?? '—' }}</div>

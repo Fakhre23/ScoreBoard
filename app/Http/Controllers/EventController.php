@@ -8,7 +8,7 @@ use App\Models\Role;
 use App\Models\University;
 use App\Models\Event;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use PgSql\Lob;
+
 
 class EventController extends Controller
 {
@@ -151,6 +151,8 @@ class EventController extends Controller
         $eventToEdit->scope = $request->input('scope');
         $eventToEdit->university_id = $request->input('scope') === 'University' ? $request->input('university_id') : null;
         $eventToEdit->updated_at = now();
+        $eventToEdit->approved_by = $request->input('status') === 'Approved' ? $request->user()->id  : $eventToEdit->approved_by;
+        $eventToEdit->approval_date = $request->input('status') === 'Approved' ? now() : $eventToEdit->approval_date;
         $eventToEdit->save();
 
         return redirect()->route('adminDashboard')->with('success', 'Event updated successfully.');
@@ -165,7 +167,7 @@ class EventController extends Controller
         if ($currentUser->user_role === 1) {
             $events = Event::whereIn('status', ['PendingApproval', 'Draft'])->get();
         } else if ($currentUser->user_role === 2) {
-            $events = Event::where('university_id', $currentUser->university_id)->get();
+            $events = Event::whereIn('status', ['PendingApproval', 'Draft'])->where('university_id', $currentUser->university_id)->get();
         }
         return view('events.queueEvents', compact('events', 'currentUser'));
     }
