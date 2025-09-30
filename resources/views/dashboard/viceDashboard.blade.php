@@ -8,12 +8,14 @@
 
             <ul class="space-y-4">
                 <li><a href="#" id="menuRepresentativeApproval"
-                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">Approve Representatives</a>
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800"> Representatives</a>
                 </li>
                 <li><a href="#" id="menuEvents"
-                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">Register Events</a></li>
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">Register to new Events</a>
+                </li>
                 <li><a href="#" id="menuScoreSubmission"
-                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">Submit Scores</a></li>
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">My Events and Scores</a>
+                </li>
             </ul>
         </aside>
 
@@ -29,7 +31,7 @@
 
     <script>
         document.getElementById('menuEvents').addEventListener('click', function() {
-            fetch('registerEvents')
+            fetch('eventsUsers')
                 .then(response => response.text())
                 .then(html => {
                     document.getElementById('contentArea').innerHTML = html;

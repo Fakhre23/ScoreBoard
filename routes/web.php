@@ -97,7 +97,13 @@ Route::middleware('auth')->group(function () { // just for more securty its not 
 
 
     // *** users can Register to events *** //
-    route::get('registerEvents', [EventController::class, 'listUsersEvents'])->name('events.register');
+    Route::get('eventsUsers', [EventController::class, 'listUsersEvents'])->name('events.register');
+    Route::get('eventsUsers/{id}/register', [EventController::class, 'registerUserToEvent'])->name('events.registerUser');
+    Route::post('eventsUsers/{id}/register', [EventController::class, 'storeUserEvent'])->name('events.storeUserEvent');
+
+
+
+
 });
 
 // Routes for users to register their universities (no auth middleware)

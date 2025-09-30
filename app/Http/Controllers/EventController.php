@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\University;
 use App\Models\Event;
+use App\Models\EventRoles;
+use App\Models\ScoreClaim;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 
@@ -174,14 +176,22 @@ class EventController extends Controller
 
 
 
+    //**** list the events can user register ****
 
-
-
-
-    // **** Register Users to events **** 
-    public function registerUserToEvent(Request $request, $id)
+    public function listUsersEvents(Request $request)
     {
-        //
+        $currentUser = $request->user();
+        $eventsRoles = EventRoles::all();
+
+
+        $userEvent = Event::where('status', 'Approved')
+            ->where(function ($query) use ($currentUser) {
+                $query->where('scope', 'Public')
+                    ->orWhere('university_id', $currentUser->university_id);
+            })
+            ->get();
+        $scoreClaims = ScoreClaim::all();
+        return view('events.eventsUsers', compact('userEvent', 'eventsRoles', 'scoreClaims'));
     }
 
 
@@ -190,19 +200,19 @@ class EventController extends Controller
 
 
 
-    //**** list the events can user register ****
-
-    public function listUsersEvents(Request $request)
+    // **** Register Users to events **** 
+    public function registerUserToEvent(Request $request, $id)
     {
+        $event = Event::findOrFail($id);
+        $eventsRoles = EventRoles::all();
+
+        return view('events.registerToEvent', compact('event', 'eventsRoles'));
+    }
+
+
+    public function storeUserEvent(Request $request, $id)
+    {
+        $event = Event::findOrFail($id);
         $currentUser = $request->user();
-
-        $userEvent = Event::where('status', 'Approved')
-            ->where(function ($query) use ($currentUser) {
-                $query->where('scope', 'Public')
-                    ->orWhere('university_id', $currentUser->university_id);
-            })
-            ->get();
-
-        return view('events.registerEvents', compact('userEvent'));
     }
 }

@@ -1,8 +1,9 @@
 {{-- resources/views/events/registerEvents.blade.php --}}
 <div class="max-w-7xl mx-auto py-10 px-6">
 
+    {{-- Page Header --}}
     <h2 class="text-2xl font-bold mb-6 text-gray-800">
-        Events you can register
+        Approved Events for Your University
     </h2>
 
     {{-- Check if events exist --}}
@@ -20,8 +21,9 @@
                         <th class="px-6 py-3 font-semibold">Event Name</th>
                         <th class="px-6 py-3 font-semibold">Description</th>
                         <th class="px-6 py-3 font-semibold">Date</th>
-                        <th class="px-6 py-3 font-semibold">Max Participants</th>
                         <th class="px-6 py-3 font-semibold">Scope</th>
+                        <th class="px-6 py-3 font-semibold">Max Participants</th>
+                        <th class="px-6 py-3 font-semibold">Actual Participants</th>
                         <th class="px-6 py-3 font-semibold">Action</th>
                     </tr>
                 </thead>
@@ -31,22 +33,28 @@
                             <td class="px-6 py-4">{{ $index + 1 }}</td>
                             <td class="px-6 py-4 font-medium">{{ $event->title }}</td>
                             <td class="px-6 py-4">{{ Str::limit($event->description, 50) }}</td>
-                            <td class="px-6 py-4">{{ \Carbon\Carbon::parse($event->date)->format('d M Y') }}</td>
-                            <td class="px-6 py-4">{{ $event->max_participants }}</td>
-
-                            <td class="px-6 py-4">
-                                {{ optional($event->scope)->name ?? ($event->scope ?? 'N/A') }}
+                            <td class="px-6 py-4">{{ \Carbon\Carbon::parse($event->start_datetime)->format('d M Y') }}
                             </td>
-
-                            {{-- Register button --}}
+                            <td class="px-6 py-4">{{ $event->scope }}</td>
+                            <td class="px-6 py-4 text-red-500">{{ $event->max_participants }}</td>
+                            <td class="px-6 py-4 text-green-500">{{ $event->actual_participants }}</td>
                             <td class="px-6 py-4">
-                                <form action="{{ route('events.register', ['event' => $event->id]) }}" method="POST">
-                                    @csrf
-                                    <button type="submit"
-                                        class="inline-flex items-center px-3 py-1.5 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300">
-                                        Register
+                                @if ($event->actual_participants >= $event->max_participants)
+                                    <button disabled
+                                        class="bg-gray-300 text-white px-4 py-2 rounded cursor-not-allowed">
+                                        Full
                                     </button>
-                                </form>
+                               {{--  @elseif ($scoreClaims->where('user_id', auth()->id())->where('event_id', $event->id)->exists())
+                                    <button disabled
+                                        class="bg-gray-300 text-white px-4 py-2 rounded cursor-not-allowed">
+                                        Registered
+                                    </button> --}}
+                                @else
+                                    <a href="{{ route('events.registerUser', $event->id) }}"
+                                        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                                        Register
+                                    </a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
