@@ -171,4 +171,38 @@ class EventController extends Controller
         }
         return view('events.queueEvents', compact('events', 'currentUser'));
     }
+
+
+
+
+
+
+
+    // **** Register Users to events **** 
+    public function registerUserToEvent(Request $request, $id)
+    {
+        //
+    }
+
+
+
+
+
+
+
+    //**** list the events can user register ****
+
+    public function listUsersEvents(Request $request)
+    {
+        $currentUser = $request->user();
+
+        $userEvent = Event::where('status', 'Approved')
+            ->where(function ($query) use ($currentUser) {
+                $query->where('scope', 'Public')
+                    ->orWhere('university_id', $currentUser->university_id);
+            })
+            ->get();
+
+        return view('events.registerEvents', compact('userEvent'));
+    }
 }

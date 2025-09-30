@@ -94,6 +94,10 @@ Route::middleware('auth')->group(function () { // just for more securty its not 
     Route::patch('eventsList/{id}/update', [EventController::class, 'updateEvent'])->name('events.update');
 
     Route::get('eventsQueue', [EventController::class, 'notActiveList'])->name('events.queue');
+
+
+    // *** users can Register to events *** //
+    route::get('registerEvents', [EventController::class, 'listUsersEvents'])->name('events.register');
 });
 
 // Routes for users to register their universities (no auth middleware)

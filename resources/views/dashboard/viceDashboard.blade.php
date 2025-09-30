@@ -7,9 +7,13 @@
             <h2 class="text-2xl font-bold mb-8 text-gray-800">Vice Ambassador Panel</h2>
 
             <ul class="space-y-4">
-                <li><a href="#" id="menuRepresentativeApproval" class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">Approve Representatives</a></li>
-                <li><a href="#" id="menuEvents" class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">Submit Events</a></li>
-                <li><a href="#" id="menuScoreSubmission" class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">Submit Scores</a></li>
+                <li><a href="#" id="menuRepresentativeApproval"
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">Approve Representatives</a>
+                </li>
+                <li><a href="#" id="menuEvents"
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">Register Events</a></li>
+                <li><a href="#" id="menuScoreSubmission"
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">Submit Scores</a></li>
             </ul>
         </aside>
 
@@ -21,4 +25,15 @@
             </div>
         </main>
     </div>
+
+
+    <script>
+        document.getElementById('menuEvents').addEventListener('click', function() {
+            fetch('registerEvents')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('contentArea').innerHTML = html;
+                });
+        });
+    </script>
 </x-app-layout>
