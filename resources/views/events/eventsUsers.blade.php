@@ -44,7 +44,7 @@
                                         class="bg-gray-300 text-white px-4 py-2 rounded cursor-not-allowed">
                                         Full
                                     </button>
-                               {{--  @elseif ($scoreClaims->where('user_id', auth()->id())->where('event_id', $event->id)->exists())
+                                    {{--    @elseif ($scoreClaims->where('user_id', auth()->id())->where('event_id', $event->id)->exists())
                                     <button disabled
                                         class="bg-gray-300 text-white px-4 py-2 rounded cursor-not-allowed">
                                         Registered

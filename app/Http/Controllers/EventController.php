@@ -205,8 +205,9 @@ class EventController extends Controller
     {
         $event = Event::findOrFail($id);
         $eventsRoles = EventRoles::all();
+        $currentUser = $request->user();
 
-        return view('events.registerToEvent', compact('event', 'eventsRoles'));
+        return view('events.registerToEvent', compact('event', 'eventsRoles', 'currentUser'));
     }
 
 
@@ -214,5 +215,45 @@ class EventController extends Controller
     {
         $event = Event::findOrFail($id);
         $currentUser = $request->user();
+
+        $request->validate([
+            'role_id' => 'required|exists:event_roles,id',
+        ]);
+
+        $role = EventRoles::find($request->role_id);
+
+        $points = match ($role->name) {
+            'Organizer' => 5,
+            'Booth' => 10,
+            'ContentCreation' => 7,
+            'MediaCoverage' => 3,
+            default => 0,
+        };
+
+        ScoreClaim::create([
+            'user_id' => $currentUser->id,
+            'event_id' => $event->id,
+            'event_role_id' => $request->role_id,
+            'attendance_status' => 'Registered',
+            'points_earned' => $points,
+            'approved_by' => null,
+            'approval_date' => null,
+            'feedback' => null,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        Event::where('id', $event->id)->update(['actual_participants' => $event->actual_participants + 1]);
+        User::where('id', $currentUser->id)->update(['total_user_score' => $currentUser->total_user_score + $points]);
+        University::where('id', $currentUser->university_id)->update(['total_score' => University::find($currentUser->university_id)->total_score + $points]);
+        return redirect()->route('studentDashboard')->with('success', 'You have successfully registered for the event.');
     }
 }
+
+
+
+
+
+
+
+
