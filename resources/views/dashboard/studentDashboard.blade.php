@@ -7,8 +7,12 @@
             <h2 class="text-2xl font-bold mb-8 text-gray-800">Student Dashboard</h2>
 
             <ul class="space-y-4">
-                <li><a href="#" id="menuMyEvents" class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">My Events</a></li>
-                <li><a href="#" id="menuLeaderboard" class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">Leaderboard</a></li>
+                <li><a href="#" id="menuMyEvents"
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">Scores</a></li>
+                <li><a href="#" id="menuRegisterEvents"
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">Register To Events</a></li>
+                        <li><a href="#" id="menuLeaderboard"
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">Leaderboard</a></li>
             </ul>
         </aside>
 
@@ -20,4 +24,16 @@
             </div>
         </main>
     </div>
+
+
+
+    <script>
+        document.getElementById('menuRegisterEvents').addEventListener('click', function() {
+            fetch('eventsUsers')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('contentArea').innerHTML = html;
+                });
+        });
+    </script>
 </x-app-layout>

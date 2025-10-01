@@ -24,9 +24,9 @@ class EventController extends Controller
         $this->authorize('viewAny', Event::class);
 
         if ($currentUser->user_role === 1) {
-            $events = Event::all();
+            $events = Event::orderBy('created_at', 'desc')->get();
         } else {
-            $events = Event::where('university_id', $currentUser->university_id)->get();
+            $events = Event::where('university_id', $currentUser->university_id)->orderBy('created_at', 'desc')->get();
         }
         return view('events.eventsList', compact('events'));
     }
@@ -167,9 +167,9 @@ class EventController extends Controller
         $this->authorize('viewAny', $currentUser);   //viewAny is not working , idk why , but the create policy is similar to viewAny
 
         if ($currentUser->user_role === 1) {
-            $events = Event::whereIn('status', ['PendingApproval', 'Draft'])->get();
+            $events = Event::whereIn('status', ['PendingApproval', 'Draft'])->orderBy('created_at', 'desc')->get();
         } else if ($currentUser->user_role === 2) {
-            $events = Event::whereIn('status', ['PendingApproval', 'Draft'])->where('university_id', $currentUser->university_id)->get();
+            $events = Event::whereIn('status', ['PendingApproval', 'Draft'])->where('university_id', $currentUser->university_id)->orderBy('created_at', 'desc')->get();
         }
         return view('events.queueEvents', compact('events', 'currentUser'));
     }
@@ -189,6 +189,7 @@ class EventController extends Controller
                 $query->where('scope', 'Public')
                     ->orWhere('university_id', $currentUser->university_id);
             })
+            ->orderBy('created_at', 'desc')
             ->get();
         $scoreClaims = ScoreClaim::all();
         return view('events.eventsUsers', compact('userEvent', 'eventsRoles', 'scoreClaims'));
@@ -250,4 +251,14 @@ class EventController extends Controller
         University::where('id', $currentUser->university_id)->update(['total_score' => University::find($currentUser->university_id)->total_score + $points]);
         return redirect()->route('studentDashboard')->with('success', 'You have successfully registered for the event.');
     }
+
+
+
+    //*** Admin and ambasdoor event registerd managment  */
+
+
+
+
+
+    //**users Scores and events statistics */
 }

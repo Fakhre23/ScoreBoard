@@ -32,16 +32,13 @@
                 <thead class="bg-gray-100 text-gray-600 text-xs uppercase">
                     <tr>
                         <th class="py-3 px-4">Title</th>
-                        <th class="py-3 px-4">Start</th>
-                        <th class="py-3 px-4">Max Participants</th>
-                        <th class="py-3 px-4">Actual Participants</th>
+                        <th class="py-1 px-1">Participants</th>
                         <th class="py-3 px-4">Scope</th>
                         <th class="py-3 px-4">University</th>
-                        <th class="py-3 px-4">Status</th>
-                        <th class="py-3 px-4">Created By</th>
-                        <th class="py-3 px-4">Created At</th>
+                        <th class="py-3 px-4 text-center align-middle">Status</th>
+                        <th class="py-3 px-4">Created </th>
                         @can('view', App\Models\User::class)
-                            <th class="py-3 px-4">Actions</th>
+                            <th class="py-3 px-4 text-center align-middle">Actions</th>
                         @endcan
                     </tr>
                 </thead>
@@ -49,15 +46,14 @@
                     @foreach ($events as $event)
                         <tr class="hover:bg-gray-50 transition cursor-pointer"
                             @click="openId === {{ $event->id }} ? openId = null : openId = {{ $event->id }}">
-                            <td class="py-3 px-4 font-medium text-gray-800">{{ $event->title }}</td>
-                            <td class="py-3 px-4 text-gray-700">{{ $event->start_datetime }}</td>
-                            <td class="py-3 px-4 text-red-700">{{ $event->max_participants ?? '—' }}</td>
-                            <td class="py-3 px-4 text-green-700">{{ $event->actual_participants }}</td>
-                            <td class="py-3 px-4 text-gray-700">{{ $event->scope }}</td>
-                            <td class="py-3 px-4 text-gray-700">
+                            <td class="py-2 px-2 font-medium text-gray-800">{{ $event->title }}</td>
+                            <td class="py-2 px-2 text-green-700 text-center align-middle">
+                                {{ $event->actual_participants }}</td>
+                            <td class="py-2 px-2 text-gray-700 text-center align-middle">{{ $event->scope }}</td>
+                            <td class="py-2 px-2 text-gray-700 text-center align-middle">
                                 {{ $event->university?->name ?? (\App\Models\University::find($event->university_id)?->name ?? '—') }}
                             </td>
-                            <td class="py-3 px-4">
+                            <td class="py-3 px-4 text-center align-middle">
                                 @php
                                     $status = $event->status ?? '—';
                                     $statusClasses = [
@@ -76,10 +72,7 @@
                                 </span>
                             </td>
                             <td class="py-3 px-4 text-gray-700">
-                                {{ $event->created_by?->name ?? (\App\Models\User::find($event->created_by)?->email ?? ($event->created_by ?? 'System')) }}
-                            </td>
-                            <td class="py-3 px-4 text-gray-700">
-                                {{ $event->created_at?->format('Y-m-d') ?? '—' }}
+                                {{ $event->created_at ? strtoupper($event->created_at->format('j-M')) : '—' }}
                             </td>
                             @can('view', App\Models\User::class)
                                 <td class="py-3 px-4">
@@ -87,6 +80,10 @@
                                         <a href="{{ route('events.edit', $event->id) }}"
                                             class="bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600 transition text-sm">
                                             Edit
+                                        </a>
+                                        <a href="#"
+                                            class="bg-blue-400 text-white px-3 py-1 rounded-lg hover:bg-green-600 transition text-sm">
+                                            Manage
                                         </a>
 
                                         <form method="POST" action="{{ route('events.delete', $event->id) }}"
@@ -98,6 +95,7 @@
                                                 Delete
                                             </button>
                                         </form>
+
                                     </div>
                                 </td>
                             @endcan
@@ -106,6 +104,9 @@
                         {{-- Detail Row --}}
                         <tr x-show="openId === {{ $event->id }}" x-transition class="bg-gray-50">
                             <td colspan="11" class="py-3 px-4 text-gray-700 space-y-1">
+                                <div><strong>Created By:</strong>
+                                    {{ $event->created_by?->name ?? (\App\Models\User::find($event->created_by)?->email ?? ($event->created_by ?? 'System')) }}
+                                </div>
                                 <div><strong>Approved By:</strong>
                                     {{ $event->approvedBy?->email ?? (\App\Models\User::find($event->approved_by)?->email ?? '—') }}
                                 </div>
@@ -114,6 +115,10 @@
                                 <div><strong>Rejection Reason:</strong> {{ $event->rejection_reason ?? '—' }}</div>
                                 <div><strong>Updated At:</strong> {{ $event->updated_at ?? '—' }}</div>
                                 <div><strong>Location:</strong> {{ $event->location ?? '—' }}</div>
+                                <div class="text-red-600"><strong>Max Participants:</strong>
+                                    {{ $event->max_participants ?? '—' }}</div>
+                                <div class="text-green-600"><strong>Start Date :</strong>{{ $event->start_datetime }}
+                                </div>
                                 <div class="text-red-500"><strong>End Date:</strong> {{ $event->end_datetime ?? '—' }}
                                 </div>
                             </td>

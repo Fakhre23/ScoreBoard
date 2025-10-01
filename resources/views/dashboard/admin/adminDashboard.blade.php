@@ -11,19 +11,19 @@
                 <li>
                     <a href="#" id="ListUniversities"
                         class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
-                        Universities
+                        Manage Universities
                     </a>
                 </li>
                 <li>
                     <a href="#" id="listUsers" class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
-                        Users
+                        Manage Users
                     </a>
                 </li>
 
                 <li>
                     <a href="#" id="menuEvents"
                         class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
-                        Events
+                        Manage Events
                     </a>
                 </li>
                 <li>

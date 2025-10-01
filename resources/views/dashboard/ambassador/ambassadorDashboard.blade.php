@@ -21,19 +21,13 @@
                 <li>
                     <a href="#" id="menuEvents"
                         class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
-                        Events
+                        Manage my Events
                     </a>
                 </li>
                 <li>
                     <a href="#" id="menuScoreSubmission"
                         class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
-                        Submit Scores
-                    </a>
-                </li>
-                <li>
-                    <a href="#" id="menuLeaderboard"
-                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
-                        Leaderboard
+                        Scores
                     </a>
                 </li>
                 <li>
@@ -42,6 +36,13 @@
                         Register To Events
                     </a>
                 </li>
+                <li>
+                    <a href="#" id="menuLeaderboard"
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
+                        Leaderboard
+                    </a>
+                </li>
+
             </ul>
         </aside>
 

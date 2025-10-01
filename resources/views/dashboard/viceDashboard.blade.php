@@ -8,13 +8,17 @@
 
             <ul class="space-y-4">
                 <li><a href="#" id="menuRepresentativeApproval"
-                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800"> Representatives</a>
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800"> Manage Representatives</a>
+                </li>
+
+                <li><a href="#" id="menuScoreSubmission"
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">Scores</a>
                 </li>
                 <li><a href="#" id="menuEvents"
-                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">Register to new Events</a>
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">Register To Events</a>
                 </li>
                 <li><a href="#" id="menuScoreSubmission"
-                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">My Events and Scores</a>
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">Leaderboard</a>
                 </li>
             </ul>
         </aside>

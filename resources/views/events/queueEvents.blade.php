@@ -8,7 +8,7 @@
 
             {{-- Header --}}
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
-                <h2 class="text-2xl font-bold text-gray-800">Event Management</h2>
+                <h2 class="text-2xl font-bold text-gray-800">Event Queue </h2>
 
                 <div class="flex gap-2">
                     <button @click="fullscreen = !fullscreen"
@@ -35,12 +35,9 @@
                     <thead class="bg-gray-100 text-gray-600 text-xs uppercase">
                         <tr>
                             <th class="py-3 px-4">Title</th>
-                            <th class="py-3 px-4">Start</th>
-                            <th class="py-3 px-4">Max Participants</th>
                             <th class="py-3 px-4">Scope</th>
                             <th class="py-3 px-4">University</th>
                             <th class="py-3 px-4">Status</th>
-                            <th class="py-3 px-4">Created By</th>
                             <th class="py-3 px-4">Created At</th>
                             @can('view', App\Models\User::class)
                                 <th class="py-3 px-4">Actions</th>
@@ -52,8 +49,6 @@
                             <tr class="hover:bg-gray-50 transition cursor-pointer"
                                 @click="openId === {{ $event->id }} ? openId = null : openId = {{ $event->id }}">
                                 <td class="py-3 px-4 font-medium text-gray-800">{{ $event->title }}</td>
-                                <td class="py-3 px-4 text-gray-700">{{ $event->start_datetime }}</td>
-                                <td class="py-3 px-4 text-gray-700">{{ $event->max_participants ?? '—' }}</td>
                                 <td class="py-3 px-4 text-gray-700">{{ $event->scope }}</td>
                                 <td class="py-3 px-4 text-gray-700">
                                     {{ $event->university?->name ?? (\App\Models\University::find($event->university_id)?->name ?? '—') }}
@@ -78,9 +73,7 @@
                                     </span>
                                 </td>
 
-                                <td class="py-3 px-4 text-gray-700">
-                                    {{ $event->created_by?->name ?? (\App\Models\User::find($event->created_by)?->email ?? ($event->created_by ?? 'System')) }}
-                                </td>
+
                                 <td class="py-3 px-4 text-gray-700">
                                     {{ $event->created_at?->format('Y-m-d') ?? '—' }}
                                 </td>
@@ -109,12 +102,22 @@
                             {{-- Detail Row --}}
                             <tr x-show="openId === {{ $event->id }}" x-transition class="bg-gray-50">
                                 <td colspan="11" class="py-3 px-4 text-gray-700 space-y-1">
-                                    <div><strong>Approved By:</strong> {{ $event->approved_by?->name ?? '—' }}</div>
+                                    <div><strong>Created By:</strong>
+                                        {{ $event->created_by?->name ?? (\App\Models\User::find($event->created_by)?->email ?? ($event->created_by ?? 'System')) }}
+                                    </div>
+                                    <div><strong>Approved By:</strong>
+                                        {{ $event->approvedBy?->email ?? (\App\Models\User::find($event->approved_by)?->email ?? '—') }}
+                                    </div>
                                     <div><strong>Description:</strong> {{ $event->description ?? '—' }}</div>
                                     <div><strong>Approval Date:</strong> {{ $event->approval_date ?? '—' }}</div>
                                     <div><strong>Rejection Reason:</strong> {{ $event->rejection_reason ?? '—' }}</div>
                                     <div><strong>Updated At:</strong> {{ $event->updated_at ?? '—' }}</div>
                                     <div><strong>Location:</strong> {{ $event->location ?? '—' }}</div>
+                                    <div class="text-red-600"><strong>Max Participants:</strong>
+                                        {{ $event->max_participants ?? '—' }}</div>
+                                    <div class="text-green-600"><strong>Start Date
+                                            :</strong>{{ $event->start_datetime }}
+                                    </div>
                                     <div class="text-red-500"><strong>End Date:</strong>
                                         {{ $event->end_datetime ?? '—' }}
                                     </div>
