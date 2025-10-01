@@ -44,11 +44,11 @@
                                         class="bg-gray-300 text-white px-4 py-2 rounded cursor-not-allowed">
                                         Full
                                     </button>
-                                    {{--    @elseif ($scoreClaims->where('user_id', auth()->id())->where('event_id', $event->id)->exists())
+                                @elseif (\App\Models\ScoreClaim::where('user_id', auth()->id())->where('event_id', $event->id)->exists())
                                     <button disabled
                                         class="bg-gray-300 text-white px-4 py-2 rounded cursor-not-allowed">
                                         Registered
-                                    </button> --}}
+                                    </button>
                                 @else
                                     <a href="{{ route('events.registerUser', $event->id) }}"
                                         class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">

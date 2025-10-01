@@ -108,11 +108,22 @@
                                     class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 mr-2">
                                     Cancel
                                 </a>
-
-                                <button type="submit"
-                                    class="inline-flex items-center px-5 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                    Register
-                                </button>
+                                @if ($event->actual_participants >= $event->max_participants)
+                                    <button disabled
+                                        class="bg-gray-300 text-white px-4 py-2 rounded cursor-not-allowed">
+                                        Full
+                                    </button>
+                                @elseif (\App\Models\ScoreClaim::where('user_id', auth()->id())->where('event_id', $event->id)->exists())
+                                    <button disabled
+                                        class="bg-gray-300 text-white px-4 py-2 rounded cursor-not-allowed">
+                                        Registered
+                                    </button>
+                                @else
+                                    <button type="submit"
+                                        class="inline-flex items-center px-5 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                        Register
+                                    </button>
+                                @endif
                             </div>
                         </form>
                     @else

@@ -37,9 +37,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" id="menuProfile"
+                    <a href="#" id="RegisterToEvents"
                         class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
-                        My Profile
+                        Register To Events
                     </a>
                 </li>
             </ul>
@@ -81,5 +81,14 @@
                     document.getElementById('contentArea').innerHTML = html;
                 });
         });
+        document.getElementById('RegisterToEvents').addEventListener('click', function() {
+            fetch('eventsUsers', )
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('contentArea').innerHTML = html;
+                });
+        });
+
+        eventsUsers
     </script>
 </x-app-layout>

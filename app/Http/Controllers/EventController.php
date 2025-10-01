@@ -227,6 +227,8 @@ class EventController extends Controller
             'Booth' => 10,
             'ContentCreation' => 7,
             'MediaCoverage' => 3,
+            'Volunteer' => 2,
+            'Participant' => 1,
             default => 0,
         };
 
@@ -249,11 +251,3 @@ class EventController extends Controller
         return redirect()->route('studentDashboard')->with('success', 'You have successfully registered for the event.');
     }
 }
-
-
-
-
-
-
-
-

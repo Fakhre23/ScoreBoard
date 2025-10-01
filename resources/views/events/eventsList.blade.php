@@ -52,7 +52,7 @@
                             <td class="py-3 px-4 font-medium text-gray-800">{{ $event->title }}</td>
                             <td class="py-3 px-4 text-gray-700">{{ $event->start_datetime }}</td>
                             <td class="py-3 px-4 text-red-700">{{ $event->max_participants ?? '—' }}</td>
-                            <td class="py-3 px-4 text-green-700">{{ $event->actual_participants ?? '—' }}</td>
+                            <td class="py-3 px-4 text-green-700">{{ $event->actual_participants }}</td>
                             <td class="py-3 px-4 text-gray-700">{{ $event->scope }}</td>
                             <td class="py-3 px-4 text-gray-700">
                                 {{ $event->university?->name ?? (\App\Models\University::find($event->university_id)?->name ?? '—') }}
