@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-admin-layout>
 
     <div class="max-w-7xl mx-auto bg-white shadow-md rounded-xl p-6">
         <h2 class="text-2xl font-bold text-gray-800 mb-4">Edit University</h2>
@@ -40,4 +40,4 @@
             </div>
         </form>
     </div>
-</x-app-layout>
+</x-admin-layout>

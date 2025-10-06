@@ -1,3 +1,4 @@
+<x-admin-layout>
 {{-- resources/views/universities/listUniversities.blade.php --}}
 <div class="max-w-7xl mx-auto bg-white shadow-md rounded-xl p-6">
     {{-- Header --}}
@@ -112,3 +113,4 @@
         </table>
     </div>
 </div>
+</x-admin-layout>

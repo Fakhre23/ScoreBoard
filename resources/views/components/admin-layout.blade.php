@@ -1,26 +1,62 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<x-app-layout>
+    <div class="flex h-screen">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+        {{-- ******** Sidebar ******** --}}
+        <aside class="w-64 bg-white border-r border-gray-200 p-6">
+            <h2 class="text-2xl font-bold mb-8 text-gray-800">Dashboard</h2>
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+            {{-- Main Navigation --}}
+            <ul class="space-y-4">
+                <li>
+                    <a href=" {{ route('universities.list') }}" id="ListUniversities"
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
+                        Manage Universities
+                    </a>
+                </li>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+                <li>
+                    <a href="{{ route('users.list') }}" id="listUsers"
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
+                        Manage Users
+                    </a>
+                </li>
 
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
+                <li>
+                    <a href="{{ route('events.list') }}" id="menuEvents"
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
+                        Manage Events
+                    </a>
+                </li>
 
+                <li>
+                    <a href="#" id="menuScores"
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
+                        Scores
+                    </a>
+                </li>
 
+                <li>
+                    <a href="#" id="menuLeaderboard"
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
+                        Leaderboard
+                    </a>
+                </li>
 
+                <li>
+                    <a href="#" id="menuProfile"
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
+                        My Profile
+                    </a>
+                </li>
+            </ul>
+        </aside>
 
-<div class="min-h-screen bg-gray-100">
-    <div class="w-full px-6 py-8">
-        {{ $slot }}
+        {{-- ******** Main Content ******** --}}
+        <main class="flex-1 min-h-screen bg-gray-100">
+            <div class="w-full px-6 py-8">
+                {{ $slot }}
+            </div>
+        </main>
+
     </div>
-</div>
+</x-app-layout>

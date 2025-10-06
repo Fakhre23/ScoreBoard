@@ -1,4 +1,4 @@
-<x-app-layout class="min-h-screen flex items-center justify-center bg-gray-50">
+<x-admin-layout class="min-h-screen flex items-center justify-center bg-gray-50">
     <div class="w-full max-w-6xl mx-auto px-4 py-8" x-data="{ fullscreen: false }">
         {{-- Header --}}
         <div class="flex justify-between items-center mb-4">
@@ -112,4 +112,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-admin-layout>

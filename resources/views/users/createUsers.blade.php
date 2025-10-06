@@ -1,4 +1,4 @@
-<x-app-layout class="min-h-screen flex items-center justify-center bg-gray-50">
+<x-admin-layout class="min-h-screen flex items-center justify-center bg-gray-50">
     <div class="w-full max-w-3xl mx-auto p-12 bg-white rounded-lg shadow-lg">
         <h2 class="text-3xl font-extrabold text-gray-900 mb-8 border-b pb-4 text-center">Create User</h2>
 
@@ -84,4 +84,4 @@
             </div>
         </form>
     </div>
-</x-app-layout>
+</x-admin-layout>

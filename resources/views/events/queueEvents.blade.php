@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-admin-layout>
 
     {{-- resources/views/events/admin/listEvents.blade.php --}}
     <div class="max-w-7xl mx-auto p-6" x-data="{ fullscreen: false, openId: null }">
@@ -129,6 +129,6 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-admin-layout>
 
 {{-- resources/views/events/admin/listEvents.blade.php --}}

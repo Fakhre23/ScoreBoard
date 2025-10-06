@@ -1,4 +1,4 @@
-<x-app-layout class="min-h-screen flex items-center justify-center bg-gray-50">
+<x-admin-layout class="min-h-screen flex items-center justify-center bg-gray-50">
 
 
     <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-2xl p-8">
@@ -54,4 +54,4 @@
             </div>
         </form>
     </div>
-</x-app-layout>
+</x-admin-layout>
