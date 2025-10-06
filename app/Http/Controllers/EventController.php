@@ -219,22 +219,14 @@ class EventController extends Controller
 
         $role = EventRoles::find($request->role_id);
 
-        $points = match ($role->name) {
-            'Organizer' => 5,
-            'Booth' => 10,
-            'ContentCreation' => 7,
-            'MediaCoverage' => 3,
-            'Volunteer' => 2,
-            'Participant' => 1,
-            default => 0,
-        };
+
 
         ScoreClaim::create([
             'user_id' => $currentUser->id,
             'event_id' => $event->id,
             'event_role_id' => $request->role_id,
             'attendance_status' => 'NoShow',
-            'points_earned' => $points,
+            'points_earned' => 0,
             'approved_by' => null,
             'approval_date' => null,
             'feedback' => null,
@@ -242,10 +234,10 @@ class EventController extends Controller
             'updated_at' => now(),
         ]);
 
-        Event::where('id', $event->id)->update(['actual_participants' => $event->actual_participants + 1]);
+        /*  Event::where('id', $event->id)->update(['actual_participants' => $event->actual_participants + 1]);
         User::findOrFail($currentUser->id)->increment('total_user_score', $points);
-        University::where('id', $currentUser->university_id)->increment('total_score', $points);
-        return redirect()->with('success', 'You have successfully registered for the event.');
+        University::where('id', $currentUser->university_id)->increment('total_score', $points); */
+        return redirect()->route('dashboard')->with('success', 'You have successfully registered for the event.');
     }
 
 
@@ -255,31 +247,44 @@ class EventController extends Controller
     public function eventUsersManagement(Request $request, $id)
     {
         $event = Event::findOrFail($id);
+        $this->authorize('view', $event);
+
         $users = User::all();
         $eventsRoles = EventRoles::all();
-        $this->authorize('view', $event);
         $scoreClaims = ScoreClaim::where('event_id', $event->id)->get();
+
         return view('events.eventManagment', compact('event', 'scoreClaims', 'users', 'eventsRoles'));
     }
 
 
     public function updateRegisteredEventStatus(Request $request, $id)
     {
-        $statusToUpdate = Event::findOrFail($id);
-        $this->authorize('view', $statusToUpdate);
+        $statusToUpdate = ScoreClaim::findOrFail($id);
 
         $request->validate([
-            'attendance_status' => 'required|exists:event_roles,name',
+            'attendance_status' => 'required|in:Registered,Attended,NoShow',
+            'points_earned' => 'nullable|integer|min:0'
         ]);
 
-        $statusToUpdate->attendance_status = $request->input('attendance_status');
+        // Get the user and role before updating
+        $targetUser = User::findOrFail($statusToUpdate->user_id);
+        $role = EventRoles::findOrFail($statusToUpdate->event_role_id);
+
+        // Store old status to check if we need to add/remove points
+        $oldStatus = $statusToUpdate->attendance_status;
+        $newStatus = $request->input('attendance_status');
+
+        // Update the attendance status
+        $statusToUpdate->attendance_status = $newStatus;
+
+        // Update points if provided
+        if ($request->has('points_earned')) {
+            $statusToUpdate->points_earned = $request->input('points_earned');
+        }
+
         $statusToUpdate->save();
 
-        $role = EventRoles::find($request->role_id);
-        $currentUser = $request->user();
-
-
-
+        // Define points based on role
         $points = match ($role->name) {
             'Organizer' => 5,
             'Booth' => 10,
@@ -289,15 +294,25 @@ class EventController extends Controller
             'Participant' => 1,
             default => 0,
         };
-        
 
-        if ($statusToUpdate->attendance_status == '') {
-            User::where('id', $currentUser->id)->update(['total_user_score' => $currentUser->total_user_score + $points]);
-            University::where('id', $currentUser->university_id)->update(['total_score' => University::find($currentUser->university_id)->total_score + $points]);
+        // Handle points addition/removal based on status change
+        if ($oldStatus !== 'Attended' && $newStatus === 'Attended') {
+            // User changed from not attended to attended - ADD points
+            User::where('id', $targetUser->id)->increment('total_user_score', $points);
+            University::where('id', $targetUser->university_id)->increment('total_score', $points);
+            ScoreClaim::where('id', $statusToUpdate->id)->update(['points_earned' => $points]);
+
+            return redirect()->back()->with('success', "Status updated to Attended. {$points} points added!");
+        } elseif ($oldStatus === 'Attended' && $newStatus !== 'Attended') {
+            // User changed from attended to not attended - REMOVE points
+            User::where('id', $targetUser->id)->decrement('total_user_score', $points);
+            University::where('id', $targetUser->university_id)->decrement('total_score', $points);
+
+            return redirect()->back()->with('success', "Status updated. {$points} points removed.");
         } else {
-            return redirect()->back()->with('error', 'Attendance status is not valid.');
+            // Status changed but no point modification needed
+            return redirect()->back()->with('success', 'Status updated successfully.');
         }
-        return redirect()->with('success', 'You have successfully registered for the event.');
     }
 
 

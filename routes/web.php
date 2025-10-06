@@ -105,6 +105,8 @@ Route::middleware('auth')->group(function () { // just for more securty its not 
 
     // *** Event users management *** //
     Route::get('eventManagement/{id}', [EventController::class, 'eventUsersManagement'])->name('events.eventUsersManagement');
+
+    Route::patch('eventManagement/{id}/updateStatus', [EventController::class, 'updateRegisteredEventStatus'])->name('events.updateRegisteredEventStatus');
 });
 
 // Routes for users to register their universities (no auth middleware)

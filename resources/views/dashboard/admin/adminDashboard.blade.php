@@ -15,7 +15,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('users.list') }}" id="listUsers" class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
+                    <a href="{{ route('users.list') }}" id="listUsers"
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
                         Manage Users
                     </a>
                 </li>
@@ -69,27 +70,27 @@
     {{-- ********  AJAX and Interactivity //// (ChatGPT do that not me) ********  --}}
     <script>
         /* document.getElementById('listUsers').addEventListener('click', function() {
-            fetch('usersList')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('contentArea').innerHTML = html;
-                });
-        });
+                                        fetch('usersList')
+                                            .then(response => response.text())
+                                            .then(html => {
+                                                document.getElementById('contentArea').innerHTML = html;
+                                            });
+                                    });
 
-        document.getElementById('ListUniversities').addEventListener('click', function() {
-            fetch('universitiesList')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('contentArea').innerHTML = html;
-                });
-        });
+                                    document.getElementById('ListUniversities').addEventListener('click', function() {
+                                        fetch('universitiesList')
+                                            .then(response => response.text())
+                                            .then(html => {
+                                                document.getElementById('contentArea').innerHTML = html;
+                                            });
+                                    });
 
-        document.getElementById('menuEvents').addEventListener('click', function() {
-            fetch('eventsList')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('contentArea').innerHTML = html;
-                });
-        });/*
+                                    document.getElementById('menuEvents').addEventListener('click', function() {
+                                        fetch('eventsList')
+                                            .then(response => response.text())
+                                            .then(html => {
+                                                document.getElementById('contentArea').innerHTML = html;
+                                            });
+                                    });/*
     </script>
 </x-app-layout>
