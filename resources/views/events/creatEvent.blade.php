@@ -1,4 +1,16 @@
-<x-admin-layout class="min-h-screen flex items-center justify-center bg-gray-50">
+@php
+    $role = auth()->user()->user_role ?? null;
+
+    // map role ids to blade layout component names
+    $layout = match ($role) {
+        1 => 'admin-layout', // admin
+        4 => 'stu-layout', // student
+        2 => 'amb-layout', // ambassador
+        3 => 'vice-layout', // vice
+        default => 'stu-layout',
+    };
+@endphp
+<x-dynamic-component :component="$layout">
     <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-2xl p-8">
         <h2 class="text-3xl font-extrabold text-gray-900 mb-8 border-b pb-4">Create Event</h2>
 
@@ -153,4 +165,4 @@
             toggleUniversity();
         });
     </script>
-</x-admin-layout>
+</x-dynamic-component>

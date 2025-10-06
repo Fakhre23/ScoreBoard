@@ -1,4 +1,17 @@
-<x-admin-layout>
+@php
+    $role = auth()->user()->user_role ?? null;
+
+    // map role ids to blade layout component names
+    $layout = match ($role) {
+        1 => 'admin-layout', // admin
+        4 => 'stu-layout', // student
+        2 => 'amb-layout', // ambassador
+        3 => 'vice-layout', // vice
+        default => 'stu-layout',
+    };
+@endphp
+
+<x-dynamic-component :component="$layout">
     {{-- resources/views/events/admin/listEvents.blade.php --}}
     <div class="max-w-7xl mx-auto p-6" x-data="{ fullscreen: false, openId: null }">
         {{-- Card --}}
@@ -132,4 +145,4 @@
             </div>
         </div>
     </div>
-</x-admin-layout>
+</x-dynamic-component>

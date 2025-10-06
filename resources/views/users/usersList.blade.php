@@ -1,4 +1,18 @@
-<x-admin-layout>
+{{-- resources/views/events/registerToEvent.blade.php --}}
+@php
+    $role = auth()->user()->user_role ?? null;
+
+    // map role ids to blade layout component names
+    $layout = match ($role) {
+        1 => 'admin-layout', // admin
+        4 => 'stu-layout', // student
+        2 => 'amb-layout', // ambassador
+        3 => 'vice-layout', // vice
+        default => 'stu-layout',
+    };
+@endphp
+
+<x-dynamic-component :component="$layout">
     <div class="max-w-full mx-auto p-4" x-data="{ fullscreen: false }">
         {{-- ******** Compact Header Section ******** --}}
         <div class="flex justify-between items-center mb-4">
@@ -32,11 +46,20 @@
                             <th class="py-2 px-2 text-left">Name</th>
                             <th class="py-2 px-2 text-left">Email</th>
                             <th class="py-2 px-2 text-left">Phone</th>
-                            <th class="py-2 px-2 text-left">Role</th>
-                            <th class="py-2 px-2 text-left">University</th>
+
+                            @can('roleUpdate', App\Models\User::class)
+                                <th class="py-2 px-2 text-left">Role</th>
+                            @endcan
+
+                            @can('view', App\Models\User::class)
+                                <th class="py-2 px-2 text-left">University</th>
+                            @endcan
+
                             <th class="py-2 px-2 text-left">Status</th>
-                            <th class="py-2 px-2 text-left">Date</th>
-                            <th class="py-2 px-2 text-center">Action</th>
+                            <th class="py-2 px-2 text-left">Created At</th>
+                            @can('view', App\Models\User::class)
+                                <th class="py-2 px-2 text-center">Action</th>
+                            @endcan
                         </tr>
                     </thead>
 
@@ -56,42 +79,46 @@
                                 {{-- Phone --}}
                                 <td class="py-2 px-2 max-w-[100px] truncate">{{ $user->phone }}</td>
 
-                                {{-- Role Dropdown --}}
-                                <td class="py-2 px-2">
-                                    <form method="POST" action="{{ route('users.changeRole', $user->id) }}">
-                                        @csrf
-                                        @method('PATCH')
-                                        <select name="userRole"
-                                            class="border rounded px-2 py-1 text-xs w-full max-w-[100px]"
-                                            onchange="if(confirm('Change role for {{ $user->name }}?')) this.form.submit();">
-                                            @foreach ($roles as $role)
-                                                <option value="{{ $role->id }}"
-                                                    {{ $user->user_role == $role->id ? 'selected' : '' }}>
-                                                    {{ $role->id === 1 ? 'Admin' : ($role->id === 2 ? 'Ambassador' : ($role->id === 3 ? 'Vice Amb.' : ($role->id === 4 ? 'Rep.' : 'Viewer'))) }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </form>
-                                </td>
+                                @can('roleUpdate', App\Models\User::class)
+                                    {{-- Role Dropdown --}}
+                                    <td class="py-2 px-2">
+                                        <form method="POST" action="{{ route('users.changeRole', $user->id) }}">
+                                            @csrf
+                                            @method('PATCH')
+                                            <select name="userRole"
+                                                class="border rounded px-2 py-1 text-xs w-full max-w-[100px]"
+                                                onchange="if(confirm('Change role for {{ $user->name }}?')) this.form.submit();">
+                                                @foreach ($roles as $role)
+                                                    <option value="{{ $role->id }}"
+                                                        {{ $user->user_role == $role->id ? 'selected' : '' }}>
+                                                        {{ $role->id === 1 ? 'Admin' : ($role->id === 2 ? 'Ambassador' : ($role->id === 3 ? 'Vice Amb.' : ($role->id === 4 ? 'Rep.' : 'Viewer'))) }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </form>
+                                    </td>
+                                @endcan
 
                                 {{-- University Dropdown --}}
-                                <td class="py-2 px-2">
-                                    <form method="POST" action="{{ route('users.changeUniversity', $user->id) }}">
-                                        @csrf
-                                        @method('PATCH')
-                                        <select name="university_id"
-                                            class="border rounded px-2 py-1 text-xs w-full max-w-[120px]"
-                                            onchange="if(confirm('Change university for {{ $user->name }}?')) this.form.submit();">
-                                            @foreach ($universities as $university)
-                                                <option value="{{ $university->id }}"
-                                                    {{ $user->university_id == $university->id ? 'selected' : '' }}
-                                                    title="{{ $university->name }}">
-                                                    {{ Str::limit($university->name, 15) }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </form>
-                                </td>
+                                @can('view', App\Models\User::class)
+                                    <td class="py-2 px-2">
+                                        <form method="POST" action="{{ route('users.changeUniversity', $user->id) }}">
+                                            @csrf
+                                            @method('PATCH')
+                                            <select name="university_id"
+                                                class="border rounded px-2 py-1 text-xs w-full max-w-[120px]"
+                                                onchange="if(confirm('Change university for {{ $user->name }}?')) this.form.submit();">
+                                                @foreach ($universities as $university)
+                                                    <option value="{{ $university->id }}"
+                                                        {{ $user->university_id == $university->id ? 'selected' : '' }}
+                                                        title="{{ $university->name }}">
+                                                        {{ Str::limit($university->name, 15) }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </form>
+                                    </td>
+                                @endcan
 
                                 {{-- Status --}}
                                 <td class="py-2 px-2">
@@ -116,17 +143,19 @@
                                 </td>
 
                                 {{-- Actions --}}
-                                <td class="py-2 px-2 text-center">
-                                    <form method="POST" action="{{ route('users.delete', $user->id) }}"
-                                        onsubmit="return confirm('Delete {{ $user->name }} permanently?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-xs transition-all">
-                                            Del
-                                        </button>
-                                    </form>
-                                </td>
+                                @can('view', App\Models\User::class)
+                                    <td class="py-2 px-2 text-center">
+                                        <form method="POST" action="{{ route('users.delete', $user->id) }}"
+                                            onsubmit="return confirm('Delete {{ $user->name }} permanently?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-xs transition-all">
+                                                Del
+                                            </button>
+                                        </form>
+                                    </td>
+                                @endcan
                             </tr>
                         @endforeach
                     </tbody>
@@ -134,4 +163,4 @@
             </div>
         </div>
     </div>
-</x-admin-layout>
+</x-dynamic-component>

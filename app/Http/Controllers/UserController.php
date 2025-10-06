@@ -27,7 +27,7 @@ class UserController extends Controller
             $users = User::orderBy('created_at', 'desc')->get();
         } else {
             // Ambassador → only their university, newest first
-            $users = User::where('university_id', $currentUser->university_id)
+            $users = User::where('university_id', $currentUser->university_id)->where('user_role', '>', 1)
                 ->orderBy('created_at', 'desc')
                 ->get();
         }

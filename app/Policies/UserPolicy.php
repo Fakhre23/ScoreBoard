@@ -60,7 +60,7 @@ class UserPolicy
     }
 
 
-    public function roleUpdate(User $user, User $model): bool
+    public function roleUpdate(User $user): bool
     {
         if ($user->user_role === 1) {
             return true; // Allow update if the user is an admin

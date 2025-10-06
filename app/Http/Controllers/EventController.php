@@ -32,7 +32,7 @@ class EventController extends Controller
     }
 
 
-    // **** delete event ****
+    // ******************************** delete event ********************************
 
     public function delete(Request $request, $id)
     {
@@ -45,7 +45,7 @@ class EventController extends Controller
 
 
 
-    //***** create new event ******
+    //********************************* create new event **********************************
 
     public function create(Request $request)
     {
@@ -116,7 +116,7 @@ class EventController extends Controller
 
 
 
-    //**** edit / update event ****
+    //******************************** edit / update event ********************************
 
     public function edit(Request $request, $id)
     {
@@ -144,7 +144,7 @@ class EventController extends Controller
         ]);
 
         $eventToEdit->title = $request->input('title');
-        $eventToEdit->description = $request->input('description'); //not found
+        $eventToEdit->description = $request->input('description');
         $eventToEdit->location = $request->input('location');
         $eventToEdit->start_datetime = $request->input('start_datetime');
         $eventToEdit->end_datetime = $request->input('end_datetime');
@@ -160,7 +160,7 @@ class EventController extends Controller
         return redirect()->route('adminDashboard')->with('success', 'Event updated successfully.');
     }
 
-    //**** not active events ****
+    //******************************** not active events ********************************
     public function notActiveList(Request $request)
     {
         $currentUser = $request->user();
@@ -176,7 +176,7 @@ class EventController extends Controller
 
 
 
-    //**** list the events can user register ****
+    //******************************** list the events can user register ********************************
 
     public function listUsersEvents(Request $request)
     {
@@ -197,7 +197,7 @@ class EventController extends Controller
 
 
 
-    // **** Register Users to events **** 
+    // ******************************** Register Users to events ****************************
     public function registerUserToEvent(Request $request, $id)
     {
         $event = Event::findOrFail($id);
@@ -206,7 +206,6 @@ class EventController extends Controller
 
         return view('events.registerToEvent', compact('event', 'eventsRoles', 'currentUser'));
     }
-
 
     public function storeUserEvent(Request $request, $id)
     {
@@ -218,8 +217,6 @@ class EventController extends Controller
         ]);
 
         $role = EventRoles::find($request->role_id);
-
-
 
         ScoreClaim::create([
             'user_id' => $currentUser->id,
@@ -233,25 +230,28 @@ class EventController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
-        /*  Event::where('id', $event->id)->update(['actual_participants' => $event->actual_participants + 1]);
-        User::findOrFail($currentUser->id)->increment('total_user_score', $points);
-        University::where('id', $currentUser->university_id)->increment('total_score', $points); */
         return redirect()->route('dashboard')->with('success', 'You have successfully registered for the event.');
     }
 
 
 
-    //*** Admin and ambasdoor event users registered managment  */
+    //**************************** Admin and ambasdoor event users registered managment  *****************************/
 
     public function eventUsersManagement(Request $request, $id)
     {
         $event = Event::findOrFail($id);
         $this->authorize('view', $event);
+        $currentUser = $request->user();
 
-        $users = User::all();
-        $eventsRoles = EventRoles::all();
-        $scoreClaims = ScoreClaim::where('event_id', $event->id)->get();
+        if ($currentUser == '1') {
+            $users = User::all();
+            $eventsRoles = EventRoles::all();
+            $scoreClaims = ScoreClaim::where('event_id', $event->id)->get();
+        } else {
+            $users = User::where('university_id', $currentUser->university_id);
+            $eventsRoles = EventRoles::all();
+            $scoreClaims = ScoreClaim::where('event_id', $event->id)->get();
+        }
 
         return view('events.eventManagment', compact('event', 'scoreClaims', 'users', 'eventsRoles'));
     }
@@ -269,6 +269,7 @@ class EventController extends Controller
         // Get the user and role before updating
         $targetUser = User::findOrFail($statusToUpdate->user_id);
         $role = EventRoles::findOrFail($statusToUpdate->event_role_id);
+        $currentUser = $request->user();
 
         // Store old status to check if we need to add/remove points
         $oldStatus = $statusToUpdate->attendance_status;
@@ -295,8 +296,10 @@ class EventController extends Controller
             default => 0,
         };
 
-        // Handle points addition/removal based on status change
+
+
         if ($oldStatus !== 'Attended' && $newStatus === 'Attended') {
+
             // User changed from not attended to attended - ADD points
             User::where('id', $targetUser->id)->increment('total_user_score', $points);
             University::where('id', $targetUser->university_id)->increment('total_score', $points);
@@ -304,17 +307,19 @@ class EventController extends Controller
 
             return redirect()->back()->with('success', "Status updated to Attended. {$points} points added!");
         } elseif ($oldStatus === 'Attended' && $newStatus !== 'Attended') {
+
             // User changed from attended to not attended - REMOVE points
             User::where('id', $targetUser->id)->decrement('total_user_score', $points);
             University::where('id', $targetUser->university_id)->decrement('total_score', $points);
 
             return redirect()->back()->with('success', "Status updated. {$points} points removed.");
         } else {
+
             // Status changed but no point modification needed
             return redirect()->back()->with('success', 'Status updated successfully.');
         }
     }
 
 
-    //**users Scores and events statistics */
+    //******************************users Scores and events statistics *****************************/
 }
