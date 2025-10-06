@@ -322,4 +322,15 @@ class EventController extends Controller
 
 
     //******************************users Scores and events statistics *****************************/
+
+
+    public function topScores()
+    {
+        $topUsers = User::orderBy('total_user_score', 'desc')->take(10)->get();
+
+
+        $topUniversities = University::orderBy('total_score', 'desc')->take(5)->get();
+
+        return view('welcome', compact('topUsers', 'topUniversities'));
+    }
 }
