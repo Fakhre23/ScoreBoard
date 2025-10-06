@@ -14,7 +14,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('users.list') }}" id="listUsers" class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
+                    <a href="{{ route('users.list') }}" id="listUsers"
+                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
                         Manage Representatives
                     </a>
                 </li>
@@ -37,7 +38,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" id="menuLeaderboard"
+                    <a href="{{ route('leaderboard') }}" id="menuLeaderboard"
                         class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
                         Leaderboard
                     </a>
@@ -55,5 +56,5 @@
         </main>
     </div>
 
- 
+
 </x-app-layout>

@@ -10,7 +10,7 @@ use App\Http\Controllers\EventController;
 
 
 
-Route::get('/', [EventController::class, 'topScores'])->name('welcome');
+Route::get('/', [EventController::class, 'topScores'])->name('leaderboard');
 
 // Pending dashboard for users whose accounts are not yet active
 

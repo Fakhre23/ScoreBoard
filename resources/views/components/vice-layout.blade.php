@@ -16,7 +16,7 @@
                 <li><a href="{{ route('events.register') }}" id="menuEvents"
                         class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">Register To Events</a>
                 </li>
-                <li><a href="#" id="menuScoreSubmission"
+                <li><a href="{{ route('leaderboard') }}" id="menuLeaderboard"
                         class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">Leaderboard</a>
                 </li>
             </ul>

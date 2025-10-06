@@ -104,4 +104,15 @@ class UserPolicy
     {
         return false;
     }
+
+
+    public function viewLeaderBoard(?User $user): bool
+    {
+        // Deny guests (unauthenticated) or users without a role
+        if (is_null($user) || is_null($user->user_role)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
