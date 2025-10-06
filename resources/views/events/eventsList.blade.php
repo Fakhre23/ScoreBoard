@@ -51,7 +51,7 @@
                             <th class="py-3 px-4">University</th>
                             <th class="py-3 px-4 text-center align-middle">Status</th>
                             <th class="py-3 px-4">Created </th>
-                            @can('view', App\Models\User::class)
+                            @can('viewAny', App\Models\User::class)
                                 <th class="py-3 px-4 text-center align-middle">Actions</th>
                             @endcan
                         </tr>
@@ -88,18 +88,22 @@
                                 <td class="py-3 px-4 text-gray-700">
                                     {{ $event->created_at ? strtoupper($event->created_at->format('j-M')) : '—' }}
                                 </td>
-                                @can('view', App\Models\User::class)
-                                    <td class="py-3 px-4">
-                                        <div class="flex gap-2">
+
+                                <td class="py-3 px-4">
+                                    <div class="flex gap-2">
+                                        @can('view', App\Models\User::class)
                                             <a href="{{ route('events.edit', $event->id) }}"
                                                 class="bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600 transition text-sm">
                                                 Edit
                                             </a>
+                                        @endcan
+                                        @can('viewAny', App\Models\User::class)
                                             <a href="{{ route('events.eventUsersManagement', $event->id) }}"
                                                 class="bg-blue-400 text-white px-3 py-1 rounded-lg hover:bg-green-600 transition text-sm">
                                                 Manage
                                             </a>
-
+                                        @endcan
+                                        @can('view', App\Models\User::class)
                                             <form method="POST" action="{{ route('events.delete', $event->id) }}"
                                                 onsubmit="return confirm('Are you sure you want to delete this event?');">
                                                 @csrf
@@ -109,10 +113,10 @@
                                                     Delete
                                                 </button>
                                             </form>
+                                        @endcan
+                                    </div>
+                                </td>
 
-                                        </div>
-                                    </td>
-                                @endcan
                             </tr>
 
                             {{-- Detail Row --}}

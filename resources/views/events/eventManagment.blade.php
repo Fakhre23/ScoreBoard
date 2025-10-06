@@ -1,4 +1,17 @@
-<x-admin-layout>
+@php
+    $role = auth()->user()->user_role ?? null;
+
+    // map role ids to blade layout component names
+    $layout = match ($role) {
+        1 => 'admin-layout', // admin
+        4 => 'stu-layout', // student
+        2 => 'amb-layout', // ambassador
+        3 => 'vice-layout', // vice
+        default => 'stu-layout',
+    };
+@endphp
+
+<x-dynamic-component :component="$layout">
     <div class="h-screen flex flex-col p-4">
         {{-- Header Section - Fixed Height --}}
         <div class="flex-shrink-0 mb-4">
@@ -73,20 +86,22 @@
                                                     {{ $claim->attendance_status === 'Registered' ? 'selected' : '' }}>
                                                     Registered
                                                 </option>
-                                                <option value="Attended"
-                                                    {{ $claim->attendance_status === 'Attended' ? 'selected' : '' }}>
-                                                    Attended
-                                                </option>
+                                                @can('view', App\Models\User::class)
+                                                    <option value="Attended"
+                                                        {{ $claim->attendance_status === 'Attended' ? 'selected' : '' }}>
+                                                        Attended
+                                                    </option>
+                                                @endcan
                                                 <option value="NoShow"
                                                     {{ $claim->attendance_status === 'NoShow' ? 'selected' : '' }}>
                                                     NoShow
                                                 </option>
                                             </select>
-
-                                            <input type="number" name="points_earned"
-                                                value="{{ $claim->points_earned }}" min="0" step="1"
-                                                class="w-16 border rounded px-1 py-1 text-xs" />
-
+                                            @can('view', App\Models\User::class)
+                                                <input type="number" name="points_earned"
+                                                    value="{{ $claim->points_earned }}" min="0" step="1"
+                                                    class="w-16 border rounded px-1 py-1 text-xs" />
+                                            @endcan
                                             <button type="submit"
                                                 class="bg-blue-600 text-white px-2 py-1 rounded text-xs hover:bg-blue-700">
                                                 Save
@@ -102,4 +117,4 @@
             </div>
         @endif
     </div>
-</x-admin-layout>
+</x-dynamic-component>

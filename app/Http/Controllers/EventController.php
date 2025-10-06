@@ -240,7 +240,7 @@ class EventController extends Controller
     public function eventUsersManagement(Request $request, $id)
     {
         $event = Event::findOrFail($id);
-        $this->authorize('view', $event);
+        $this->authorize('viewAny', $event);
         $currentUser = $request->user();
 
         if ($currentUser == '1') {
