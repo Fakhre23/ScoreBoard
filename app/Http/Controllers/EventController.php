@@ -244,16 +244,16 @@ class EventController extends Controller
         $currentUser = $request->user();
 
         if ($currentUser == '1') {
-            $users = User::all();
-            $eventsRoles = EventRoles::all();
-            $scoreClaims = ScoreClaim::where('event_id', $event->id)->get();
+            $scoreClaims = ScoreClaim::with('user', 'event')
+                ->where('event_id', $event->id)
+                ->get();
         } else {
-            $users = User::where('university_id', $currentUser->university_id);
-            $eventsRoles = EventRoles::all();
-            $scoreClaims = ScoreClaim::where('event_id', $event->id)->get();
+            $scoreClaims = ScoreClaim::with('user', 'event')
+                ->where('event_id', $event->id)
+                ->get();
         }
 
-        return view('events.eventManagment', compact('event', 'scoreClaims', 'users', 'eventsRoles'));
+        return view('events.eventManagment', compact('scoreClaims', 'event'));
     }
 
 

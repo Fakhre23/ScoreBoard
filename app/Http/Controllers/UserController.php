@@ -139,10 +139,19 @@ class UserController extends Controller
     {
         $currentUser = $request->user();
 
-        $ScoreHistory = ScoreClaim::with('user.university', 'event')
-            ->where('user_id', $currentUser->id)
-            ->orderBy('created_at', 'desc')
-            ->get();
+        if ($currentUser->user_role == 1) {
+            // Admin → see all, newest first
+            $ScoreHistory = ScoreClaim::with('user.university', 'event')
+                ->orderBy('created_at', 'desc')
+                ->take(15)
+                ->get();
+            return view('users.usersScores', compact('currentUser', 'ScoreHistory'));
+        } else {
+            $ScoreHistory = ScoreClaim::with('user.university', 'event')
+                ->where('user_id', $currentUser->id)
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
 
         return view('users.usersScores', compact('currentUser', 'ScoreHistory'));
     }

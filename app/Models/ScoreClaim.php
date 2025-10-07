@@ -19,4 +19,5 @@ class ScoreClaim extends Model
     {
         return $this->belongsTo(Event::class);
     }
+
 }
