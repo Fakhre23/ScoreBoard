@@ -13,4 +13,9 @@ class University extends Model
     protected $table = 'universities';
     protected $guarded = [];    //all columns are mass assignable.
     public $timestamps = true;  //created_at and updated_at
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'university_id');
+    }
 }

@@ -29,6 +29,27 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'user_role');
+    }
+    public function university()
+    {
+        return $this->belongsTo(University::class, 'university_id');
+    }
+    public function scoreClaims()
+    {
+        return $this->hasMany(ScoreClaim::class, 'user_id');
+    }
+
+    public function events()
+    {
+        return $this->belongsToMany(Event::class, 'event_user', 'user_id', 'event_id')
+            ->withPivot('status') 
+            ->withTimestamps();
+    }
+
+
     /**
      * Get the attributes that should be cast.
      *

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\ScoreClaim;
 use App\Models\University;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
@@ -127,5 +128,22 @@ class UserController extends Controller
             'is_active' => "1",
         ]);
         return redirect()->route('adminDashboard')->with('success', 'New user created successfully.');
+    }
+
+
+
+    //************ users Score history ************ */
+
+
+    public function userScoreHistory(request $request)
+    {
+        $currentUser = $request->user();
+
+        $ScoreHistory = ScoreClaim::with('user.university', 'event')
+            ->where('user_id', $currentUser->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('users.usersScores', compact('currentUser', 'ScoreHistory'));
     }
 }

@@ -11,7 +11,7 @@
                         class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800"> Manage Representatives</a>
                 </li>
 
-                <li><a href="#" id="menuScoreSubmission"
+                <li><a href="{{ route('users.scoreHistory') }}" id="menuScoreSubmission"
                         class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">Scores</a>
                 </li>
                 <li><a href="{{ route('events.register') }}" id="menuEvents"

@@ -28,7 +28,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" id="menuScores"
+                    <a href="{{ route('users.scoreHistory') }}" id="menuScores"
                         class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
                         Scores
                     </a>
@@ -40,7 +40,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" id="menuProfile"
+                    <a href="" id="menuProfile"
                         class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
                         My Profile
                     </a>
@@ -70,27 +70,27 @@
     {{-- ********  AJAX and Interactivity //// (ChatGPT do that not me) ********  --}}
     <script>
         /* document.getElementById('listUsers').addEventListener('click', function() {
-                                                fetch('usersList')
-                                                    .then(response => response.text())
-                                                    .then(html => {
-                                                        document.getElementById('contentArea').innerHTML = html;
+                                                        fetch('usersList')
+                                                            .then(response => response.text())
+                                                            .then(html => {
+                                                                document.getElementById('contentArea').innerHTML = html;
+                                                            });
                                                     });
-                                            });
 
-                                            document.getElementById('ListUniversities').addEventListener('click', function() {
-                                                fetch('universitiesList')
-                                                    .then(response => response.text())
-                                                    .then(html => {
-                                                        document.getElementById('contentArea').innerHTML = html;
+                                                    document.getElementById('ListUniversities').addEventListener('click', function() {
+                                                        fetch('universitiesList')
+                                                            .then(response => response.text())
+                                                            .then(html => {
+                                                                document.getElementById('contentArea').innerHTML = html;
+                                                            });
                                                     });
-                                            });
 
-                                            document.getElementById('menuEvents').addEventListener('click', function() {
-                                                fetch('eventsList')
-                                                    .then(response => response.text())
-                                                    .then(html => {
-                                                        document.getElementById('contentArea').innerHTML = html;
-                                                    });
-                                            });/*
+                                                    document.getElementById('menuEvents').addEventListener('click', function() {
+                                                        fetch('eventsList')
+                                                            .then(response => response.text())
+                                                            .then(html => {
+                                                                document.getElementById('contentArea').innerHTML = html;
+                                                            });
+                                                    });/*
     </script>
 </x-app-layout>

@@ -329,7 +329,8 @@ class EventController extends Controller
         $topUsers = User::orderBy('total_user_score', 'desc')->take(10)->get();
 
 
-        $topUniversities = University::orderBy('total_score', 'desc')->take(5)->get();
+        $topUniversities = University::with('users')
+            ->orderBy('total_score', 'desc')->take(5)->get();
 
         return view('welcome', compact('topUsers', 'topUniversities'));
     }

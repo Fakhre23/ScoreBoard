@@ -7,7 +7,7 @@
             <h2 class="text-2xl font-bold mb-8 text-gray-800">Student Dashboard</h2>
 
             <ul class="space-y-4">
-                <li><a href="#" id="menuMyEvents"
+                <li><a href="{{ route('users.scoreHistory') }}" id="menuMyEvents"
                         class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">Scores</a></li>
                 <li><a href="{{ route('events.register') }}" id="menuRegisterEvents"
                         class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">Register To Events</a></li>

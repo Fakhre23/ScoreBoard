@@ -8,4 +8,15 @@ class ScoreClaim extends Model
 {
     protected $table = 'score_claim';
     protected $guarded = [];
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
 }

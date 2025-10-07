@@ -56,7 +56,8 @@
                                 </span>
                                 <div class="ml-3">
                                     <p class="font-semibold text-gray-800">{{ $user->name }}</p>
-                                    <p class="text-sm text-gray-600">{{ $user->university_id ?? 'No University' }}</p>
+                                    <p class="text-sm text-gray-600">{{ $user->university->name ?? 'No University' }}
+                                    </p>
                                 </div>
                             </div>
                             <span class="font-bold text-lg text-blue-600">{{ $user->total_user_score ?? 0 }}</span>
