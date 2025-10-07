@@ -20,4 +20,8 @@ class ScoreClaim extends Model
         return $this->belongsTo(Event::class);
     }
 
+    public function eventRole()
+    {
+        return $this->belongsTo(EventRoles::class);
+    }
 }

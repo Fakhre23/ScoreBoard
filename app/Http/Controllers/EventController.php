@@ -230,6 +230,8 @@ class EventController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+        $event->increment('actual_participants');
+
         return redirect()->route('dashboard')->with('success', 'You have successfully registered for the event.');
     }
 
@@ -244,11 +246,11 @@ class EventController extends Controller
         $currentUser = $request->user();
 
         if ($currentUser == '1') {
-            $scoreClaims = ScoreClaim::with('user', 'event')
+            $scoreClaims = ScoreClaim::with('user', 'event', 'eventRole')
                 ->where('event_id', $event->id)
                 ->get();
         } else {
-            $scoreClaims = ScoreClaim::with('user', 'event')
+            $scoreClaims = ScoreClaim::with('user', 'event', 'eventRole')
                 ->where('event_id', $event->id)
                 ->get();
         }

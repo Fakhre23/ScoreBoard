@@ -83,9 +83,8 @@
 
                                     {{-- Role --}}
                                     <td class="py-2 px-2">
-                                        {{ $claim->user->user_role_name ?? 'No Role' }}
+                                        {{ $claim->eventRole->name ?? 'No Role' }}
                                     </td>
-
                                     {{-- Date --}}
                                     <td class="py-2 px-2 text-xs">
                                         {{ \Carbon\Carbon::parse($claim->created_at)->format('m/d/y H:i') }}

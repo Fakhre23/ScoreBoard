@@ -1,20 +1,18 @@
 @php
     $role = auth()->user()->user_role ?? null;
 
-    // map role ids to blade layout component names
     $layout = match ($role) {
-        1 => 'admin-layout', // admin
-        4 => 'stu-layout', // student
-        2 => 'amb-layout', // ambassador
-        3 => 'vice-layout', // vice
+        1 => 'admin-layout',
+        4 => 'stu-layout',
+        2 => 'amb-layout',
+        3 => 'vice-layout',
         default => 'stu-layout',
     };
 @endphp
 
 <x-dynamic-component :component="$layout">
-    {{-- resources/views/events/admin/listEvents.blade.php --}}
-    <div class="max-w-7xl mx-auto p-6" x-data="{ fullscreen: false, openId: null }">
-        {{-- Card --}}
+    <div class="max-w-7xl mx-auto p-6" x-data="{ fullscreen: false, selectedEvent: null }">
+
         <div :class="fullscreen ? 'fixed inset-0 z-50 m-0 p-6 bg-gray-50 overflow-auto' : 'bg-white shadow-md rounded-xl p-6'"
             class="transition-all duration-200">
 
@@ -36,11 +34,10 @@
                         class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded-lg shadow transition text-sm">
                         + Create Event
                     </a>
-
                 </div>
             </div>
 
-            {{-- Table Wrapper --}}
+            {{-- Table --}}
             <div class="overflow-x-auto rounded-lg border border-gray-200">
                 <table class="min-w-full text-sm text-left">
                     <thead class="bg-gray-100 text-gray-600 text-xs uppercase">
@@ -50,7 +47,7 @@
                             <th class="py-3 px-4">Scope</th>
                             <th class="py-3 px-4">University</th>
                             <th class="py-3 px-4 text-center align-middle">Status</th>
-                            <th class="py-3 px-4">Created </th>
+                            <th class="py-3 px-4">Created</th>
                             @can('viewAny', App\Models\User::class)
                                 <th class="py-3 px-4 text-center align-middle">Actions</th>
                             @endcan
@@ -59,7 +56,7 @@
                     <tbody class="divide-y divide-gray-200">
                         @foreach ($events as $event)
                             <tr class="hover:bg-gray-50 transition cursor-pointer"
-                                @click="openId === {{ $event->id }} ? openId = null : openId = {{ $event->id }}">
+                                @click="selectedEvent = {{ $event->toJson() }}">
                                 <td class="py-2 px-2 font-medium text-gray-800">{{ $event->title }}</td>
                                 <td class="py-2 px-2 text-green-700 text-center align-middle">
                                     {{ $event->actual_participants }}</td>
@@ -88,7 +85,6 @@
                                 <td class="py-3 px-4 text-gray-700">
                                     {{ $event->created_at ? strtoupper($event->created_at->format('j-M')) : '—' }}
                                 </td>
-
                                 <td class="py-3 px-4">
                                     <div class="flex gap-2">
                                         @can('view', App\Models\User::class)
@@ -116,36 +112,35 @@
                                         @endcan
                                     </div>
                                 </td>
-
-                            </tr>
-
-                            {{-- Detail Row --}}
-                            <tr x-show="openId === {{ $event->id }}" x-transition class="bg-gray-50">
-                                <td colspan="11" class="py-3 px-4 text-gray-700 space-y-1">
-                                    <div><strong>Created By:</strong>
-                                        {{ $event->created_by?->name ?? (\App\Models\User::find($event->created_by)?->email ?? ($event->created_by ?? 'System')) }}
-                                    </div>
-                                    <div><strong>Approved By:</strong>
-                                        {{ $event->approvedBy?->email ?? (\App\Models\User::find($event->approved_by)?->email ?? '—') }}
-                                    </div>
-                                    <div><strong>Description:</strong> {{ $event->description ?? '—' }}</div>
-                                    <div><strong>Approval Date:</strong> {{ $event->approval_date ?? '—' }}</div>
-                                    <div><strong>Rejection Reason:</strong> {{ $event->rejection_reason ?? '—' }}</div>
-                                    <div><strong>Updated At:</strong> {{ $event->updated_at ?? '—' }}</div>
-                                    <div><strong>Location:</strong> {{ $event->location ?? '—' }}</div>
-                                    <div class="text-red-600"><strong>Max Participants:</strong>
-                                        {{ $event->max_participants ?? '—' }}</div>
-                                    <div class="text-green-600"><strong>Start Date
-                                            :</strong>{{ $event->start_datetime }}
-                                    </div>
-                                    <div class="text-red-500"><strong>End Date:</strong>
-                                        {{ $event->end_datetime ?? '—' }}
-                                    </div>
-                                </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+        </div>
+
+        {{-- Popup Modal --}}
+        <div x-show="selectedEvent" x-transition
+            class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-lg relative">
+                <button @click="selectedEvent = null"
+                    class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-xl font-bold">&times;</button>
+
+                <h3 class="text-xl font-bold mb-4 text-gray-800" x-text="selectedEvent.title"></h3>
+
+                <div class="space-y-2 text-gray-700 text-sm">
+                    <p><strong>Created By:</strong> <span x-text="selectedEvent.created_by ?? 'System'"></span></p>
+                    <p><strong>Approved By:</strong> <span x-text="selectedEvent.approved_by ?? '—'"></span></p>
+                    <p><strong>Description:</strong> <span x-text="selectedEvent.description ?? '—'"></span></p>
+                    <p><strong>Approval Date:</strong> <span x-text="selectedEvent.approval_date ?? '—'"></span></p>
+                    <p><strong>Rejection Reason:</strong> <span x-text="selectedEvent.rejection_reason ?? '—'"></span>
+                    </p>
+                    <p><strong>Location:</strong> <span x-text="selectedEvent.location ?? '—'"></span></p>
+                    <p><strong>Start Date:</strong> <span x-text="selectedEvent.start_datetime ?? '—'"></span></p>
+                    <p><strong>End Date:</strong> <span x-text="selectedEvent.end_datetime ?? '—'"></span></p>
+                    <p><strong>Max Participants:</strong> <span x-text="selectedEvent.max_participants ?? '—'"></span>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
