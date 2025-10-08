@@ -7,8 +7,8 @@
             <!-- Name -->
             <div>
                 <x-input-label for="name" :value="__('Name')" />
-                <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required
-                    autofocus autocomplete="name" />
+                <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')"
+                    required autofocus autocomplete="name" />
                 <x-input-error :messages="$errors->get('name')" class="mt-2" />
             </div>
 
@@ -53,7 +53,7 @@
                     <option value="">Select your role</option>
                     @foreach ($roles as $role)
                         <option value="{{ $role->id }}" {{ old('role_id') == $role->id ? 'selected' : '' }}>
-                            {{ $role->name }}
+                            {{ $role->id == 1 ? 'Admin' : ($role->id == 2 ? 'Ambassador' : ($role->id == 3 ? 'Vice' : ($role->id == 4 ? 'Representative' : 'Guest'))) }}
                         </option>
                     @endforeach
                 </select>

@@ -111,7 +111,7 @@ class EventController extends Controller
             'university_id' => $universityId,
         ]);
 
-        return redirect()->route('adminDashboard')->with('success', 'Event created successfully.');
+        return redirect()->route('events.list')->with('success', 'Event created successfully.');
     }
 
 
@@ -222,7 +222,7 @@ class EventController extends Controller
             'user_id' => $currentUser->id,
             'event_id' => $event->id,
             'event_role_id' => $request->role_id,
-            'attendance_status' => 'NoShow',
+            'attendance_status' => 'Registered',
             'points_earned' => 0,
             'approved_by' => null,
             'approval_date' => null,
@@ -232,7 +232,7 @@ class EventController extends Controller
         ]);
         $event->increment('actual_participants');
 
-        return redirect()->route('dashboard')->with('success', 'You have successfully registered for the event.');
+        return redirect()->route('events.list')->with('success', 'You have successfully registered for the event.');
     }
 
 

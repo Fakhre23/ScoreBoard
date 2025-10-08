@@ -99,7 +99,7 @@ class UserController extends Controller
     {
         $this->authorize('create', User::class);
 
-        $roles = Role::all();
+        $roles = Role::orderBy('id', 'asc')->get();
         $universities =  University::where('Status', 1)->get();
 
         return view('users.createUsers', compact('roles', 'universities'));
@@ -127,7 +127,7 @@ class UserController extends Controller
             'user_role' => $request->input('role_id'),
             'is_active' => "1",
         ]);
-        return redirect()->route('adminDashboard')->with('success', 'New user created successfully.');
+        return redirect()->route('users.list')->with('success', 'New user created successfully.');
     }
 
 

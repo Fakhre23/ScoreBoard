@@ -98,6 +98,17 @@
                                             @csrf
                                             @method('PATCH')
 
+
+
+
+                                            <div class="px-5 text-md font-medium">
+                                                {{ $claim->points_earned ?? 0 }}
+                                            </div>
+
+
+
+
+
                                             {{-- Status Dropdown --}}
                                             <select name="attendance_status" class="border rounded px-1 py-1 text-xs">
                                                 <option value="Registered"
@@ -114,10 +125,9 @@
                                                 </option>
                                             </select>
 
-                                            {{-- Points Input --}}
-                                            <input type="number" name="points_earned"
-                                                value="{{ $claim->points_earned ?? 0 }}" min="0" step="1"
-                                                class="w-16 border rounded px-1 py-1 text-xs" />
+
+
+
 
                                             {{-- Save Button --}}
                                             <button type="submit"

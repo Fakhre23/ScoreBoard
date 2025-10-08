@@ -13,7 +13,7 @@
 
 <x-dynamic-component :component="$layout">
     <div class="max-w-6xl mx-auto p-8 bg-white shadow-md rounded-lg mt-6">
-        <h2 class="text-2xl font-bold mb-6 text-gray-800">🎯 Score History</h2>
+        <h2 class="text-2xl font-bold mb-6 text-gray-800"> Score History</h2>
 
         @if ($ScoreHistory->isEmpty())
             <p class="text-gray-600">No score records found.</p>

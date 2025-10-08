@@ -76,7 +76,7 @@ class UniveristyController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-        return redirect()->route('adminDashboard')->with('success', 'New university created successfully.');
+        return redirect()->route('universities.list')->with('success', 'New university created successfully.');
     }
 
     //edit and update university
@@ -146,6 +146,6 @@ class UniveristyController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-        return redirect()->route('dashboard')->with('success', 'University registration submitted successfully. It is pending approval.');
+        return redirect()->route('register')->with('success', 'University registration submitted successfully. It is pending approval.');
     }
 }
