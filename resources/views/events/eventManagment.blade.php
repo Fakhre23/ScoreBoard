@@ -51,7 +51,6 @@
                                 <th class="py-2 px-2 text-left font-medium">Date</th>
                                 <th class="py-2 px-2 text-left font-medium">Points</th>
                                 <th class="py-2 px-2 text-left font-medium">Status</th>
-                                <th class="py-2 px-2 text-left font-medium">Action</th>
                             </tr>
                         </thead>
 
@@ -94,7 +93,7 @@
                                     <td class="py-2 px-2" colspan="3">
                                         <form action="{{ route('events.updateRegisteredEventStatus', $claim->id) }}"
                                             method="POST" class="flex items-center space-x-1"
-                                            onsubmit="return confirm('Update status for this user?');">
+                                            onchange="if (confirm('Update status for this user?')) { this.submit(); }">
                                             @csrf
                                             @method('PATCH')
 
@@ -109,8 +108,9 @@
 
 
 
+                                            <div class="px-3">|</div>
                                             {{-- Status Dropdown --}}
-                                            <select name="attendance_status" class="border rounded px-1 py-1 text-xs">
+                                            <select name="attendance_status" class="border rounded px-6 py-1 text-xs">
                                                 <option value="Registered"
                                                     {{ $claim->attendance_status === 'Registered' ? 'selected' : '' }}>
                                                     Registered
@@ -130,10 +130,7 @@
 
 
                                             {{-- Save Button --}}
-                                            <button type="submit"
-                                                class="bg-blue-600 text-white px-2 py-1 rounded text-xs hover:bg-blue-700">
-                                                Save
-                                            </button>
+
                                         </form>
                                     </td>
                                 </tr>

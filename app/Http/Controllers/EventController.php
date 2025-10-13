@@ -160,6 +160,33 @@ class EventController extends Controller
         return redirect()->route('adminDashboard')->with('success', 'Event updated successfully.');
     }
 
+
+
+    public function eventStatusUpdate(Request $request, $id)
+    {
+        $eventToUpdate = Event::findOrFail($id);
+        $this->authorize('update', $eventToUpdate);
+
+        $request->validate([
+            'status' => 'required|in:Draft,PendingApproval,Approved,Rejected,Completed',
+        ]);
+
+        $eventToUpdate->status = $request->input('status');
+
+        // If status is changed to Approved, set approved_by and approval_date
+        if ($request->input('status') === 'Approved') {
+            $eventToUpdate->approved_by = $request->user()->id;
+            $eventToUpdate->approval_date = now();
+        } elseif (in_array($request->input('status'), ['Rejected', 'Draft'])) {
+            // If status is Rejected or Draft, clear approved_by and approval_date
+            $eventToUpdate->approved_by = null;
+            $eventToUpdate->approval_date = null;
+        }
+
+        $eventToUpdate->save();
+        return redirect()->route('events.list')->with('success', 'Event status is updated');
+    }
+
     //******************************** not active events ********************************
     public function notActiveList(Request $request)
     {
@@ -232,7 +259,7 @@ class EventController extends Controller
         ]);
         $event->increment('actual_participants');
 
-        return redirect()->route('events.list')->with('success', 'You have successfully registered for the event.');
+        return redirect()->route('events.register')->with('success', 'You have successfully registered for the event.');
     }
 
 

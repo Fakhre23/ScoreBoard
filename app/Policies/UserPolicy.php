@@ -34,6 +34,14 @@ class UserPolicy
             return false;
         }
     }
+    public function guestView(User $user): bool
+    {
+        if ($user->user_role === 5) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     /**
      * Determine whether the user can create models.

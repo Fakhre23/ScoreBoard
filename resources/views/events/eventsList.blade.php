@@ -11,8 +11,7 @@
 @endphp
 
 <x-dynamic-component :component="$layout">
-    <div class="max-w-7xl mx-auto p-6" 
-         x-data="{ fullscreen: false, openEvent: null }">
+    <div class="max-w-7xl mx-auto p-6" x-data="{ fullscreen: false, openEvent: null }">
 
         {{-- Main Card --}}
         <div :class="fullscreen ? 'fixed inset-0 z-50 m-0 p-6 bg-gray-50 overflow-auto' : 'bg-white shadow-md rounded-xl p-6'"
@@ -71,21 +70,39 @@
 
                                 {{-- Status Badge --}}
                                 <td class="py-3 px-4 text-center">
-                                    @php
-                                        $status = $event->status ?? '—';
-                                        $statusClasses = [
-                                            'Draft' => 'bg-gray-200 text-gray-800',
-                                            'PendingApproval' => 'bg-yellow-100 text-yellow-800',
-                                            'Approved' => 'bg-green-100 text-green-800',
-                                            'Rejected' => 'bg-red-100 text-red-800',
-                                            'Completed' => 'bg-blue-100 text-blue-800',
-                                        ];
-                                        $badgeClass = $statusClasses[$status] ?? 'bg-gray-100 text-gray-800';
-                                    @endphp
-                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-medium {{ $badgeClass }}">
-                                        {{ $status }}
-                                    </span>
+                                    <form method="POST" action="{{ route('events.statusUpdate', $event->id) }}">
+                                        @csrf
+                                        @method('PATCH')
+
+                                        <select name="status"
+                                            class="rounded px-2 py-1 text-sm border w-full max-w-[130px] font-medium
+                {{ $event->status === 'Approved'
+                    ? 'bg-green-50 border-green-300 text-green-700'
+                    : ($event->status === 'PendingApproval'
+                        ? 'bg-yellow-50 border-yellow-300 text-yellow-700'
+                        : ($event->status === 'Rejected'
+                            ? 'bg-red-50 border-red-300 text-red-700'
+                            : ($event->status === 'Completed'
+                                ? 'bg-blue-50 border-blue-300 text-blue-700'
+                                : 'bg-gray-50 border-gray-300 text-gray-700'))) }}"
+                                            onchange="if(confirm('Are you sure you want to change status for {{ $event->title }}?')) this.form.submit();">
+
+                                            <option value="Draft" {{ $event->status === 'Draft' ? 'selected' : '' }}>
+                                                Draft</option>
+                                            <option value="PendingApproval"
+                                                {{ $event->status === 'PendingApproval' ? 'selected' : '' }}>Pending
+                                            </option>
+                                            <option value="Approved"
+                                                {{ $event->status === 'Approved' ? 'selected' : '' }}>Approved</option>
+                                            <option value="Rejected"
+                                                {{ $event->status === 'Rejected' ? 'selected' : '' }}>Rejected</option>
+                                            <option value="Completed"
+                                                {{ $event->status === 'Completed' ? 'selected' : '' }}>Completed
+                                            </option>
+                                        </select>
+                                    </form>
                                 </td>
+
 
                                 <td class="py-3 px-4 text-center">
                                     {{ $event->created_at ? strtoupper($event->created_at->format('j-M')) : '—' }}
@@ -121,8 +138,7 @@
                             </tr>
 
                             {{-- Popup Modal --}}
-                            <div x-show="openEvent === {{ $event->id }}" 
-                                @click.away="openEvent = null"
+                            <div x-show="openEvent === {{ $event->id }}" @click.away="openEvent = null"
                                 class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40"
                                 x-transition>
                                 <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 relative">
@@ -134,13 +150,13 @@
                                     </h3>
 
                                     <div class="space-y-2 text-gray-700 text-sm">
-                                        <p><strong>University:</strong> 
+                                        <p><strong>University:</strong>
                                             {{ $event->university?->name ?? '—' }}
                                         </p>
-                                        <p><strong>Created By:</strong> 
+                                        <p><strong>Created By:</strong>
                                             {{ \App\Models\User::find($event->created_by)?->email ?? 'System' }}
                                         </p>
-                                        <p><strong>Approved By:</strong> 
+                                        <p><strong>Approved By:</strong>
                                             {{ \App\Models\User::find($event->approved_by)?->email ?? '—' }}
                                         </p>
                                         <p><strong>Description:</strong> {{ $event->description ?? '—' }}</p>

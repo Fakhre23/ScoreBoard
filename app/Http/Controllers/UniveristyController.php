@@ -111,7 +111,7 @@ class UniveristyController extends Controller
 
         $universityToEdit->save();
 
-        return redirect()->route('adminDashboard')->with('success', 'University updated successfully.');
+        return redirect()->route('universities.list')->with('success', 'University updated successfully.');
     }
 
 

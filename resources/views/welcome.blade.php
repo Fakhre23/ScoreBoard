@@ -15,7 +15,12 @@
         <div class="text-center mb-8">
             <h1 class="text-4xl font-bold text-gray-900 mb-2">University Competition Platform</h1>
             <p class="text-lg text-gray-600 mb-6">Join the competition and earn points for your university!</p>
-
+            @can('guestView', App\Models\User::class)
+                <a href="{{ route('adminDashboard') }}"
+                    class="px-3 py-1 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 text-sm">
+                    Back
+                </a>
+            @endcan
             {{-- Action Buttons --}}
 
         </div>

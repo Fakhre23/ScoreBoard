@@ -93,6 +93,8 @@ Route::middleware('auth')->group(function () { // just for more securty its not 
 
     Route::get('eventsQueue', [EventController::class, 'notActiveList'])->name('events.queue');
 
+    Route::patch('eventsList/{id}/status', [EventController::class, 'eventStatusUpdate'])->name('events.statusUpdate');
+
 
     // *** users can Register to events *** //
     Route::get('eventsUsers', [EventController::class, 'listUsersEvents'])->name('events.register');
@@ -108,7 +110,7 @@ Route::middleware('auth')->group(function () { // just for more securty its not 
 
 
     //*** Users Score history ***
-    
+
     Route::get('users/scoreHistory', [UserController::class, 'userScoreHistory'])->name('users.scoreHistory');
 });
 
