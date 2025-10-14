@@ -22,6 +22,7 @@
             </div>
 
             <div class="flex gap-2">
+
                 <button @click="fullscreen = !fullscreen"
                     class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded text-xs transition-all shadow">
                     <span x-text="fullscreen ? 'Collapse' : 'Expand'"></span>
@@ -35,6 +36,10 @@
                 @endcan
             </div>
         </div>
+        <div class="mb-4">
+            <x-search-bar :action="route('users.list')" placeholder="Search users by name or email" />
+        </div>
+
 
         {{-- ******** Compact Table Section ******** --}}
         <div :class="fullscreen ? 'fixed inset-0 z-50 bg-gray-50 p-4 overflow-hidden' : ''"

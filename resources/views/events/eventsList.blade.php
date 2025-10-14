@@ -39,6 +39,7 @@
                 </div>
             </div>
 
+
             {{-- Table --}}
             <div class="overflow-x-auto rounded-lg border border-gray-200">
                 <table class="min-w-full text-sm text-left">

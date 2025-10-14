@@ -3,10 +3,10 @@
 
     // Map role IDs to layout components
     $layout = match ($role) {
-        1 => 'admin-layout', // Admin
-        2 => 'amb-layout', // Ambassador
-        3 => 'vice-layout', // Vice
-        4 => 'stu-layout', // Student
+        1 => 'admin-layout',
+        2 => 'amb-layout',
+        3 => 'vice-layout',
+        4 => 'stu-layout',
         default => 'stu-layout',
     };
 @endphp
@@ -101,7 +101,7 @@
 
 
                                             <div class="px-5 text-md font-medium">
-                                                {{ $claim->points_earned ?? 0 }}
+                                                {{ $claim->points_earned !== null ? $claim->points_earned : 0 }}
                                             </div>
 
 

@@ -48,17 +48,26 @@ Route::middleware(['auth', 'verified', EnsureUserIsActive::class])->group(functi
 
 
 Route::middleware('auth')->group(function () { // just for more securty its not nesscery 
-    //Users CRUD Routes Section
+
+    // ***** Users CRUD Routes Section ***** //
+
     Route::get('usersList', [UserController::class, 'listUsers'])->name('users.list');
+
     Route::delete('usersList/{id}', [UserController::class, 'delete'])->name('users.delete');
+
     Route::patch('usersList/{id}/status', [UserController::class, 'statusUpdate'])->name('users.statusUpdate');
+
     Route::patch('usersList/{id}/university', [UserController::class, 'changeUniversity'])->name('users.changeUniversity');
+
     Route::patch('usersList/{id}/role', [UserController::class, 'changeRole'])->name('users.changeRole');
+
     Route::get('usersList/create', [UserController::class, 'create'])->name('users.create');
+
     Route::post('usersList/store', [UserController::class, 'store'])->name('users.store');
 
 
-    // *** Universities CRUD Routes Section *** //
+
+    // ***** Universities CRUD Routes Section ***** //
 
     Route::get('universitiesList', [UniveristyController::class, 'universitiesList'])->name('universities.list');
 
@@ -77,7 +86,7 @@ Route::middleware('auth')->group(function () { // just for more securty its not 
     Route::get('universitiesList/not-active', [UniveristyController::class, 'notActiveList'])->name('universities.notActive');
 
 
-    // *** Events CRUD Routes Section *** //
+    // ***** Events CRUD Routes Section ***** //
 
     Route::get('eventsList', [EventController::class, 'listEvents'])->name('events.list');
 
@@ -96,20 +105,20 @@ Route::middleware('auth')->group(function () { // just for more securty its not 
     Route::patch('eventsList/{id}/status', [EventController::class, 'eventStatusUpdate'])->name('events.statusUpdate');
 
 
-    // *** users can Register to events *** //
+    // ***** users can Register to events ******** //
     Route::get('eventsUsers', [EventController::class, 'listUsersEvents'])->name('events.register');
 
     Route::get('eventsUsers/{id}/register', [EventController::class, 'registerUserToEvent'])->name('events.registerUser');
 
     Route::post('eventsUsers/{id}/register', [EventController::class, 'storeUserEvent'])->name('events.storeUserEvent');
 
-    // *** Event users management *** //
+    // ***** Event users management ***** //
     Route::get('eventManagement/{id}', [EventController::class, 'eventUsersManagement'])->name('events.eventUsersManagement');
 
     Route::patch('eventManagement/{id}/updateStatus', [EventController::class, 'updateRegisteredEventStatus'])->name('events.updateRegisteredEventStatus');
 
 
-    //*** Users Score history ***
+    // ***** Users Score history ***** //
 
     Route::get('users/scoreHistory', [UserController::class, 'userScoreHistory'])->name('users.scoreHistory');
 });

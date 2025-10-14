@@ -12,32 +12,40 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class UserController extends Controller
 {
-    //apply user  policies (its like roleBuck for your controller)
     use AuthorizesRequests;
 
-    //list all users
     public function listUsers(Request $request)
     {
         $currentUser = $request->user();
-
-        // Check permission before continuing
         $this->authorize('viewAny', User::class);
 
+        // query
         if ($currentUser->user_role === 1) {
-            // Admin → see all, newest first
-            $users = User::orderBy('created_at', 'desc')->get();
+            $query = User::orderBy('created_at', 'desc');
         } else {
-            // Ambassador → only their university, newest first
-            $users = User::where('university_id', $currentUser->university_id)->where('user_role', '>', 1)
-                ->orderBy('created_at', 'desc')
-                ->get();
+            $query = User::where('university_id', $currentUser->university_id)
+                ->where('user_role', '>', 1)
+                ->orderBy('created_at', 'desc');
         }
 
+        // search filter
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                    ->orWhere('email', 'LIKE', "%{$search}%")
+                    ->orWhere('phone', 'LIKE', "%{$search}%");
+            });
+        }
+
+
+        $users = $query->with('university', 'role')->get();
         $roles = Role::all();
         $universities = University::all();
 
         return view('users.usersList', compact('users', 'roles', 'universities'));
     }
+
 
 
     //delete user
