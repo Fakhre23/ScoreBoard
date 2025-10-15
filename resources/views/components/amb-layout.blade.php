@@ -6,7 +6,7 @@
 
             <ul class="space-y-4">
                 <li>
-                    <a href="#" id="menuMyUniversity"
+                    <a href="{{ route('universities.list') }}" id="menuMyUniversity"
                         class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
                         My University
                     </a>

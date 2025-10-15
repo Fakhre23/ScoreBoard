@@ -17,7 +17,7 @@ class UniversityPolicy
         if ($user->user_role === 1) {
             return true;
         }
-        if ($user->user_role > 1 && $user->user_role <= 3) {
+        if ($user->user_role > 1 && $user->user_role <= 2) {
             return true;
         } else {
             return false;

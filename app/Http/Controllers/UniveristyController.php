@@ -35,8 +35,13 @@ class UniveristyController extends Controller
                     ->orWhere('country', 'LIKE', "%{$search}%");
             });
         }
-        $universities = $query->get();
-        return view('universities.universitiesList', compact('universities'));
+        $universities = $query->withCount('users')->get();
+
+        if ($currentUser->user_role === 2) {
+            return view('dashboard.ambassador.ambUniList', compact('universities'));
+        } else {
+            return view('universities.universitiesList', compact('universities'));
+        }
     }
 
 
