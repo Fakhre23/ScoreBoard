@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class="mb-4">
-            <x-search-bar :action="route('users.list')" placeholder="Search users by name or email" />
+            <x-search-bar :action="route('users.list')" placeholder="Search users by name or email" /> {{-- the colon mean (im passing a variable or expression) --}}
         </div>
 
 
@@ -156,7 +156,7 @@
                                             @method('DELETE')
                                             <button type="submit"
                                                 class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-xs transition-all">
-                                                Del
+                                                Delete
                                             </button>
                                         </form>
                                     </td>

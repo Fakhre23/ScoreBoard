@@ -24,10 +24,22 @@ class EventController extends Controller
         $this->authorize('viewAny', Event::class);
 
         if ($currentUser->user_role === 1) {
-            $events = Event::orderBy('created_at', 'desc')->get();
+            $query = Event::orderBy('created_at', 'desc');
         } else {
-            $events = Event::where('university_id', $currentUser->university_id)->orderBy('created_at', 'desc')->get();
+            $query = Event::where('university_id', $currentUser->university_id)
+            ->orderBy('created_at', 'desc')
+            ;
         }
+
+        if ($request->filled('search')) { /* checks if that input exists and is not empty */
+            $search = $request->search; /* the $request->search come from name="search" */
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'LIKE', "%{$search}%")
+                    ->orWhere('Created By:', 'LIKE', "%{$search}%")
+                    ->orWhere('scope', 'LIKE', "%{$search}%");
+            });
+        }
+        $events = $query->get();
         return view('events.eventsList', compact('events'));
     }
 

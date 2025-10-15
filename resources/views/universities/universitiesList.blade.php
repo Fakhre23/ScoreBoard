@@ -23,6 +23,10 @@
                 </a>
             </div>
         </div>
+        <div class="mb-4">
+            <x-search-bar :action="route('universities.list')" placeholder="Search universities by name ,status" />
+            {{-- the colon mean (im passing a variable or expression) --}}
+        </div>
 
 
         {{-- Table Wrapper --}}
@@ -54,6 +58,7 @@
                                 <span class="text-gray-400 italic">No Image</span>
                             @endif
                         </td> --}}
+
 
                         {{-- Name --}}
                         <td class="py-3 px-4 font-medium text-gray-800">{{ $university->name }}</td>

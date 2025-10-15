@@ -29,8 +29,8 @@ class UserController extends Controller
         }
 
         // search filter
-        if ($request->filled('search')) {
-            $search = $request->search;
+        if ($request->filled('search')) { /* checks if that input exists and is not empty */
+            $search = $request->search; /* the $request->search come from name="search" */
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'LIKE', "%{$search}%")
                     ->orWhere('email', 'LIKE', "%{$search}%")

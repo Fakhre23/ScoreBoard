@@ -38,6 +38,9 @@
                     </a>
                 </div>
             </div>
+            <div class="mb-4">
+                <x-search-bar :action="route('events.list')" placeholder="Search events by title or scope" /> {{-- the colon mean (im passing a variable or expression) --}}
+            </div>
 
 
             {{-- Table --}}

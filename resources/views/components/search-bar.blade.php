@@ -1,4 +1,6 @@
-@props(['action', 'placeholder' => 'Search...'])
+@props(['action', 'placeholder' => 'Search...']) {{-- The Search here is just a placeholder not a variable عشان خربطت كثير 
+                                                 @props to define which attributes (props) are passed from the BladeView into that component. --}}
+
 
 <form method="GET" action="{{ $action }}" class="flex items-center gap-2 mb-6">
     <input type="text" name="search" value="{{ request('search') }}" placeholder="{{ $placeholder }}"

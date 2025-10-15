@@ -20,12 +20,22 @@ class UniveristyController extends Controller
         $this->authorize('viewAny', $currentUser);
 
         if ($currentUser->user_role === 1) {
-            $universities =  University::orderBy('created_at', 'desc')->get();
+            $query =  University::orderBy('created_at', 'desc');
         } else {
-            $universities = University::where('id', $currentUser->university_id)
-                ->orderBy('created_at', 'desc')
-                ->get();
+            $query = University::where('id', $currentUser->university_id)
+                ->orderBy('created_at', 'desc');
         }
+
+        // search filter
+        if ($request->filled('search')) { /* checks if that input exists and is not empty */
+            $search = $request->search; /* the $request->search come from name="search" */
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                    ->orWhere('Status', 'LIKE', "%{$search}%")
+                    ->orWhere('country', 'LIKE', "%{$search}%");
+            });
+        }
+        $universities = $query->get();
         return view('universities.universitiesList', compact('universities'));
     }
 
