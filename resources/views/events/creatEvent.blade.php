@@ -36,6 +36,39 @@
                     <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                 @enderror
             </div>
+            <!-- Scope -->
+            @can('view', App\Models\User::class)
+                <div>
+                    <label for="scope" class="block text-sm font-semibold text-gray-700">Scope</label>
+                    <select name="scope" id="scope" required
+                        class="mt-2 w-full rounded-xl border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 p-3 bg-white">
+                        <option value="Public" {{ old('scope') === 'Public' ? 'selected' : '' }}>Public</option>
+                        <option value="University" {{ old('scope') === 'University' ? 'selected' : '' }}>University
+                        </option>
+                    </select>
+                    @error('scope')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+            @endcan
+
+            <!-- University (only visible if scope = University) -->
+            <div id="university-wrapper" style="display: none;">
+                <label for="university_id" class="block text-sm font-semibold text-gray-700">University</label>
+                <select name="university_id" id="university_id"
+                    class="mt-2 w-full rounded-xl border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 p-3 bg-white">
+                    <option value="">-- Select University --</option>
+                    @foreach ($universities as $university)
+                        <option value="{{ $university->id }}"
+                            {{ old('university_id') == $university->id ? 'selected' : '' }}>
+                            {{ $university->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('university_id')
+                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
             <!-- Location -->
             <div>
@@ -80,39 +113,7 @@
                 @enderror
             </div>
 
-            <!-- Scope -->
-            @can('view', App\Models\User::class)
-                <div>
-                    <label for="scope" class="block text-sm font-semibold text-gray-700">Scope</label>
-                    <select name="scope" id="scope" required
-                        class="mt-2 w-full rounded-xl border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 p-3 bg-white">
-                        <option value="Public" {{ old('scope') === 'Public' ? 'selected' : '' }}>Public</option>
-                        <option value="University" {{ old('scope') === 'University' ? 'selected' : '' }}>University
-                        </option>
-                    </select>
-                    @error('scope')
-                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-            @endcan
 
-            <!-- University (only visible if scope = University) -->
-            <div id="university-wrapper" style="display: none;">
-                <label for="university_id" class="block text-sm font-semibold text-gray-700">University</label>
-                <select name="university_id" id="university_id"
-                    class="mt-2 w-full rounded-xl border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 p-3 bg-white">
-                    <option value="">-- Select University --</option>
-                    @foreach ($universities as $university)
-                        <option value="{{ $university->id }}"
-                            {{ old('university_id') == $university->id ? 'selected' : '' }}>
-                            {{ $university->name }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('university_id')
-                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
-                @enderror
-            </div>
 
             <!-- Status -->
             @can('view', App\Models\User::class)
