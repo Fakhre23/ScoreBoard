@@ -57,4 +57,24 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    /* Update profile Photo  */
+    public function uploadPhoto(Request $request)
+    {
+        $request->validate([
+            'profile_photo' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $currentUser = $request->user();
+
+        if ($currentUser->profile_photo) {
+            Storage::disk('public')->delete('profile-photos/' . $currentUser->profile_photo);
+        }
+
+        $path = $request->file('profile_photo')->store('profile-photos', 'public');
+        $currentUser->profile_photo = basename($path);
+        $currentUser->save();
+
+        return back()->with('success', 'Profile photo updated successfully!');
+    }
 }

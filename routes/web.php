@@ -65,6 +65,10 @@ Route::middleware('auth')->group(function () { // just for more securty its not 
 
     Route::post('usersList/store', [UserController::class, 'store'])->name('users.store');
 
+    /* Add profile photo */
+
+    Route::post('/profile', [ProfileController::class, 'uploadPhoto'])->name('profile.photo.upload');
+
 
 
     // ***** Universities CRUD Routes Section ***** //

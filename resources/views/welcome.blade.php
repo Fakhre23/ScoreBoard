@@ -21,8 +21,6 @@
                     Back
                 </a>
             @endcan
-            {{-- Action Buttons --}}
-
         </div>
 
         {{-- Leaderboards --}}
@@ -48,6 +46,7 @@
                                         ? 'bg-orange-100 border border-orange-300'
                                         : 'bg-gray-50')) }}">
                             <div class="flex items-center">
+                                {{-- Rank number --}}
                                 <span
                                     class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold
                                     {{ $index === 0
@@ -59,12 +58,23 @@
                                                 : 'bg-blue-500 text-white')) }}">
                                     {{ $index + 1 }}
                                 </span>
+
+                                {{-- Profile Photo --}}
+                                <img src="{{ $user->profile_photo
+                                    ? asset('storage/profile-photos/' . $user->profile_photo)
+                                    : asset('images/default-avatar.png') }}"
+                                    alt="Profile Photo"
+                                    class="w-10 h-10 rounded-full object-cover ml-3 border border-gray-300">
+
+                                {{-- User Info --}}
                                 <div class="ml-3">
                                     <p class="font-semibold text-gray-800">{{ $user->name }}</p>
                                     <p class="text-sm text-gray-600">{{ $user->university->name ?? 'No University' }}
                                     </p>
                                 </div>
                             </div>
+
+                            {{-- User Score --}}
                             <span class="font-bold text-lg text-blue-600">{{ $user->total_user_score ?? 0 }}</span>
                         </div>
                     @endforeach
@@ -115,6 +125,7 @@
                 </div>
             </div>
         </div>
+
         @can('viewLeaderBoard', App\Models\User::class)
             {{-- Call to Action --}}
             <div class="flex justify-center py-6 gap-8 mb-10">
