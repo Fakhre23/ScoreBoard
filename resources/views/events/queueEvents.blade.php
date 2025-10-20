@@ -19,10 +19,15 @@
             class="transition-all duration-200">
 
             {{-- Header --}}
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
+            <div class="flex flex-col sm:flex-row  items-start sm:items-center mb-6 gap-3">
                 <h2 class="text-2xl font-bold text-gray-800">Event Queue </h2>
+                <a href="{{ route('events.list') }}"
+                    class="px-3 py-1 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 text-sm">
+                    Back
+                </a>
 
-                <div class="flex gap-2">
+
+                <div class="ml-auto w-full sm:w-auto flex justify-end items-center gap-2">
                     <button @click="fullscreen = !fullscreen"
                         class="bg-blue-600 text-white px-4 py-1 rounded-lg hover:bg-blue-700 text-sm transition">
                         <span x-text="fullscreen ? 'Collapse' : 'Expand'"></span>
@@ -37,8 +42,8 @@
                         class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded-lg shadow transition text-sm">
                         + Create Event
                     </a>
-
                 </div>
+
             </div>
 
             {{-- Table Wrapper --}}

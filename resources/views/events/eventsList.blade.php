@@ -72,40 +72,64 @@
                                     {{ $event->university?->name ?? (\App\Models\University::find($event->university_id)?->name ?? '—') }}
                                 </td>
 
-                                {{-- Status Badge --}}
-                                <td class="py-3 px-4 text-center">
-                                    <form method="POST" action="{{ route('events.statusUpdate', $event->id) }}">
-                                        @csrf
-                                        @method('PATCH')
+                                @if (auth()->user()?->user_role === 1)
+                                    {{-- Admin: editable status select --}}
+                                    <td class="py-3 px-4 text-center">
+                                        <form method="POST" action="{{ route('events.statusUpdate', $event->id) }}">
+                                            @csrf
+                                            @method('PATCH')
 
-                                        <select name="status"
-                                            class="rounded px-2 py-1 text-sm border w-full max-w-[130px] font-medium
-                {{ $event->status === 'Approved'
-                    ? 'bg-green-50 border-green-300 text-green-700'
-                    : ($event->status === 'PendingApproval'
-                        ? 'bg-yellow-50 border-yellow-300 text-yellow-700'
-                        : ($event->status === 'Rejected'
-                            ? 'bg-red-50 border-red-300 text-red-700'
-                            : ($event->status === 'Completed'
-                                ? 'bg-blue-50 border-blue-300 text-blue-700'
-                                : 'bg-gray-50 border-gray-300 text-gray-700'))) }}"
-                                            onchange="if(confirm('Are you sure you want to change status for {{ $event->title }}?')) this.form.submit();">
+                                            <select name="status"
+                                                class="rounded px-2 py-1 text-sm border w-full max-w-[130px] font-medium
+                                                {{ $event->status === 'Approved'
+                                                    ? 'bg-green-50 border-green-300 text-green-700'
+                                                    : ($event->status === 'PendingApproval'
+                                                        ? 'bg-yellow-50 border-yellow-300 text-yellow-700'
+                                                        : ($event->status === 'Rejected'
+                                                            ? 'bg-red-50 border-red-300 text-red-700'
+                                                            : ($event->status === 'Completed'
+                                                                ? 'bg-blue-50 border-blue-300 text-blue-700'
+                                                                : 'bg-gray-50 border-gray-300 text-gray-700'))) }}"
+                                                onchange="if(confirm('Are you sure you want to change status for {{ addslashes($event->title) }}?')) this.form.submit();">
 
-                                            <option value="Draft" {{ $event->status === 'Draft' ? 'selected' : '' }}>
-                                                Draft</option>
-                                            <option value="PendingApproval"
-                                                {{ $event->status === 'PendingApproval' ? 'selected' : '' }}>Pending
-                                            </option>
-                                            <option value="Approved"
-                                                {{ $event->status === 'Approved' ? 'selected' : '' }}>Approved</option>
-                                            <option value="Rejected"
-                                                {{ $event->status === 'Rejected' ? 'selected' : '' }}>Rejected</option>
-                                            <option value="Completed"
-                                                {{ $event->status === 'Completed' ? 'selected' : '' }}>Completed
-                                            </option>
-                                        </select>
-                                    </form>
-                                </td>
+                                                <option value="Draft"
+                                                    {{ $event->status === 'Draft' ? 'selected' : '' }}>Draft</option>
+                                                <option value="PendingApproval"
+                                                    {{ $event->status === 'PendingApproval' ? 'selected' : '' }}>
+                                                    Pending</option>
+                                                <option value="Approved"
+                                                    {{ $event->status === 'Approved' ? 'selected' : '' }}>Approved
+                                                </option>
+                                                <option value="Rejected"
+                                                    {{ $event->status === 'Rejected' ? 'selected' : '' }}>Rejected
+                                                </option>
+                                                <option value="Completed"
+                                                    {{ $event->status === 'Completed' ? 'selected' : '' }}>Completed
+                                                </option>
+                                            </select>
+                                        </form>
+                                    </td>
+                                @else
+                                    {{-- Non-admin: read-only status badge --}}
+                                    <td class="py-3 px-4 text-center">
+                                        @php
+                                            $badgeClasses = match ($event->status) {
+                                                'Approved' => 'bg-green-50 border border-green-300 text-green-700',
+                                                'PendingApproval'
+                                                    => 'bg-yellow-50 border border-yellow-300 text-yellow-700',
+                                                'Rejected' => 'bg-red-50 border border-red-300 text-red-700',
+                                                'Completed' => 'bg-blue-50 border border-blue-300 text-blue-700',
+                                                default => 'bg-gray-50 border border-gray-300 text-gray-700',
+                                            };
+                                        @endphp
+
+                                        <span
+                                            class="inline-block rounded px-2 py-1 text-sm font-medium {{ $badgeClasses }}">
+                                            {{ $event->status ?? '—' }}
+                                        </span>
+                                    </td>
+                                @endif
+
 
 
                                 <td class="py-3 px-4 text-center">
@@ -142,7 +166,7 @@
                             </tr>
 
                             {{-- Popup Modal --}}
-                            <div x-show="openEvent === {{ $event->id }}" @click.away="openEvent = null"
+                            <div x-cloak x-show="openEvent === {{ $event->id }}" @click.away="openEvent = null"
                                 class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40"
                                 x-transition>
                                 <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 relative">

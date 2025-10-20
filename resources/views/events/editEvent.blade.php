@@ -134,7 +134,7 @@
 
                     <!-- Actions -->
                     <div class="flex items-center justify-between">
-                        <a href="{{ route('adminDashboard') }}"
+                        <a href="{{ route('events.list') }}"
                             class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition">Cancel</a>
                         <button type="submit"
                             class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">Update

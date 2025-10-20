@@ -27,15 +27,14 @@ class EventController extends Controller
             $query = Event::orderBy('created_at', 'desc');
         } else {
             $query = Event::where('university_id', $currentUser->university_id)
-            ->orderBy('created_at', 'desc')
-            ;
+                ->orderBy('created_at', 'desc');
         }
 
         if ($request->filled('search')) { /* checks if that input exists and is not empty */
             $search = $request->search; /* the $request->search come from name="search" */
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'LIKE', "%{$search}%")
-                    ->orWhere('Created By:', 'LIKE', "%{$search}%")
+                    ->orWhere('created_by', 'LIKE', "%{$search}%")
                     ->orWhere('scope', 'LIKE', "%{$search}%");
             });
         }
@@ -169,7 +168,7 @@ class EventController extends Controller
         $eventToEdit->approval_date = $request->input('status') === 'Approved' ? now() : $eventToEdit->approval_date;
         $eventToEdit->save();
 
-        return redirect()->route('adminDashboard')->with('success', 'Event updated successfully.');
+        return redirect()->route('events.list')->with('success', 'Event updated successfully.');
     }
 
 

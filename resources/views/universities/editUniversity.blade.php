@@ -18,14 +18,6 @@
                 <input type="text" name="country" id="country" value="{{ $university->country }}" required
                     class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-opacity-50">
             </div>
-
-            <div class="mb-4">
-                <label for="total_score" class="block text-sm font-medium text-gray-700">Total Score</label>
-                <input type="number" name="total_score" id="total_score" value="{{ $university->total_score }}"
-                    required
-                    class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-opacity-50">
-            </div>
-
             <div class="mb-4">
                 <label for="photo" class="block text-sm font-medium text-gray-700">Logo</label>
                 <input type="file" name="photo" id="photo"

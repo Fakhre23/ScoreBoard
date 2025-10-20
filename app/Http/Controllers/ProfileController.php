@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -62,7 +63,7 @@ class ProfileController extends Controller
     public function uploadPhoto(Request $request)
     {
         $request->validate([
-            'profile_photo' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'profile_photo' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         $currentUser = $request->user();

@@ -39,12 +39,7 @@
                         Leaderboard
                     </a>
                 </li>
-                <li>
-                    <a href="" id="menuProfile"
-                        class="block bg-gray-100 hover:bg-gray-200 rounded p-2 text-gray-800">
-                        My Profile
-                    </a>
-                </li>
+                
 
 
         </aside>

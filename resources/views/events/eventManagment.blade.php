@@ -17,6 +17,10 @@
         <div class="flex-shrink-0 mb-4">
             <h2 class="text-xl font-bold text-gray-800 mb-2">
                 Event: <span class="text-blue-600">{{ Str::limit($event->title, 40) }}</span>
+                <a href="{{ route('events.list') }}"
+                    class="px-3 py-1 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 text-sm">
+                    Back
+                </a>
             </h2>
 
             {{-- Event Info --}}
