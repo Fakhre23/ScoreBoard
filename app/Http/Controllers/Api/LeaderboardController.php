@@ -23,7 +23,7 @@ class LeaderboardController extends Controller
                 ];
             });
 
-        $universities = University::with('students')->orderBy('total_score', 'desc')
+        $universities = University::orderBy('total_score', 'desc')
             ->limit(4)
             ->get()
             ->map(function ($university, $index) {
