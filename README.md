@@ -122,9 +122,9 @@ Now open your browser at 👉 **[http://127.0.0.1:8000](http://127.0.0.1:8000)**
 
 ## 🧑‍💻 Author
 
-**👤 Fakhri Tamimie**
- Software Development
- 
+**👤 Fakhre Tamimie**
+Software Development
+
 💼 [LinkedIn](https://www.linkedin.com/in/fakhretamimie)
 📧 [fakhre@vibes.solutions](fakhre@vibes.solutions)
 📧 [fakhretamimie@gmail.com](fakhretamimie@gmail.com)
@@ -141,6 +141,3 @@ Now open your browser at 👉 **[http://127.0.0.1:8000](http://127.0.0.1:8000)**
 ---
 
 > “The goal is not to build software, but to build impact through software.” 💪
-
-
-
