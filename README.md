@@ -122,7 +122,7 @@ Now open your browser at 👉 **[http://127.0.0.1:8000](http://127.0.0.1:8000)**
 
 ## 🧑‍💻 Author
 
-**👤 Fakhri Tamimie**
+**👤 Fakhre Tamimie**
  Software Development
  
 💼 [LinkedIn](https://www.linkedin.com/in/fakhretamimie)
