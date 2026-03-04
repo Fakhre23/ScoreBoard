@@ -52,78 +52,51 @@ Route::middleware('auth')->group(function () { // just for more securty its not 
     // ***** Users CRUD Routes Section ***** //
 
     Route::get('usersList', [UserController::class, 'listUsers'])->name('users.list');
-
     Route::delete('usersList/{id}', [UserController::class, 'delete'])->name('users.delete');
-
     Route::patch('usersList/{id}/status', [UserController::class, 'statusUpdate'])->name('users.statusUpdate');
-
     Route::patch('usersList/{id}/university', [UserController::class, 'changeUniversity'])->name('users.changeUniversity');
-
     Route::patch('usersList/{id}/role', [UserController::class, 'changeRole'])->name('users.changeRole');
-
     Route::get('usersList/create', [UserController::class, 'create'])->name('users.create');
-
     Route::post('usersList/store', [UserController::class, 'store'])->name('users.store');
 
     /* Add profile photo */
-
     Route::post('/profile', [ProfileController::class, 'uploadPhoto'])->name('profile.photo.upload');
-
-
 
     // ***** Universities CRUD Routes Section ***** //
 
     Route::get('universitiesList', [UniveristyController::class, 'universitiesList'])->name('universities.list');
-
     Route::delete('universitiesList/{id}', [UniveristyController::class, 'delete'])->name('universities.delete');
-
     Route::patch('universitiesList/{id}/status', [UniveristyController::class, 'statusUpdate'])->name('universities.statusUpdate');
-
     Route::patch('universitiesList/{id}/edit', [UniveristyController::class, 'updateUniversity'])->name('universities.edit');
-
     Route::get('universitiesList/{id}/edit', [UniveristyController::class, 'edit'])->name('universities.editForm');
-
     Route::get('universitiesList/create', [UniveristyController::class, 'create'])->name('universities.create');
-
     Route::post('universitiesList/store', [UniveristyController::class, 'store'])->name('universities.store');
-
     Route::get('universitiesList/not-active', [UniveristyController::class, 'notActiveList'])->name('universities.notActive');
 
 
     // ***** Events CRUD Routes Section ***** //
 
     Route::get('eventsList', [EventController::class, 'listEvents'])->name('events.list');
-
-    Route::delete('eventsList/{id}', [EventController::class, 'delete'])->name('events.delete');
-
+    Route::delete('eventsList/{event}', [EventController::class, 'delete'])->name('events.delete');
     Route::get('eventsList/create', [EventController::class, 'create'])->name('events.create');
-
     Route::post('eventsList/store', [EventController::class, 'store'])->name('events.store');
-
-    Route::get('eventsList/{id}/edit', [EventController::class, 'edit'])->name('events.edit');
-
-    Route::patch('eventsList/{id}/update', [EventController::class, 'updateEvent'])->name('events.update');
-
-    Route::get('eventsQueue', [EventController::class, 'notActiveList'])->name('events.queue');
-
-    Route::patch('eventsList/{id}/status', [EventController::class, 'eventStatusUpdate'])->name('events.statusUpdate');
+    Route::get('eventsList/{event}/edit', [EventController::class, 'edit'])->name('events.edit');
+    Route::patch('eventsList/{event}/update', [EventController::class, 'updateEvent'])->name('events.update');
+    Route::get('eventsQueue', [EventController::class, 'notActiveEvents'])->name('events.queue');
+    Route::patch('eventsList/{event}/status', [EventController::class, 'eventStatusUpdate'])->name('events.statusUpdate');
 
 
     // ***** users can Register to events ******** //
     Route::get('eventsUsers', [EventController::class, 'listUsersEvents'])->name('events.register');
-
-    Route::get('eventsUsers/{id}/register', [EventController::class, 'registerUserToEvent'])->name('events.registerUser');
-
-    Route::post('eventsUsers/{id}/register', [EventController::class, 'storeUserEvent'])->name('events.storeUserEvent');
+    Route::get('eventsUsers/{event}/register', [EventController::class, 'registerUserToEvent'])->name('events.registerUser');
+    Route::post('eventsUsers/{event}/register', [EventController::class, 'storeUserToEvent'])->name('events.storeUserToEvent');
 
     // ***** Event users management ***** //
-    Route::get('eventManagement/{id}', [EventController::class, 'eventUsersManagement'])->name('events.eventUsersManagement');
-
-    Route::patch('eventManagement/{id}/updateStatus', [EventController::class, 'updateRegisteredEventStatus'])->name('events.updateRegisteredEventStatus');
+    Route::get('eventManagement/{event}', [EventController::class, 'usersEventManagement'])->name('events.usersEventManagement');
+    Route::patch('eventManagement/{scoreClaim}/updateStatus', [EventController::class, 'updateRegisteredEventStatus'])->name('events.updateRegisteredEventStatus');
 
 
     // ***** Users Score history ***** //
-
     Route::get('users/scoreHistory', [UserController::class, 'userScoreHistory'])->name('users.scoreHistory');
 });
 

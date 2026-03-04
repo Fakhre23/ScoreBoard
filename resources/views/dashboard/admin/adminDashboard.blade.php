@@ -39,7 +39,7 @@
                         Leaderboard
                     </a>
                 </li>
-                
+
 
 
         </aside>
@@ -65,27 +65,27 @@
     {{-- ********  AJAX and Interactivity //// (ChatGPT do that not me) ********  --}}
     <script>
         /* document.getElementById('listUsers').addEventListener('click', function() {
-                                                        fetch('usersList')
-                                                            .then(response => response.text())
-                                                            .then(html => {
-                                                                document.getElementById('contentArea').innerHTML = html;
-                                                            });
-                                                    });
+                                                            fetch('usersList')
+                                                                .then(response => response.text())
+                                                                .then(html => {
+                                                                    document.getElementById('contentArea').innerHTML = html;
+                                                                });
+                                                        });
 
-                                                    document.getElementById('ListUniversities').addEventListener('click', function() {
-                                                        fetch('universitiesList')
-                                                            .then(response => response.text())
-                                                            .then(html => {
-                                                                document.getElementById('contentArea').innerHTML = html;
-                                                            });
-                                                    });
+                                                        document.getElementById('ListUniversities').addEventListener('click', function() {
+                                                            fetch('universitiesList')
+                                                                .then(response => response.text())
+                                                                .then(html => {
+                                                                    document.getElementById('contentArea').innerHTML = html;
+                                                                });
+                                                        });
 
-                                                    document.getElementById('menuEvents').addEventListener('click', function() {
-                                                        fetch('eventsList')
-                                                            .then(response => response.text())
-                                                            .then(html => {
-                                                                document.getElementById('contentArea').innerHTML = html;
-                                                            });
-                                                    });/*
+                                                        document.getElementById('menuEvents').addEventListener('click', function() {
+                                                            fetch('eventsList')
+                                                                .then(response => response.text())
+                                                                .then(html => {
+                                                                    document.getElementById('contentArea').innerHTML = html;
+                                                                });
+                                                        });/*
     </script>
 </x-app-layout>

@@ -145,7 +145,7 @@
                                             </a>
                                         @endcan
                                         @can('viewAny', App\Models\User::class)
-                                            <a href="{{ route('events.eventUsersManagement', $event->id) }}"
+                                            <a href="{{ route('events.usersEventManagement', $event->id) }}"
                                                 class="bg-blue-400 text-white px-3 py-1 rounded-lg hover:bg-blue-500 transition text-sm">
                                                 Manage
                                             </a>

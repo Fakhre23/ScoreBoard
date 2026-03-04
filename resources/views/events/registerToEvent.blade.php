@@ -62,7 +62,7 @@
                     </div>
 
                     {{-- Registration form --}}
-                    <form method="POST" action="{{ route('events.storeUserEvent', $event->id ?? $event) }}"
+                    <form method="POST" action="{{ route('events.storeUserToEvent', $event->id ?? $event) }}"
                         class="space-y-4">
                         @csrf
 
@@ -71,10 +71,10 @@
                                 role</label>
                             @php
                                 // Prefer $eventsRoles from your controller, fall back to $roles or $event->roles
-                                $rolesList = $eventsRoles ?? ($roles ?? ($event->roles ?? collect()));
+                                $eventRoles = $eventRoles ?? ($event->roles ?? collect());
                             @endphp
 
-                            @if ($rolesList->isEmpty())
+                            @if ($eventRoles->isEmpty())
                                 <div
                                     class="mt-2 text-sm text-yellow-700 bg-yellow-50 border border-yellow-100 p-3 rounded">
                                     No roles available for this event.
@@ -86,7 +86,7 @@
                                         aria-describedby="role-help">
                                         <option value="">-- Select role --</option>
 
-                                        @foreach ($rolesList as $role)
+                                        @foreach ($eventRoles as $role)
                                             <option value="{{ $role->id }}"
                                                 {{ old('role_id') == $role->id ? 'selected' : '' }}>
                                                 {{ $role->name }}{{ isset($role->description) ? ' — ' . $role->description : '' }}
@@ -109,7 +109,7 @@
                                 @enderror
 
                                 <p id="role-help" class="mt-2 text-xs text-gray-500">Select the role you want to
-                                    register for. If you need a different role, contact the organizer.</p>
+                                    register for</p>
                             @endif
                         </div>
 

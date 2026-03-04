@@ -3,375 +3,148 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\Role;
-use App\Models\University;
-use App\Models\Event;
-use App\Models\EventRoles;
-use App\Models\ScoreClaim;
+use App\Models\{University, Event, EventRoles, ScoreClaim,};
+use App\Http\Requests\{StoreEventRequest, UpdateEventRequest, UpdateEventStatusRequest, StoreUserToEventRequest, UpdateAttendanceStatusRequest};
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-
+use App\Services\EventService;
 
 class EventController extends Controller
 {
     use AuthorizesRequests;
 
-    //list events (all events for admin * ber uni for ambassador ) 
-
-    public function listEvents(Request $request)
+    // ******************************** Events ********************************
+    public function listEvents(Request $request, EventService $service)
     {
-        $currentUser = $request->user();
         $this->authorize('viewAny', Event::class);
 
-        if ($currentUser->user_role === 1) {
-            $query = Event::orderBy('created_at', 'desc');
-        } else {
-            $query = Event::where('university_id', $currentUser->university_id)
-                ->orderBy('created_at', 'desc');
-        }
+        $events = $service->listEventsForUser(
+            $request->user(),
+            $request->input('search')
+        );
 
-        if ($request->filled('search')) { /* checks if that input exists and is not empty */
-            $search = $request->search; /* the $request->search come from name="search" */
-            $query->where(function ($q) use ($search) {
-                $q->where('title', 'LIKE', "%{$search}%")
-                    ->orWhere('created_by', 'LIKE', "%{$search}%")
-                    ->orWhere('scope', 'LIKE', "%{$search}%");
-            });
-        }
-        $events = $query->get();
         return view('events.eventsList', compact('events'));
     }
 
-
-    // ******************************** delete event ********************************
-
-    public function delete(Request $request, $id)
+    public function delete(Request $request, Event $event, EventService $service)
     {
-        $eventToDelete = Event::findOrFail($id);
-        //Check if the currently  is allowed to delete 
-        $this->authorize('delete', $eventToDelete);
-        $eventToDelete->delete();
+        //Check if the currently logged-in user is allowed to delete the event
+        $this->authorize('delete', $event);
+        $service->deleteEvent($event);
         return redirect()->back()->with('success', 'Event is Deleted');
     }
 
-
-
-    //********************************* create new event **********************************
-
+    // create new event 
     public function create(Request $request)
     {
         $this->authorize('create', Event::class);
-        $users = User::all();
-        $roles = Role::all();
         $universities =  University::where('Status', 1)->get();
 
-        return view('events.creatEvent', compact('roles', 'universities', 'users'));
+        return view('events.creatEvent', compact('universities'));
     }
 
-    public function store(Request $request)
+    public function store(StoreEventRequest $request, EventService $service)
     {
-        $this->authorize('create', Event::class);
+        $service->createEvent($request->validated(), $request->user());
 
-        // Get the current user
-        $user = $request->user();
-
-        // Validation rules
-        $rules = [
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'location' => 'required|string|max:255',
-            'start_datetime' => 'required|date',
-            'end_datetime' => 'required|date|after_or_equal:start_datetime',
-            'max_participants' => 'required|integer|min:1',
-        ];
-
-        // If Admin → allow status & scope validation
-        if ($user->user_role === 1) {
-            $rules['status'] = 'nullable|in:Draft,PendingApproval,Approved,Rejected,Completed';
-            $rules['scope'] = 'nullable|in:University,Public';
-            $rules['university_id'] = 'nullable|required_if:scope,University|exists:universities,id';
-        }
-
-        // Validate input
-        $request->validate($rules);
-
-        // Decide values based on role
-        if ($user->user_role === 2) {
-            $status = 'Draft';
-            $scope = 'University';
-            $universityId = $user->university_id; // ambassador’s university
-        } else {
-            $status = $request->status ?? 'Draft';
-            $scope = $request->scope ?? 'Public';
-            $universityId = $scope === 'University' ? $request->university_id : null;
-        }
-
-        // Create event
-        Event::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'location' => $request->location,
-            'start_datetime' => $request->start_datetime,
-            'end_datetime' => $request->end_datetime,
-            'max_participants' => $request->max_participants,
-            'created_by' => $user->id,
-            'status' => $status,
-            'scope' => $scope,
-            'approved_by' => $user->user_role === 1 ? $user->id : null, // Only admin approves directly
-            'approval_date' => $user->user_role === 1 ? now() : null,
-            'university_id' => $universityId,
-        ]);
-
-        return redirect()->route('events.list')->with('success', 'Event created successfully.');
+        return redirect()->route('events.list')
+            ->with('success', 'Event created successfully.');
     }
 
-
-
-    //******************************** edit / update event ********************************
-
-    public function edit(Request $request, $id)
+    // edit / update event 
+    public function edit(Request $request, Event $event)
     {
-        $eventToEdit = Event::findOrFail($id);
-        $this->authorize('update', $eventToEdit);
+        $this->authorize('update', $event);
         $universities = University::where('Status', 1)->get();
 
         return view('events.editEvent', compact('eventToEdit', 'universities'));
     }
 
-    public function updateEvent(Request $request, $id)
+    public function updateEvent(UpdateEventRequest $request, Event $event, EventService $service)
     {
-        $eventToEdit = Event::findOrFail($id);
-        $this->authorize('update', $eventToEdit);
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'location' => 'required|string|max:255',
-            'start_datetime' => 'required|date',
-            'end_datetime' => 'required|date|after_or_equal:start_datetime',
-            'max_participants' => 'required|integer|min:1',
-            'status' => 'required|in:Draft,PendingApproval,Approved,Rejected,Completed',
-            'scope' => 'required|in:Public,University',
-            'university_id' => 'nullable|required_if:scope,University|exists:universities,id',
-        ]);
-
-        $eventToEdit->title = $request->input('title');
-        $eventToEdit->description = $request->input('description');
-        $eventToEdit->location = $request->input('location');
-        $eventToEdit->start_datetime = $request->input('start_datetime');
-        $eventToEdit->end_datetime = $request->input('end_datetime');
-        $eventToEdit->max_participants = $request->input('max_participants');
-        $eventToEdit->status = $request->input('status');
-        $eventToEdit->scope = $request->input('scope');
-        $eventToEdit->university_id = $request->input('scope') === 'University' ? $request->input('university_id') : null;
-        $eventToEdit->updated_at = now();
-        $eventToEdit->approved_by = $request->input('status') === 'Approved' ? $request->user()->id  : $eventToEdit->approved_by;
-        $eventToEdit->approval_date = $request->input('status') === 'Approved' ? now() : $eventToEdit->approval_date;
-        $eventToEdit->save();
-
+        $service->updateEvent($event, $request->validated(), $request->user());
         return redirect()->route('events.list')->with('success', 'Event updated successfully.');
     }
 
-
-
-    public function eventStatusUpdate(Request $request, $id)
+    public function eventStatusUpdate(UpdateEventStatusRequest $request, Event $event, EventService $service)
     {
-        $eventToUpdate = Event::findOrFail($id);
-        $this->authorize('update', $eventToUpdate);
-
-        $request->validate([
-            'status' => 'required|in:Draft,PendingApproval,Approved,Rejected,Completed',
-        ]);
-
-        $eventToUpdate->status = $request->input('status');
-
-        // If status is changed to Approved, set approved_by and approval_date
-        if ($request->input('status') === 'Approved') {
-            $eventToUpdate->approved_by = $request->user()->id;
-            $eventToUpdate->approval_date = now();
-        } elseif (in_array($request->input('status'), ['Rejected', 'Draft'])) {
-            // If status is Rejected or Draft, clear approved_by and approval_date
-            $eventToUpdate->approved_by = null;
-            $eventToUpdate->approval_date = null;
-        }
-
-        $eventToUpdate->save();
+        $service->updateEventStatus($event, $request->input('status'), $request->user());
         return redirect()->route('events.list')->with('success', 'Event status is updated');
     }
 
-    //******************************** not active events ********************************
-    public function notActiveList(Request $request)
+    // not active events 
+    public function notActiveEvents(Request $request, EventService $service)
     {
         $currentUser = $request->user();
         $this->authorize('viewAny', $currentUser);   //viewAny is not working , idk why , but the create policy is similar to viewAny
-
-        if ($currentUser->user_role === 1) {
-            $events = Event::whereIn('status', ['PendingApproval', 'Draft'])->orderBy('created_at', 'desc')->get();
-        } else if ($currentUser->user_role === 2) {
-            $events = Event::whereIn('status', ['PendingApproval', 'Draft'])->where('university_id', $currentUser->university_id)->orderBy('created_at', 'desc')->get();
-        }
+        $events = $service->listEventsForQueue($currentUser);
         return view('events.queueEvents', compact('events', 'currentUser'));
     }
 
-
-
-    //******************************** list the events can user register ********************************
-
-    public function listUsersEvents(Request $request)
+    // list the events can user register 
+    public function listUsersEvents(Request $request, EventService $service)
     {
         $currentUser = $request->user();
         $eventsRoles = EventRoles::all();
 
-
-        $userEvent = Event::where('status', 'Approved')
-            ->where(function ($query) use ($currentUser) {
-                $query->where('scope', 'Public')
-                    ->orWhere('university_id', $currentUser->university_id);
-            })
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $userEvent = $service->listApprovedEventsForUsers($currentUser);
         $scoreClaims = ScoreClaim::all();
         return view('events.eventsUsers', compact('userEvent', 'eventsRoles', 'scoreClaims'));
     }
 
-
-
-    // ******************************** Register Users to events ****************************
-    public function registerUserToEvent(Request $request, $id)
+    //Register Users to events 
+    public function registerUserToEvent(Event $event, Request $request,  EventService $service)
     {
-        $event = Event::findOrFail($id);
-        $eventsRoles = EventRoles::all();
-        $currentUser = $request->user();
+        $data = $service->getRegistrationData($event, $request->user());
 
-        return view('events.registerToEvent', compact('event', 'eventsRoles', 'currentUser'));
+        return view('events.registerToEvent', $data);
     }
 
-    public function storeUserEvent(Request $request, $id)
+    public function storeUserToEvent(StoreUserToEventRequest $request, Event $event, EventService $service)
     {
-        $event = Event::findOrFail($id);
-        $currentUser = $request->user();
+        $service->registerUserToEvent(
+            $event,
+            $request->user(),
+            $request->validated()['role_id']
+        );
 
-        $request->validate([
-            'role_id' => 'required|exists:event_roles,id',
-        ]);
-
-        $role = EventRoles::find($request->role_id);
-
-        ScoreClaim::create([
-            'user_id' => $currentUser->id,
-            'event_id' => $event->id,
-            'event_role_id' => $request->role_id,
-            'attendance_status' => 'Registered',
-            'points_earned' => 0,
-            'approved_by' => null,
-            'approval_date' => null,
-            'feedback' => null,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-        $event->increment('actual_participants');
-
-        return redirect()->route('events.register')->with('success', 'You have successfully registered for the event.');
+        return redirect()
+            ->route('events.register')
+            ->with('success', 'You have successfully registered for the event.');
     }
 
 
 
-    //**************************** Admin and ambasdoor event users registered managment  *****************************/
+    // Admin and ambasdoor registered event managment /
 
-    public function eventUsersManagement(Request $request, $id)
+    public function usersEventManagement(Event $event, Request $request, EventService $service)
     {
-        $event = Event::findOrFail($id);
         $this->authorize('viewAny', $event);
-        $currentUser = $request->user();
-
-        if ($currentUser == '1') {
-            $scoreClaims = ScoreClaim::with('user', 'event', 'eventRole')
-                ->where('event_id', $event->id)
-                ->get();
-        } else {
-            $scoreClaims = ScoreClaim::with('user', 'event', 'eventRole')
-                ->where('event_id', $event->id)
-                ->get();
-        }
-
+        $scoreClaims = $service->usersEventManagement($event, $request->user());
         return view('events.eventManagment', compact('scoreClaims', 'event'));
     }
 
 
-    public function updateRegisteredEventStatus(Request $request, $id)
+    public function updateRegisteredEventStatus(UpdateAttendanceStatusRequest $request, ScoreClaim $scoreClaim, EventService $service)
     {
-        $statusToUpdate = ScoreClaim::findOrFail($id);
 
-        $request->validate([
-            'attendance_status' => 'required|in:Registered,Attended,NoShow',
-            'points_earned' => 'nullable|integer|min:0'
-        ]);
+        $result = $service->updateAttendanceStatus(
+            $scoreClaim,
+            $request->input('attendance_status'),
+            $request->input('points_earned')
+        );
 
-        // Get the user and role before updating
-        $targetUser = User::findOrFail($statusToUpdate->user_id);
-        $role = EventRoles::findOrFail($statusToUpdate->event_role_id);
-        $currentUser = $request->user();
-
-        // Store old status to check if we need to add/remove points
-        $oldStatus = $statusToUpdate->attendance_status;
-        $newStatus = $request->input('attendance_status');
-
-        // Update the attendance status
-        $statusToUpdate->attendance_status = $newStatus;
-
-        // Update points if provided
-        if ($request->has('points_earned')) {
-            $statusToUpdate->points_earned = $request->input('points_earned');
-        }
-
-        $statusToUpdate->save();
-
-        // Define points based on role
-        $points = match ($role->name) {
-            'Organizer' => 5,
-            'Booth' => 10,
-            'ContentCreation' => 7,
-            'MediaCoverage' => 3,
-            'Volunteer' => 2,
-            'Participant' => 1,
-            default => 0,
-        };
-
-
-
-        if ($oldStatus !== 'Attended' && $newStatus === 'Attended') {
-
-            // User changed from not attended to attended - ADD points
-            User::where('id', $targetUser->id)->increment('total_user_score', $points);
-            University::where('id', $targetUser->university_id)->increment('total_score', $points);
-            ScoreClaim::where('id', $statusToUpdate->id)->update(['points_earned' => $points]);
-
-            return redirect()->back()->with('success', "Status updated to Attended. {$points} points added!");
-        } elseif ($oldStatus === 'Attended' && $newStatus !== 'Attended') {
-
-            // User changed from attended to not attended - REMOVE points
-            User::where('id', $targetUser->id)->decrement('total_user_score', $points);
-            University::where('id', $targetUser->university_id)->decrement('total_score', $points);
-
-            return redirect()->back()->with('success', "Status updated. {$points} points removed.");
-        } else {
-
-            // Status changed but no point modification needed
-            return redirect()->back()->with('success', 'Status updated successfully.');
-        }
+        return redirect()->back()->with('success', $result['message']);
     }
 
 
-    //******************************users Scores and events statistics *****************************/
+
+    //users Scores and unverities /
 
 
-    public function topScores()
+    public function topScores(EventService $service)
     {
-        $topUsers = User::orderBy('total_user_score', 'desc')->take(10)->get();
+        $data = $service->getTopScores();
 
-
-        $topUniversities = University::with('users')
-            ->orderBy('total_score', 'desc')->take(5)->get();
-
-        return view('welcome', compact('topUsers', 'topUniversities'));
+        return view('welcome', $data);
     }
 }

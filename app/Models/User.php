@@ -42,14 +42,23 @@ class User extends Authenticatable
         return $this->hasMany(ScoreClaim::class, 'user_id');
     }
 
+
+    public function isAdmin(): bool
+    {
+        return $this->user_role === 1;
+    }
+
+    public function isAmbassador(): bool
+    {
+        return $this->user_role === 2;
+    }
+
     public function events()
     {
         return $this->belongsToMany(Event::class, 'event_user', 'user_id', 'event_id')
             ->withPivot('status')
             ->withTimestamps();
     }
-
-
 
 
     /**
