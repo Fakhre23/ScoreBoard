@@ -47,4 +47,17 @@ class Event extends Model
     {
         return $this->hasMany(ScoreClaim::class, 'event_id');
     }
+
+    public function scopeSearch($query, $search)
+    {
+        if (!$search) {
+            return $query;
+        }
+
+        return $query->where(function ($q) use ($search) {
+            $q->where('title', 'like', "%{$search}%")
+                ->orWhere('created_by', 'like', "%{$search}%")
+                ->orWhere('scope', 'like', "%{$search}%");
+        });
+    }
 }
