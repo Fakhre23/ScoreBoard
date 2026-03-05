@@ -55,8 +55,7 @@ class EventController extends Controller
     {
         $this->authorize('update', $event);
         $universities = University::where('Status', 1)->get();
-
-        return view('events.editEvent', compact('eventToEdit', 'universities'));
+        return view('events.editEvent', compact('event', 'universities'));
     }
 
     public function updateEvent(UpdateEventRequest $request, Event $event, EventService $service)
