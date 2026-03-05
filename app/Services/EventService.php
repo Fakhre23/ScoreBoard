@@ -4,26 +4,51 @@ namespace App\Services;
 
 use App\Models\{Event, User, ScoreClaim, EventRoles, University};
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\EventCreatedNotification;
 
 class EventService
 {
-
-    public function createEvent(array $data, $user): Event
+    public function createEvent(array $data, User $user): Event
     {
         return DB::transaction(function () use ($data, $user) {
+            if ($user->isAmbassador()) {
+                $status = 'Draft';
+                $scope = 'University';
+                $universityId = $user->university_id;
+            } else {
+                $status = $data['status'] ?? 'Draft';
+                $scope = $data['scope'] ?? 'University';
+                $universityId = $data['university_id'] ?? null;
+            }
 
-            $status = $user->isAmbassador() ? 'Draft' : ($data['status'] ?? 'Draft');
-            $scope = $user->isAmbassador() ? 'University' : ($data['scope'] ?? 'Public');
-
-            return Event::create([
-                ...$data,
-                'university_id' => $user->university_id,
+            $event = Event::create([
+                'title' => $data['title'],
+                'description' => $data['description'],
+                'location' => $data['location'],
+                'start_datetime' => $data['start_datetime'],
+                'end_datetime' => $data['end_datetime'],
+                'max_participants' => $data['max_participants'],
                 'created_by' => $user->id,
                 'status' => $status,
                 'scope' => $scope,
                 'approved_by' => $user->isAdmin() ? $user->id : null,
                 'approval_date' => $user->isAdmin() ? now() : null,
+                'university_id' => $universityId,
             ]);
+
+            // Notify users
+            if ($event->scope === 'Public') {
+                $users = User::all();
+            } else {
+                $users = User::where('university_id', $event->university_id)->get();
+            }
+
+            if ($users->isNotEmpty()) {
+                Notification::send($users, new EventCreatedNotification($event));
+            }
+
+            return $event;
         });
     }
 

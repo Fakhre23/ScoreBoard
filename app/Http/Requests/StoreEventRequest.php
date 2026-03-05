@@ -22,7 +22,7 @@ class StoreEventRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'location' => 'required|string|max:255',
@@ -31,14 +31,15 @@ class StoreEventRequest extends FormRequest
             'max_participants' => 'required|integer|min:1',
         ];
 
-        if ($user->isAdmin()) {
-            $rules['status'] = 'nullable|in:Draft,PendingApproval,Approved,Rejected,Completed';
-            $rules['scope'] = 'nullable|in:University,Public';
+        // Only admin can set status, scope, university_id
+        if ($this->user()->isAdmin()) {
+            $rules['status'] = 'required|in:Draft,PendingApproval,Approved,Rejected,Completed';
+            $rules['scope'] = 'required|in:Public,University';
             $rules['university_id'] = 'nullable|required_if:scope,University|exists:universities,id';
         }
+
         return $rules;
     }
-
     public function messages(): array
     {
         return [

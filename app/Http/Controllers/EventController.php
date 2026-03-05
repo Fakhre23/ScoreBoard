@@ -8,6 +8,7 @@ use App\Http\Requests\{StoreEventRequest, UpdateEventRequest, UpdateEventStatusR
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Services\EventService;
 
+
 class EventController extends Controller
 {
     use AuthorizesRequests;
@@ -21,7 +22,6 @@ class EventController extends Controller
             $request->user(),
             $request->input('search')
         );
-
         return view('events.eventsList', compact('events'));
     }
 
@@ -45,7 +45,6 @@ class EventController extends Controller
     public function store(StoreEventRequest $request, EventService $service)
     {
         $service->createEvent($request->validated(), $request->user());
-
         return redirect()->route('events.list')
             ->with('success', 'Event created successfully.');
     }

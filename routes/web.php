@@ -107,6 +107,17 @@ Route::post('registerUniversity/store', [UniveristyController::class, 'storeUniF
 
 Route::get('listRoles', [UserRoles::class, 'index'])->name('roles.list');
 
+// Mark notification as read
+Route::post('/notifications/{id}/read', function ($id) {
+
+    $notification = auth()->user()
+        ->notifications()
+        ->findOrFail($id);
+
+    $notification->markAsRead();
+
+    return back();
+})->name('notifications.read');
 
 /* ========= PROFILE ROUTES ========= */
 Route::middleware('auth')->group(function () {
