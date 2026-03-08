@@ -95,31 +95,48 @@
                     @foreach ($topUniversities->take(10) as $index => $university)
                         <div
                             class="flex items-center justify-between p-3 rounded-lg 
-                            {{ $index === 0
-                                ? 'bg-green-100 border border-green-300'
-                                : ($index === 1
-                                    ? 'bg-blue-100 border border-blue-300'
-                                    : ($index === 2
-                                        ? 'bg-purple-100 border border-purple-300'
-                                        : 'bg-gray-50')) }}">
+            {{ $index === 0
+                ? 'bg-green-100 border border-green-300'
+                : ($index === 1
+                    ? 'bg-blue-100 border border-blue-300'
+                    : ($index === 2
+                        ? 'bg-purple-100 border border-purple-300'
+                        : 'bg-gray-50')) }}">
+
                             <div class="flex items-center">
+
+                                {{-- Rank Number OR University Image --}}
                                 <span
-                                    class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold
-                                    {{ $index === 0
-                                        ? 'bg-green-500 text-white'
-                                        : ($index === 1
-                                            ? 'bg-blue-500 text-white'
-                                            : ($index === 2
-                                                ? 'bg-purple-500 text-white'
-                                                : 'bg-gray-500 text-white')) }}">
-                                    {{ $index + 1 }}
+                                    class="w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold overflow-hidden
+                    {{ $index === 0
+                        ? 'bg-green-500 text-white'
+                        : ($index === 1
+                            ? 'bg-blue-500 text-white'
+                            : ($index === 2
+                                ? 'bg-purple-500 text-white'
+                                : 'bg-gray-500 text-white')) }}">
+
+                                    @if ($university->UNI_photo)
+                                        <img src="{{ asset('storage/university-photos/' . $university->UNI_photo) }}"
+                                            alt="{{ $university->name }}"
+                                            class="w-full h-full object-cover rounded-full">
+                                    @else
+                                        {{ $index + 1 }}
+                                    @endif
+
                                 </span>
+
                                 <div class="ml-3">
                                     <p class="font-semibold text-gray-800">{{ $university->name }}</p>
                                     <p class="text-sm text-gray-600">University Ranking</p>
                                 </div>
+
                             </div>
-                            <span class="font-bold text-lg text-green-600">{{ $university->total_score ?? 0 }}</span>
+
+                            <span class="font-bold text-lg text-green-600">
+                                {{ $university->total_score ?? 0 }}
+                            </span>
+
                         </div>
                     @endforeach
                 </div>

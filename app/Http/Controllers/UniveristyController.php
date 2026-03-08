@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\Role;
-use App\Models\University;
+use App\Models\{University};
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 
@@ -158,5 +157,26 @@ class UniveristyController extends Controller
             'updated_at' => now(),
         ]);
         return redirect()->route('register')->with('success', 'University registration submitted successfully. It is pending approval.');
+    }
+
+    public function updateUniversityPhoto(Request $request)
+    {
+        $request->validate([
+            'UNI_photo' => 'required|file|mimes:jpg,jpeg,png,webp,pdf|max:2048',
+            'university_id' => 'required|exists:universities,id',
+        ]);
+
+        $currentUni = University::findOrFail($request->input('university_id'));
+
+        if ($currentUni->UNI_photo) {
+            Storage::disk('public')->delete('university-photos/' . $currentUni->UNI_photo);
+        }
+        // Store new file
+        $path = $request->file('UNI_photo')->store('university-photos', 'public');
+
+        $currentUni->UNI_photo = basename($path);
+        $currentUni->save();
+
+        return back()->with('success', 'University file updated successfully!');
     }
 }

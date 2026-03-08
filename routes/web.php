@@ -73,6 +73,9 @@ Route::middleware('auth')->group(function () { // just for more securty its not 
     Route::post('universitiesList/store', [UniveristyController::class, 'store'])->name('universities.store');
     Route::get('universitiesList/not-active', [UniveristyController::class, 'notActiveList'])->name('universities.notActive');
 
+    Route::post('/university/upload-photo', [UniveristyController::class, 'updateUniversityPhoto'])
+    ->name('university.uploadPhoto');
+
 
     // ***** Events CRUD Routes Section ***** //
 
