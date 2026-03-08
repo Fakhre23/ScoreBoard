@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 
-class UniveristyController extends Controller
+class UniversityController extends Controller
 {
     //apply university policies (its like roleBuck for your controller)
     use AuthorizesRequests;

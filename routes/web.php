@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRoles;
-use App\Http\Controllers\UniveristyController;
+use App\Http\Controllers\UniversityController;
 use App\Http\Controllers\EventController;
 
 
@@ -64,16 +64,16 @@ Route::middleware('auth')->group(function () { // just for more securty its not 
 
     // ***** Universities CRUD Routes Section ***** //
 
-    Route::get('universitiesList', [UniveristyController::class, 'universitiesList'])->name('universities.list');
-    Route::delete('universitiesList/{id}', [UniveristyController::class, 'delete'])->name('universities.delete');
-    Route::patch('universitiesList/{id}/status', [UniveristyController::class, 'statusUpdate'])->name('universities.statusUpdate');
-    Route::patch('universitiesList/{id}/edit', [UniveristyController::class, 'updateUniversity'])->name('universities.edit');
-    Route::get('universitiesList/{id}/edit', [UniveristyController::class, 'edit'])->name('universities.editForm');
-    Route::get('universitiesList/create', [UniveristyController::class, 'create'])->name('universities.create');
-    Route::post('universitiesList/store', [UniveristyController::class, 'store'])->name('universities.store');
-    Route::get('universitiesList/not-active', [UniveristyController::class, 'notActiveList'])->name('universities.notActive');
+    Route::get('universitiesList', [UniversityController::class, 'universitiesList'])->name('universities.list');
+    Route::delete('universitiesList/{id}', [UniversityController::class, 'delete'])->name('universities.delete');
+    Route::patch('universitiesList/{id}/status', [UniversityController::class, 'statusUpdate'])->name('universities.statusUpdate');
+    Route::patch('universitiesList/{id}/edit', [UniversityController::class, 'updateUniversity'])->name('universities.edit');
+    Route::get('universitiesList/{id}/edit', [UniversityController::class, 'edit'])->name('universities.editForm');
+    Route::get('universitiesList/create', [UniversityController::class, 'create'])->name('universities.create');
+    Route::post('universitiesList/store', [UniversityController::class, 'store'])->name('universities.store');
+    Route::get('universitiesList/not-active', [UniversityController::class, 'notActiveList'])->name('universities.notActive');
 
-    Route::post('/university/upload-photo', [UniveristyController::class, 'updateUniversityPhoto'])
+    Route::post('/university/upload-photo', [UniversityController::class, 'updateUniversityPhoto'])
     ->name('university.uploadPhoto');
 
 
