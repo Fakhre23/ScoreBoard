@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\{Event, User};
+use App\Models\{Event};
 
 class StoreEventRequest extends FormRequest
 {
@@ -29,6 +29,7 @@ class StoreEventRequest extends FormRequest
             'start_datetime' => 'required|date',
             'end_datetime' => 'required|date|after_or_equal:start_datetime',
             'max_participants' => 'required|integer|min:1',
+            'content_delivery' => 'nullable|string|max:255',
         ];
 
         // Only admin can set status, scope, university_id

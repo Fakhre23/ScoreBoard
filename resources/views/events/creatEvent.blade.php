@@ -132,15 +132,50 @@
                         <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-            @endcan
+                <div>
+                @endcan
 
-            <!-- Submit -->
-            <div class="pt-4">
-                <button type="submit"
-                    class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition-all duration-200 ease-in-out">
-                    ✅ Create Event
-                </button>
-            </div>
+                <div>
+                    <label for="content_delivery" class="block text-sm font-semibold text-gray-700">
+                        Time required to deliver the content
+                    </label>
+
+                    <select name="content_delivery" id="content_delivery" required
+                        class="mt-2 w-full rounded-xl border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 p-3 bg-white">
+
+                        <option value="" disabled selected>Select delivery time</option>
+
+                        <option value="1" {{ old('content_delivery') == '1' ? 'selected' : '' }}>
+                            Urgent (same event day)
+                        </option>
+
+                        <option value="2" {{ old('content_delivery') == '2' ? 'selected' : '' }}>
+                            2 - 5 Days
+                        </option>
+
+                        <option value="3" {{ old('content_delivery') == '3' ? 'selected' : '' }}>
+                            5 - 7 Days
+                        </option>
+
+                        <option value="4" {{ old('content_delivery') == '4' ? 'selected' : '' }}>
+                            More than 7 Days
+                        </option>
+
+                    </select>
+
+                    @error('content_delivery')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+
+                <!-- Submit -->
+                <div class="pt-4">
+                    <button type="submit"
+                        class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition-all duration-200 ease-in-out">
+                        Create Event
+                    </button>
+                </div>
         </form>
     </div>
 

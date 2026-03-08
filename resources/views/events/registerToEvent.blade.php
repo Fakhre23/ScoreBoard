@@ -66,13 +66,30 @@
                         class="space-y-4">
                         @csrf
 
+                        @php
+                            $deliveryLabels = [
+                                1 => 'Urgent (same event day)',
+                                2 => '2 - 5 Days',
+                                3 => '5 - 7 Days',
+                                4 => 'More than 7 Days',
+                            ];
+
+                            // Prefer $eventsRoles from your controller, fall back to $roles or $event->roles
+                            $eventRoles = $eventRoles ?? ($event->roles ?? collect());
+                        @endphp
+
+                        {{-- Content Delivery Time --}}
                         <div>
-                            <label for="role_id" class="block text-sm font-medium text-gray-700">Choose your
-                                role</label>
-                            @php
-                                // Prefer $eventsRoles from your controller, fall back to $roles or $event->roles
-                                $eventRoles = $eventRoles ?? ($event->roles ?? collect());
-                            @endphp
+                            <div class="bg-blue-50 border border-blue-100 text-blue-800 p-3 rounded-md text-sm">
+                                <strong>Content Delivery Time:</strong>
+                                {{ $deliveryLabels[$event->content_delivery] ?? 'Not specified' }}
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="role_id" class="block text-sm font-medium text-gray-700">
+                                Choose your role
+                            </label>
 
                             @if ($eventRoles->isEmpty())
                                 <div
@@ -84,14 +101,17 @@
                                     <select name="role_id" id="role_id"
                                         class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('role_id') border-red-500 @enderror"
                                         aria-describedby="role-help">
+
                                         <option value="">-- Select role --</option>
 
                                         @foreach ($eventRoles as $role)
                                             <option value="{{ $role->id }}"
                                                 {{ old('role_id') == $role->id ? 'selected' : '' }}>
-                                                {{ $role->name }}{{ isset($role->description) ? ' — ' . $role->description : '' }}
+                                                {{ $role->name }}
+                                                {{ isset($role->description) ? ' — ' . $role->description : '' }}
                                             </option>
                                         @endforeach
+
                                     </select>
 
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -108,8 +128,9 @@
                                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
 
-                                <p id="role-help" class="mt-2 text-xs text-gray-500">Select the role you want to
-                                    register for</p>
+                                <p id="role-help" class="mt-2 text-xs text-gray-500">
+                                    Select the role you want to register for
+                                </p>
                             @endif
                         </div>
 
@@ -118,6 +139,7 @@
                                 class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 mr-2">
                                 Cancel
                             </a>
+
                             @if ($event->actual_participants >= $event->max_participants)
                                 <button disabled class="bg-gray-300 text-white px-4 py-2 rounded cursor-not-allowed">
                                     Full

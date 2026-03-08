@@ -195,6 +195,7 @@
                                         <p><strong>Max Participants:</strong> {{ $event->max_participants ?? '—' }}</p>
                                         <p><strong>Start Date:</strong> {{ $event->start_datetime ?? '—' }}</p>
                                         <p><strong>End Date:</strong> {{ $event->end_datetime ?? '—' }}</p>
+                                        <p><strong>Content Delivery:</strong> {{ $event->content_delivery ?? '—' }}days </p>
                                     </div>
                                 </div>
                             </div>

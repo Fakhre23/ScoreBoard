@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use App\Models\Event;
-use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -36,7 +35,7 @@ class EventCreatedNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('New Event Created: ' . $this->event->title)
+            ->subject('New Event: ' . $this->event->title)
             ->greeting('Hello ' . $notifiable->name . '!')
             ->line('A new event has been created: **' . $this->event->title . '**')
             ->line('Description: ' . $this->event->description)

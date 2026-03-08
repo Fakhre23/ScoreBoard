@@ -22,6 +22,7 @@ class Event extends Model
         'university_id',
         'actual_participants',
         'created_at',
+        'content_delivery',
     ];
 
     // Each event belongs to the user who created it

@@ -35,6 +35,7 @@ class EventService
                 'approved_by' => $user->isAdmin() ? $user->id : null,
                 'approval_date' => $user->isAdmin() ? now() : null,
                 'university_id' => $universityId,
+                'content_delivery' => $data['content_delivery'] ?? null,
             ]);
 
             // Notify users

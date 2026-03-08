@@ -20,16 +20,16 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('Home') }}
                     </x-nav-link>
                 </div>
 
             </div>
 
             <!-- Right Side -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6 space-x-4">
+            <div class="hidden sm:flex sm:items-center sm:ms-12 space-x-5">
 
-                <!-- 🔔 Notification Dropdown -->
+                <!--Notification Dropdown -->
                 <x-dropdown align="right" width="80">
                     <x-slot name="trigger">
                         <button
@@ -65,7 +65,7 @@ a3 3 0 11-6 0m6 0H9" />
                                         @csrf
 
                                         <button type="submit"
-                                            class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            class="block w-full text-left px-8 py-3 text-sm text-gray-700 hover:bg-gray-200">
 
                                             {{ $notification->data['message'] }}
 
