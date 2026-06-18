@@ -15,8 +15,10 @@ class UniversitySeeder extends Seeder
     public function run(): void
     {
         DB::Table('universities')->insert([
-            ['name' => 'University of Jordan', 'country' => 'Jordan', 'total_score' => 0, 'UNI_photo' => NULL ,'status' => true],
-            ['name' => 'Amman Arab Univeristy', 'country' => 'Jordan', 'total_score' => 0, 'UNI_photo' => NULL ,'status' => true],
+            ['name' => 'Amman Arab Univeristy', 'country' => 'Jordan', 'total_score' => 0, 'UNI_photo' => NULL, 'status' => true, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Yarmouk University', 'country' => 'Jordan', 'total_score' => 0, 'UNI_photo' => NULL, 'status' => true, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Al-Balqa Applied University', 'country' => 'Jordan', 'total_score' => 0, 'UNI_photo' => NULL, 'status' => true, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Al-Hussein Bin Talal University', 'country' => 'Jordan', 'total_score' => 0, 'UNI_photo' => NULL, 'status' => true, 'created_at' => now(), 'updated_at' => now()],
 
         ]);
     }
