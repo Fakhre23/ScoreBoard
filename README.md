@@ -1,7 +1,7 @@
 # 🏆 University Leaderboard System (ScoreBoard Project)
 
 ![Laravel](https://img.shields.io/badge/Laravel-11-red?style=for-the-badge&logo=laravel)
-![PHP](https://img.shields.io/badge/PHP-8.3-blue?style=for-the-badge&logo=php)
+![PHP](https://img.shields.io/badge/PHP-8.4-blue?style=for-the-badge&logo=php)
 ![MySQL](https://img.shields.io/badge/MySQL-Database-orange?style=for-the-badge&logo=mysql)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-Framework-38B2AC?style=for-the-badge&logo=tailwind-css)
 ![Fedora](https://img.shields.io/badge/Fedora-Linux-294172?style=for-the-badge&logo=fedora)

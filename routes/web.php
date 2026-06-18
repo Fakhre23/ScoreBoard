@@ -74,7 +74,7 @@ Route::middleware('auth')->group(function () { // just for more securty its not 
     Route::get('universitiesList/not-active', [UniversityController::class, 'notActiveList'])->name('universities.notActive');
 
     Route::post('/university/upload-photo', [UniversityController::class, 'updateUniversityPhoto'])
-    ->name('university.uploadPhoto');
+        ->name('university.uploadPhoto');
 
 
     // ***** Events CRUD Routes Section ***** //
@@ -104,8 +104,8 @@ Route::middleware('auth')->group(function () { // just for more securty its not 
 });
 
 // Routes for users to register their universities (no auth middleware)
-Route::get('registerUniversity/create', [UniveristyController::class, 'createUniFromUser'])->name('universities.fromUser.create');
-Route::post('registerUniversity/store', [UniveristyController::class, 'storeUniFromUser'])->name('universities.fromUser.store');
+Route::get('registerUniversity/create', [UniversityController::class, 'createUniFromUser'])->name('universities.fromUser.create');
+Route::post('registerUniversity/store', [UniversityController::class, 'storeUniFromUser'])->name('universities.fromUser.store');
 
 
 Route::get('listRoles', [UserRoles::class, 'index'])->name('roles.list');
